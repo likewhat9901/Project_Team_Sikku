@@ -1,0 +1,38 @@
+@charset "UTF-8";
+.mydiary-thumbnail {
+  width: 80%;
+  height: auto;
+  object-fit: cover;
+  border-radius: 8px 8px; /* 둥근 모서리 (선택사항) */
+  vertical-align: middle; /* 세로 방향 가운데 정렬 (선택) */
+}
+.mydiary-img {
+  width: 80%;
+  height: auto;
+  object-fit: cover;
+  vertical-align: middle; /* 세로 방향 가운데 정렬 (선택) */
+  /* border-radius: 8px 8px; */
+}
+.mydiary-top-wrapper{
+	display: flex;
+    justify-content: center; /* 가운데 정렬 */
+}
+.mydiary-top {
+    display: flex;
+    justify-content: space-between; /* 양쪽 정렬 + 가운데 제목 가능 */
+    align-items: center;
+    width: 800px; /* 원하는 만큼 줄이기 */
+    padding: 10px 20px;
+    border-bottom: 1px solid #ccc;
+  }
+
+  .mydiary-top h2 {
+    margin: 0;
+    text-align: center;
+    flex-grow: 1;
+  }
+
+  .mydiary-top nav,
+  .mydiary-top button {
+    flex-shrink: 0;
+  }
