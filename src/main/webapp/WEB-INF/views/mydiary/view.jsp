@@ -22,8 +22,6 @@ function deletePost(idx){
 <body>
 <%@ include file="/WEB-INF/views/common/header.jsp" %>
 
-	<h2 align="center">나의 식꾸</h2>
-	<h2>게시판 읽기(Mybatis)</h2>
 	<!-- 아래 form은 확인용. hidden으로 멤버 아이디 확인 -->
 	<form name="writeFrm">
 		<input type="hidden" name="diaryIdx" value="${myDiaryDTO.diaryIdx }" />
@@ -34,7 +32,7 @@ function deletePost(idx){
 		<div class="mydiary-top-wrapper">
 			<div class="mydiary-top">
 				<nav class="mydiary-nav">
-					<a href="/mycalendar/calendar.html" class="mydiary-calendar-btn">캘린더</a>
+					<a href="/mydiary/calendar.do" class="mydiary-calendar-btn">캘린더</a>
 				</nav>
 				<h2 class="mydiary-title">나만의 식물 꾸미기</h2>
 				<button type="button" class="mydiary-write-btn"
@@ -47,7 +45,7 @@ function deletePost(idx){
 			<div class="mydiary-card">
 				<!-- 카드 헤더 (날씨 영역) -->
 				<div class="mydiary-card-header">
-					<div class="mydiary-card-number">View</div>
+					<div class="mydiary-card-number">🌱</div>
 					<div class="mydiary-weather-icons">
 						<span>☀️</span> <span>☁️</span> <span>🌈</span> <span>🌡️</span>
 					</div>

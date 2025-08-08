@@ -217,9 +217,9 @@ public class MyDiaryController {
 	}
 	
 	// 입력1 : 작성페이지 매핑
-	@GetMapping("/mydiary/calender.do")
+	@GetMapping("/mydiary/calendar.do")
 	public String calender() {
-		return "mydiary/calender";
+		return "mydiary/calendar";
 	}
 
 }
