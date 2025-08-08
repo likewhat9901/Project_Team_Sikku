@@ -21,6 +21,8 @@
 						onclick="location.href='./calendar.do';">캘린더</button>
 				</nav>
 				<h1 class="mydiary-title">식물 다이어리 수정</h1>
+				<button type="button" class="mydiary-write-btn list"
+                                onclick="location.href='${contextPath}/mydiary/list.do';">목록으로</button>
 				<div></div>
 			</div>
 		</div>
@@ -124,66 +126,6 @@
 			</div>
 		</div>
 	</div>
-	<h2>게시판 수정(Mybatis)</h2>
-	<form name="writeFrm" method="post" enctype="multipart/form-data"
-		action="./edit.do" onsubmit="return validateForm(this);">
-		<input type="hidden" name="diaryIdx" value="${myDiaryDTO.diaryIdx }" />
-		<table border="1" width="90%">
-			<!-- 
-		<tr>
-	        <td>작성자</td>
-	        <td>
-	            <input type="text" name="userId" style="width:150px;" 
-	            	value="${myDiaryDTO.userId}" />
-	        </td>
-	    </tr>	
-	 -->
-			<tr>
-				<td>온도</td>
-				<td><input type="text" name="temperature" style="width: 90%;"
-					value="${myDiaryDTO.temperature}" /></td>
-			</tr>
-			<tr>
-				<td>습도</td>
-				<td><input type="text" name="humidity" style="width: 90%;"
-					value="${myDiaryDTO.humidity}" /></td>
-			</tr>
-			<tr>
-				<td>일조량</td>
-				<td><input type="text" name="sunlight" style="width: 90%;"
-					value="${myDiaryDTO.sunlight}" /></td>
-			</tr>
-			<tr>
-				<td>키</td>
-				<td><input type="text" name="height" style="width: 90%;"
-					value="${myDiaryDTO.height}" /></td>
-			</tr>
-			<tr>
-				<td>열매 개수</td>
-				<td><input type="text" name="fruit" style="width: 90%;"
-					value="${myDiaryDTO.fruit}" /></td>
-			</tr>
-			<tr>
-				<td>설명</td>
-				<td><textarea name="description"
-						style="width: 90%; height: 100px;">${myDiaryDTO.description}</textarea>
-				</td>
-			</tr>
-			<tr>
-				<td>이미지</td>
-				<td><input type="file" name="ofile" /></td>
-			</tr>
-			<tr>
-				<td colspan="2" align="center">
-					<button type="submit">작성 완료</button>
-					<button type="reset">RESET</button>
-					<button type="button" onclick="location.href='./list.do';">
-						목록 바로가기</button>
-				</td>
-			</tr>
-		</table>
-	</form>
-	
 <%@ include file="/WEB-INF/views/common/footer.jsp" %>
 </body>
 

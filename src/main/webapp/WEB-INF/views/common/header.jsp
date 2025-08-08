@@ -21,7 +21,7 @@
             <div class="icon-box"></div>
 	            <span>궁금해?</span>
 			</div>
-			<div class="nav-item" onclick="location.href='/boards/freeBoardList.do'">
+			<div class="nav-item" onclick="location.href='/boards/free/freeBoardList.do'">
 			   <div class="icon-box"></div>
 			   <span>커뮤니티</span>
 			</div>

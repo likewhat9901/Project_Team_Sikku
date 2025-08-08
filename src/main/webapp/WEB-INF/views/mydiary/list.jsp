@@ -17,7 +17,7 @@
 			<div class="mydiary-top-wrapper">
 				<div class="mydiary-top">
 					<nav class="mydiary-nav">
-						<a href="./calender.do" class="mydiary-calendar-btn">캘린더</a>
+						<a href="/mydiary/calendar.do" class="mydiary-calendar-btn">캘린더</a>
 					</nav>
 					<h2 class="mydiary-title">나만의 식물 꾸미기</h2>
 					<button type="button" class="mydiary-write-btn"
