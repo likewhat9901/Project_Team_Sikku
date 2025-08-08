@@ -4,10 +4,17 @@
 <!DOCTYPE html>
 <html>
 <head>
+<<<<<<< HEAD
 	<meta charset="UTF-8">
 	<title>마이페이지</title>
 	<link rel="stylesheet" href="/css/common/layout.css" />
 	<link rel="stylesheet" href="/css/mypage.css">
+=======
+  <meta charset="UTF-8">
+  <title>마이페이지</title>
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="stylesheet" href="/css/mypage.css">
+>>>>>>> 2693aab (backup: 최초 상태)
 </head>
 <body>
 

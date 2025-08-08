@@ -3,10 +3,17 @@
 <!DOCTYPE html>
 <html>
 <head>
+<<<<<<< HEAD
 	<meta charset="UTF-8">
 	<title>Insert title here</title>
 	<link rel="stylesheet" href="/css/common/layout.css" />
 	<link rel="stylesheet" href="/css/myDiarystyle.css" />
+=======
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<link rel="stylesheet" href="/css/myDiarystyle.css" />
+<link rel="stylesheet" href="/css/main.css">
+>>>>>>> 2693aab (backup: 최초 상태)
 </head>
 <script>
 function validateForm(fm) {
@@ -206,7 +213,11 @@ function onlyInteger(event) {
     <div class="mydiary-top-wrapper">
         <div class="mydiary-top">
             <nav class="mydiary-nav">
+<<<<<<< HEAD
                 <a href="./calendar.do" class="mydiary-calendar-btn">캘린더</a>
+=======
+                <a href="/mycalendar/calendar.html" class="mydiary-calendar-btn">캘린더</a>
+>>>>>>> 2693aab (backup: 최초 상태)
             </nav>
             <h2 class="mydiary-title">나만의 식물 꾸미기</h2>
             <button type="button" class="mydiary-write-btn" onclick="location.href='./list.do';">목록보기</button>
@@ -325,7 +336,10 @@ function onlyInteger(event) {
         </div>
     </div>
 </div>
+<<<<<<< HEAD
 
+=======
+>>>>>>> 2693aab (backup: 최초 상태)
 <%@ include file="/WEB-INF/views/common/footer.jsp" %>
 </body>
 

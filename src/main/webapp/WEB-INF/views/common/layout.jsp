@@ -6,6 +6,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>그린다이어리(예명)</title>
+<<<<<<< HEAD
     <link rel="stylesheet" href="/css/common/common.css">
 </head>
 <body>
@@ -16,5 +17,17 @@
 </div>
 
 <%@ include file="/WEB-INF/views/common/footer.jsp" %>
+=======
+    <link rel="stylesheet" href="./css/common/common.css">
+</head>
+<body>
+	<%@ include file="/WEB-INF/views/common/header.jsp" %>
+	
+	<div class="main_container">
+    	<jsp:include page="${contentPage}" />
+	</div>
+	
+	<%@ include file="/WEB-INF/views/common/footer.jsp" %>
+>>>>>>> 2693aab (backup: 최초 상태)
 </body>
 </html>

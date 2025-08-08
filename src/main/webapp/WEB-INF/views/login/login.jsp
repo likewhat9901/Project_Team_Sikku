@@ -4,10 +4,16 @@
 <!DOCTYPE html>
 <html>
 <head>
+<<<<<<< HEAD
 	<meta charset="UTF-8">
 	<title>스마트팜 로그인</title>
 	<link rel="stylesheet" href="/css/common/layout.css" />
 	<link rel="stylesheet" href="/css/loginSign.css">
+=======
+  <meta charset="UTF-8">
+  <title>스마트팜 로그인</title>
+  <link rel="stylesheet" href="./css/style.css">
+>>>>>>> 2693aab (backup: 최초 상태)
 </head>
 <body>
   <!-- 배경 애니메이션 -->
@@ -43,7 +49,11 @@
       <c:if test="${not loginResult}">
       <p class="welcome-message">${username}님 방문해주셔서 감사합니다</p>
       <div class="logout-links">
+<<<<<<< HEAD
         <a href="/main/member.do">홈페이지로</a>
+=======
+        <a href="/member.do">홈페이지로</a>
+>>>>>>> 2693aab (backup: 최초 상태)
       </div>
     </c:if>
 

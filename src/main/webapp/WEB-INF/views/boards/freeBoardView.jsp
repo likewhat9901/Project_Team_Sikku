@@ -3,8 +3,13 @@
     pageEncoding="UTF-8"%>
 <html>
 <head>
+<<<<<<< HEAD
 	<meta charset="UTF-8">
 	<title>freeBoardList</title>
+=======
+<meta charset="UTF-8">
+<title>freeBoardList</title>
+>>>>>>> 2693aab (backup: 최초 상태)
 
 <style>
 <!-- CSS - Header  -->

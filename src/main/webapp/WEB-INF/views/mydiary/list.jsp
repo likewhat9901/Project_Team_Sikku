@@ -4,6 +4,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+<<<<<<< HEAD
 	<meta charset="UTF-8">
 	<title>식꾸</title>
 	<link rel="stylesheet" href="/css/common/layout.css" />
@@ -12,12 +13,25 @@
 <body>
 <%@ include file="/WEB-INF/views/common/header.jsp" %>
 
+=======
+<meta charset="UTF-8">
+<title>식꾸</title>
+<link rel="stylesheet" href="/css/myDiarystyle.css" />
+<link rel="stylesheet" href="/css/main.css">
+</head>
+<body>
+<%@ include file="/WEB-INF/views/common/header.jsp" %>
+>>>>>>> 2693aab (backup: 최초 상태)
 		<!-- 다이어리 목록 Top -->
 		<div class="mydiary-container">
 			<div class="mydiary-top-wrapper">
 				<div class="mydiary-top">
 					<nav class="mydiary-nav">
+<<<<<<< HEAD
 						<a href="./calender.do" class="mydiary-calendar-btn">캘린더</a>
+=======
+						<a href="/mycalendar/calendar.html" class="mydiary-calendar-btn">캘린더</a>
+>>>>>>> 2693aab (backup: 최초 상태)
 					</nav>
 					<h2 class="mydiary-title">나만의 식물 꾸미기</h2>
 					<button type="button" class="mydiary-write-btn"

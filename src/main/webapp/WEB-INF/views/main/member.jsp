@@ -4,6 +4,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+<<<<<<< HEAD
 	<meta charset="UTF-8">
 	<title>SpringBoot</title>
 	<link rel="stylesheet" href="/css/common/layout.css" />
@@ -12,6 +13,14 @@
 <body>
 <%@ include file="/WEB-INF/views/common/header.jsp" %>
 
+=======
+<meta charset="UTF-8">
+<title>SpringBoot</title>
+<link rel="stylesheet" href="./css/member.css">
+</head>
+<body>
+<%@ include file="/WEB-INF/views/common/header.jsp" %>
+>>>>>>> 2693aab (backup: 최초 상태)
 <!-- Weather Section -->
 <div class="weather">
     <span class="weather-label">날씨정보</span>
@@ -47,11 +56,16 @@
 	</div>
 </c:forEach>
 </div>
+<<<<<<< HEAD
 
 <%@ include file="/WEB-INF/views/common/footer.jsp" %>
 
 </body>
 
+=======
+<%@ include file="/WEB-INF/views/common/footer.jsp" %>
+</body>
+>>>>>>> 2693aab (backup: 최초 상태)
 <script type="text/javascript">
 window.addEventListener('DOMContentLoaded', function () {
 	const container = document.querySelector('.weather-content');

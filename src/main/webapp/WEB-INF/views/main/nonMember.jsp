@@ -3,10 +3,16 @@
 <!DOCTYPE html>
 <html>
 <head>
+<<<<<<< HEAD
 	<meta charset="UTF-8">
 	<title>SpringBoot</title>
 	<link rel="stylesheet" href="/css/common/layout.css" />
 	<link rel="stylesheet" href="/css/nonMember.css">
+=======
+<meta charset="UTF-8">
+<title>SpringBoot</title>
+<link rel="stylesheet" href="./css/nonMember.css">
+>>>>>>> 2693aab (backup: 최초 상태)
 </head>
 <body>
 <%@ include file="/WEB-INF/views/common/header.jsp" %>
@@ -28,6 +34,10 @@
 		<div class="banner">
 			<a href="/mbti.do">
 		        <div class="mbti-banner">
+<<<<<<< HEAD
+=======
+					
+>>>>>>> 2693aab (backup: 최초 상태)
 		        </div>
 			</a>
 		</div>
@@ -37,11 +47,16 @@
 		
 	</div>
 </div>
+<<<<<<< HEAD
 
 <%@ include file="/WEB-INF/views/common/footer.jsp" %>
 
 </body>
 
+=======
+<%@ include file="/WEB-INF/views/common/footer.jsp" %>
+</body>
+>>>>>>> 2693aab (backup: 최초 상태)
 <script type="text/javascript">
 window.addEventListener('DOMContentLoaded', function () {
 	const container = document.querySelector('.weather-content');
@@ -107,7 +122,11 @@ document.addEventListener('DOMContentLoaded', function () {
             	const html = `
             		<div class="step-container">
 	                    <img src="\${item.image}" alt="\${item.name}" width="60" style="margin-bottom: 10px;" />
+<<<<<<< HEAD
 	                    <div class="step" style="height:\${height}px; background-color: #5cb85c;">
+=======
+	                    <div class="step" style="height:\${height}px; background-color: #5cb85c;"">
+>>>>>>> 2693aab (backup: 최초 상태)
 	                        <div class="rank">\${index + 1}위</div>
 	                        <div class="name">\${item.name}</div>
 	                        <div class="volume">(\${item.volume.toFixed(2)})</div>

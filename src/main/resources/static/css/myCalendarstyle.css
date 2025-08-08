@@ -1,3 +1,12 @@
+<<<<<<< HEAD
+=======
+@charset "UTF-8";
+
+body {
+  padding: 20px;
+}
+
+>>>>>>> 2693aab (backup: 최초 상태)
 .calendar-container {
   max-width: 700px;
   margin: auto;

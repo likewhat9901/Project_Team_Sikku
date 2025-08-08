@@ -2,10 +2,16 @@
 <!DOCTYPE html>
 <html>
 <head>
+<<<<<<< HEAD
 	<meta charset="UTF-8">
 	<title>스마트팜 회원가입</title>
 	<link rel="stylesheet" href="/css/common/layout.css" />
 	<link rel="stylesheet" href="/css/loginSign.css">
+=======
+  <meta charset="UTF-8">
+  <title>스마트팜 회원가입</title>
+  <link rel="stylesheet" href="./css/style.css">
+>>>>>>> 2693aab (backup: 최초 상태)
 </head>
 <body>
   <div class="signup-background">
