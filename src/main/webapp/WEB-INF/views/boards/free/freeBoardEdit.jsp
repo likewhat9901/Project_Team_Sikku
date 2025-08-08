@@ -6,7 +6,6 @@
 <meta charset="UTF-8">
 <title>게시판 수정</title>
 <link rel="stylesheet" href="/css/free.css">
-<link rel="stylesheet" href="/css/member.css">
 </head>
 <body>
 <%@ include file="/WEB-INF/views/common/header.jsp" %>
@@ -25,7 +24,7 @@
 
 			<div class="form-group">
 				<label for="writer">작성자</label> <input type="text" id="writer"
-					name="memberIdx" value="${row.memberIdx}" readonly />
+					name="userId" value="${row.userId}" readonly />
 			</div>
 
 			<div class="form-group">
