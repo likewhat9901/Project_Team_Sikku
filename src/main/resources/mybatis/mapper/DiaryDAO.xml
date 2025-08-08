@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.edu.springboot.mydiary.IMyDiaryMapper">
+
+	<select id="getTotalCount" resultType="int"
+	parameterType="com.edu.springboot.mydiary.MyDiaryDTO">
+		SELECT COUNT(*) from diary WHERE userId=#{userId}
+	</select>
+	
+	<select id="listPage"
+		resultType="com.edu.springboot.mydiary.MyDiaryDTO"
+		parameterType="com.edu.springboot.mydiary.ParameterDTO">
+		SELECT * FROM (
+		    SELECT tb.*, rownum rNum from (
+		        SELECT * FROM diary	
+		         WHERE userId = #{userId}
+	        	ORDER BY diaryIdx DESC
+		    ) Tb
+		)
+		where rNum<![CDATA[>=]]>#{start}
+				and rNum<![CDATA[<=]]>#{end}
+	</select>
+	<!-- where rNum between #{start}
+				and #{end} -->
+				
+  	<insert id="write" parameterType="com.edu.springboot.mydiary.MyDiaryDTO">
+	 	insert into diary (diaryIdx, userId, ofileName, sfile, description, 
+	 	temperature, humidity, sunlight, height, fruit)
+	 	values
+	 	(seq_board_num.nextval, #{userId, jdbcType=VARCHAR}, #{ofileName}, #{sfile}, 
+	 	#{description}, #{temperature}, #{humidity}, #{sunlight}, #{height}, #{fruit})
+	</insert>
+	 
+ 	<select id="view"
+ 		resultType="com.edu.springboot.mydiary.MyDiaryDTO"
+		parameterType="com.edu.springboot.mydiary.ParameterDTO">
+		SELECT * FROM diary WHERE diaryIdx=#{diaryIdx}
+	</select>
+	
+	
+ 	<update id="edit"
+		parameterType="com.edu.springboot.mydiary.MyDiaryDTO">
+		UPDATE diary SET
+		ofileName = #{ofileName, jdbcType=VARCHAR}, sfile=#{sfile, jdbcType=VARCHAR},
+		description=#{description}, temperature=#{temperature}, 
+		humidity=#{humidity}, sunlight=#{sunlight}
+		WHERE diaryIdx=#{diaryIdx}
+	</update>
+	 
+  	<delete id="delete">
+		DELETE FROM diary WHERE diaryIdx=#{diaryIdx} AND userId=#{userId}
+	</delete>
+	
+	
+	<select id="selectByMonth" 
+	resultType="com.edu.springboot.mydiary.DiaryPostResponse">
+	  SELECT diaryIdx, sfile, postdate FROM diary
+	  WHERE TO_CHAR(postdate, 'YYYY') = #{year}
+	    AND TO_CHAR(postdate, 'MM') = #{month}
+	    AND userId=#{userId}
+	  ORDER BY postdate DESC
+	</select>
+</mapper>

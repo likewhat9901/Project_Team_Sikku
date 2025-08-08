@@ -1,0 +1,125 @@
+ /* * oopy.io Footer Style
+     * - 데스크톱: 3단 Flex Layout
+     * - 모바일: Toggle 기능이 포함된 세로 Layout
+     */
+    :root {
+        --footer-bg-color: #f8f9fa; /* 푸터 배경색 */
+        --footer-text-color: #6c757d; /* 푸터 기본 글자색 */
+        --footer-title-color: #343a40; /* 푸터 제목 글자색 */
+        --footer-link-hover-color: #007bff; /* 링크에 마우스를 올렸을 때 색상 */
+    }
+    .oopy-my-footer {
+        background-color: var(--footer-bg-color);
+        color: var(--footer-text-color);
+        padding: 10px 5%;
+        border-top: 1px solid #e9ecef;
+        line-height: 1.6;
+    }
+    .oopy-my-footer-container {
+        display: flex;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+    .oopy-my-footer-column {
+        flex: 1;
+        min-width: 220px;
+        padding: 0 15px;
+        margin-bottom: 20px;
+    }
+    .oopy-my-footer-column h3 {
+        font-size: 16px;
+        font-weight: 600;
+        color: var(--footer-title-color);
+        margin-bottom: 15px;
+    }
+    .oopy-my-footer-column p {
+        margin: 0 0 5px 0;
+        font-size: 14px;
+    }
+    .oopy-my-footer-column ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+    .oopy-my-footer-column ul li {
+        margin-bottom: 8px;
+    }
+    .oopy-my-footer-column a {
+        color: var(--footer-text-color);
+        text-decoration: none;
+        font-size: 14px;
+        transition: color 0.2s ease-in-out;
+    }
+    .oopy-my-footer-column a:hover {
+        color: var(--footer-link-hover-color);
+        text-decoration: underline;
+    }
+    .oopy-my-footer-social-links a {
+        display: inline-block;
+        margin-right: 15px;
+    }
+    .oopy-my-footer-social-links svg {
+        width: 24px;
+        height: 24px;
+        fill: var(--footer-text-color);
+        transition: fill 0.2s ease-in-out;
+    }   
+    .oopy-my-footer-social-links a:hover svg {
+        fill: var(--footer-link-hover-color);
+    }
+    .oopy-my-footer-copyright {
+        text-align: center;
+        font-size: 12px;
+        border-top: 1px solid #e9ecef;
+        max-width: 1200px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+    /* 모바일 토글 버튼 (평상시 숨김) */
+    .oopy-my-footer-mobile-toggle {
+        display: none;
+    }
+    /* 모바일 반응형 스타일 (화면 너비 768px 이하) */
+    @media (max-width: 768px) {
+        .oopy-my-footer {
+            padding: 20px 5%;
+        }
+        /* 모바일용 토글 버튼 보이기 */
+        .oopy-my-footer-mobile-toggle {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            padding: 10px 0;
+            user-select: none; /* 텍스트 선택 방지 */
+        }
+        .oopy-my-footer-mobile-toggle h3 {
+            margin: 0;
+        }
+        .oopy-my-footer-mobile-toggle-button {
+            font-size: 14px;
+            font-weight: bold;
+            transition: transform 0.3s ease;
+        }
+        /* 푸터 메인 컨텐츠 기본적으로 숨기기 */
+        .oopy-my-footer-container {
+            display: none;
+            flex-direction: column;
+            margin-top: 20px;
+        }
+        /* is-open 클래스가 추가되면 컨텐츠 보이기 */
+        .oopy-my-footer-container.is-open {
+            display: flex;
+        }
+        /* 토글이 열렸을 때 화살표 아이콘 회전 */
+        .oopy-my-footer-container.is-open + .oopy-my-footer-mobile-toggle .oopy-my-footer-mobile-toggle-button,
+        .oopy-my-footer-mobile-toggle.is-open .oopy-my-footer-mobile-toggle-button {
+            transform: rotate(180deg);
+        }
+        .oopy-my-footer-column {
+             padding: 0;
+             margin-bottom: 30px;
+        }
+    }
