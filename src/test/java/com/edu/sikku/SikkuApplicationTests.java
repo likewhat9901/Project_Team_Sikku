@@ -1,10 +1,10 @@
-package com.edu.springboot;
+package com.edu.sikku;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class B07aMybatisApplicationTests {
+class SikkuApplicationTests {
 
 	@Test
 	void contextLoads() {
