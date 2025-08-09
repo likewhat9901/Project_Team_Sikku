@@ -8,9 +8,4 @@
 		resultType="com.edu.springboot.mbti.MbtiDTO">
 		SELECT * from MBTI
 	</select>
-<<<<<<< HEAD
-	
-=======
-
->>>>>>> ee744f9 (backup2)
 </mapper>
