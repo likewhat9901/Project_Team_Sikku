@@ -26,7 +26,7 @@ public class RankingApiController {
 	
 	@GetMapping("/api/ranking")
 	// Map<String, Object>	{"key": value} 형태의 JSON
-    public Map<String, Object> getRanking(@RequestParam(name="category", defaultValue="farm") String category){
+    public Map<String, Object> getRanking(@RequestParam(name="category") String category){
 		try {
 			//===========디버깅==============
 			// Python 스크립트 경로 객체 생성
@@ -42,6 +42,7 @@ public class RankingApiController {
 	        }
 	        
 	        System.out.println("Java PATH=" + System.getenv("PATH"));
+	        System.out.println("category=" + category);
 	        //============================
 	        
 			// 외부 프로그램(여기서는 Python)을 실행하기 위한 도구

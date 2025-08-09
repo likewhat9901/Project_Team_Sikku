@@ -139,17 +139,27 @@ def ranking_data(category):
     
 	# 이미지 맵핑  
 	image_map = {
-		"딸기": "/images/ranking/strawberry.jpg",
-		"토마토": "/images/ranking/tomato.jpg",
-		"당근": "/images/ranking/carrot.jpg",
-		"수박": "/images/ranking/watermelon.jpg",
-		"양배추": "/images/ranking/cabbage.jpg",
-		"바질": "/images/ranking/basil.jpg",
-		"루꼴라": "/images/ranking/arugula.jpg",
-		"애플수박": "/images/ranking/apple_watermelon.jpg",
-		"대파": "/images/ranking/green_onion.jpg",
-		"무": "/images/ranking/radish.jpg",
-		"스테비아": "/images/ranking/stevia.jpg",
+		"딸기": "/images/ranking/farm/strawberry.jpg",
+		"토마토": "/images/ranking/farm/tomato.jpg",
+		"당근": "/images/ranking/farm/carrot.jpg",
+		"수박": "/images/ranking/farm/watermelon.jpg",
+		"양배추": "/images/ranking/farm/cabbage.jpg",
+		"바질": "/images/ranking/farm/basil.jpg",
+		"루꼴라": "/images/ranking/farm/arugula.jpg",
+		"애플수박": "/images/ranking/farm/apple_watermelon.jpg",
+		"대파": "/images/ranking/farm/green_onion.jpg",
+		"무": "/images/ranking/farm/radish.jpg",
+		"스테비아": "/images/ranking/farm/stevia.jpg",
+		"브로콜리": "/images/ranking/farm/broccoli.jpg",
+		"망고": "/images/ranking/farm/mango.jpg",
+		"상추": "/images/ranking/farm/상추.jpg",
+		
+		"알로카시아": "/images/ranking/foliage/alocasia.jpg",
+		"행운목": "/images/ranking/foliage/happy_plant.jpg",
+		"몬스테라": "/images/ranking/foliage/monstera.jpg",
+		"올리브나무": "/images/ranking/foliage/olive_tree.jpg",
+		"파키라": "/images/ranking/foliage/pachira.jpg",
+		"금전수": "/images/ranking/foliage/ZZ_plant.jpg",
 	}
     
 	# top10 데이터 뽑기

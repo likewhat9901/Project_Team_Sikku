@@ -2,6 +2,8 @@
     pageEncoding="UTF-8"%>
 <link rel="stylesheet" href="/css/common/footer.css">
 
+</div>
+
 <footer class="oopy-my-footer">
     <div class="oopy-my-footer-mobile-toggle" id="footer-toggle">
         <h3>(주)Oopy</h3>

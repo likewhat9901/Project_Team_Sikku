@@ -14,9 +14,13 @@
 
 <!-- Weather Section -->
 <div class="weather">
-    <span class="weather-label">날씨정보</span>
+    <span class="weather-title">🌿 현재 날씨</span>
     <div class="weather-content">
         <!-- 날씨 정보가 들어갈 공간 -->
+        <div class="loading">
+            <div class="loading-spinner"></div>
+            날씨 정보를 불러오는 중...
+        </div>
     </div>
 </div>
 
@@ -53,9 +57,6 @@
 
 <script type="text/javascript">
 window.addEventListener('DOMContentLoaded', function () {
-	const container = document.querySelector('.weather-content');
-	container.innerHTML = '<p>날씨 정보를 불러오는 중...</p>';
-	
     fetch('/api/weather')
         .then(response => response.json())
         .then(data => {
