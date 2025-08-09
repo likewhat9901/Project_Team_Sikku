@@ -1,0 +1,337 @@
+@charset "UTF-8";
+
+/* ==========================
+   공통 스타일 (전체 JSP 공용)
+   ========================== */
+body {
+    font-family: 'Noto Sans KR', sans-serif;
+    background-color: #f5f6fa;
+    color: #333;
+    margin: 0;
+    padding: 0;
+}
+
+.main-header {
+    background-color: #4a69bd;
+    color: white;
+    padding: 0px;
+    text-align: center;
+    border-radius: 0 0 0px 0px;
+}
+
+h1, h2, h3 {
+    margin: 0;
+}
+
+button, .btn {
+    cursor: pointer;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 8px;
+    background-color: #4a69bd;
+    color: white;
+    transition: background-color 0.2s;
+}
+
+button:hover, .btn:hover {
+    background-color: #3c5aa6;
+}
+
+a {
+    text-decoration: none;
+    color: #4a69bd;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+/* ==========================
+   [LIST 페이지] freeBoardList.jsp
+   ========================== */
+   
+   
+/*==============게시판 목록 자유, 갤러리 버튼 2개==============*/ 
+  
+/* 버튼 컨테이너 - 가운데 정렬 */
+.board-btn-container {
+    display: flex;
+    justify-content: center;
+    gap: 20px; /* 버튼 간 간격 */
+    margin: 30px 0;
+}
+
+/* 버튼 기본 스타일 */
+.board-btn {
+    font-size: 20px;
+    font-weight: bold;
+    padding: 20px 40px;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    color: white;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* 색상별 버튼 */
+.board-btn.blue {
+    background-color: #4a6cf7;
+}
+
+.board-btn.green {
+    background-color: #2d6a4f;
+}
+
+/* 마우스 오버 시 효과 */
+.board-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+/*================================================*/  
+
+
+/*==============게시판 목록 검색창 + 글쓰기 버튼 ==============*/ 
+
+/* 전체 컨테이너 - 양 끝 정렬 */
+.search-write-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 20px 0;
+}
+
+/* 검색창 스타일 */
+.search-write-container input[type="search"] {
+    flex: 1; /* 너비 자동 확장 */
+    max-width: 300px; /* 너무 길지 않게 제한 */
+    padding: 10px 15px;
+    font-size: 16px;
+    border: 2px solid #ccc;
+    border-radius: 8px;
+    outline: none;
+}
+
+/* 글쓰기 버튼 스타일 */
+.write-btn {
+    margin-left: 10px;
+    padding: 10px 20px;
+    font-size: 16px;
+    font-weight: bold;
+    background-color: #4a6cf7;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.write-btn:hover {
+    background-color: #3a5bd4;
+}
+   
+/*===================================================================*/
+
+.board-container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* 무조건 2열 */
+    gap: 20px; /* 카드 사이 간격 */
+    padding: 40px;
+    max-width: 1000px; /* 전체 폭 제한 (가운데 정렬용) */
+    margin: 0 auto;
+}
+
+.board-card {
+    background-color: white;
+    border-radius: 20px;
+    padding: 20px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.board-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 14px rgba(0,0,0,0.12);
+}
+
+.board-title {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.board-content {
+    font-size: 14px;
+    color: #555;
+    flex: 1;
+}
+
+.board-footer {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+    font-size: 12px;
+    color: #888;
+}
+
+/* ==========================
+   [VIEW 페이지] freeBoardView.jsp
+   ========================== */
+.board-detail {
+    background-color: white;
+    padding: 40px;
+    margin: 40px auto;
+    border-radius: 20px;
+    max-width: 900px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+
+.board-detail label {
+    font-weight: bold;
+    display: inline-block;
+    width: 120px;
+}
+
+.board-detail div {
+    margin-bottom: 15px;
+}
+
+.comment-write-form {
+    background-color: white;
+    padding: 20px;
+    margin: 20px auto;
+    border-radius: 15px;
+    max-width: 900px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+}
+
+.comment-write-textarea, .comment-edit-textarea {
+    width: 100%;
+    padding: 10px;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+    resize: vertical;
+    font-size: 14px;
+}
+
+.comment-container {
+    background-color: white;
+    padding: 20px;
+    margin: 20px auto;
+    border-radius: 15px;
+    max-width: 900px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+}
+
+.comment-card {
+    border-bottom: 1px solid #eee;
+    padding: 15px 0;
+}
+
+.comment-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 5px;
+    font-size: 14px;
+    color: #666;
+}
+
+.comment-content {
+    font-size: 14px;
+    margin-bottom: 10px;
+}
+
+.comment-footer {
+    display: flex;
+    justify-content: space-between;
+    font-size: 13px;
+    color: #999;
+}
+
+.comment-actions button, .comment-actions a {
+    margin-left: 5px;
+}
+
+/* ==========================
+   [EDIT 페이지] freeBoardEdit.jsp
+   ========================== */
+.board-edit {
+    background-color: white;
+    padding: 40px;
+    margin: 40px auto;
+    border-radius: 20px;
+    max-width: 800px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+
+.board-edit .form-group {
+    margin-bottom: 20px;
+}
+
+.board-edit input[type="text"],
+.board-edit textarea {
+    width: 100%;
+    padding: 10px;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+    font-size: 14px;
+}
+
+.board-edit .form-actions {
+    display: flex;
+    gap: 10px;
+}
+
+/* ==========================
+   [WRITE 페이지] freeBoardWrite.jsp
+   ========================== */
+.write-container {
+    background-color: white;
+    padding: 40px;
+    margin: 40px auto;
+    border-radius: 20px;
+    max-width: 800px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+
+.write-form input[type="text"],
+.write-form textarea {
+    width: 100%;
+    padding: 10px;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+    margin-bottom: 15px;
+    font-size: 14px;
+}
+
+.write-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.image-upload-section {
+    background-color: white;
+    padding: 20px;
+    margin: 20px auto;
+    border-radius: 15px;
+    max-width: 800px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+    text-align: center;
+}
+
+.image-upload-label {
+    cursor: pointer;
+    color: #4a69bd;
+    display: inline-block;
+    margin-bottom: 10px;
+}
+
+.image-preview img {
+    max-width: 100%;
+    border-radius: 10px;
+    margin-top: 10px;
+}

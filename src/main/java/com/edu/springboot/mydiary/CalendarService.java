@@ -14,6 +14,7 @@ public class CalendarService {
 	IMyDiaryMapper dao;
 	
 	public List<DiaryPostResponse> getPostsByMonth(int year, int month, String userId) {
+		System.out.println("컨트롤러 진입");
 		String yearStr = String.valueOf(year);
 		String monthStr = String.format("%02d", month);
 		//디버깅

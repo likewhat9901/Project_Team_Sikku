@@ -5,7 +5,6 @@
 <!DOCTYPE html>
 <html>
 <head>
-<<<<<<< HEAD
 	<meta charset="UTF-8">
 	<title>Insert title here</title>
 	<link rel="stylesheet" href="/css/common/layout.css" />
@@ -17,14 +16,5 @@
 	ADMIN권한만 접근할 수 있습니다.<br>
 	
 <%@ include file="/WEB-INF/views/common/footer.jsp" %>
-=======
-<meta charset="UTF-8">
-<title>Insert title here</title>
-</head>
-<body>
-	<h2>Admin 영역</h2>
-	ADMIN권한만 접근할 수 있습니다.<br>
-
->>>>>>> 2693aab (backup: 최초 상태)
 </body>
 </html>

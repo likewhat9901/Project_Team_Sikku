@@ -139,12 +139,17 @@ def ranking_data(category):
     
 	# 이미지 맵핑  
 	image_map = {
-		"딸기": "./images/ranking/strawberry.jpg",
-		"토마토": "./images/ranking/tomato.jpg",
-		"당근": "./images/ranking/carrot.jpg",
-		"수박": "./images/ranking/watermelon.jpg",
-		"양배추": "./images/ranking/cabbage.jpg",
-		"바질": "./images/ranking/basil.jpg",
+		"딸기": "/images/ranking/strawberry.jpg",
+		"토마토": "/images/ranking/tomato.jpg",
+		"당근": "/images/ranking/carrot.jpg",
+		"수박": "/images/ranking/watermelon.jpg",
+		"양배추": "/images/ranking/cabbage.jpg",
+		"바질": "/images/ranking/basil.jpg",
+		"루꼴라": "/images/ranking/arugula.jpg",
+		"애플수박": "/images/ranking/apple_watermelon.jpg",
+		"대파": "/images/ranking/green_onion.jpg",
+		"무": "/images/ranking/radish.jpg",
+		"스테비아": "/images/ranking/stevia.jpg",
 	}
     
 	# top10 데이터 뽑기

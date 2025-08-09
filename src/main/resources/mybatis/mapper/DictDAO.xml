@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-
 <!-- 컨트롤러가 호출하는 인터페이스의 위치를 namespace로 지정한다. -->
 <mapper namespace="com.edu.springboot.dict.IDictService">
 

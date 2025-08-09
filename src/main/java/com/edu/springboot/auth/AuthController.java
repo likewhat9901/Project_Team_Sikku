@@ -27,7 +27,7 @@ public class AuthController {
 
     @RequestMapping("/signup.do")
     public String signup() {
-        return "login/signup";
+        return "member/signup";
     }
     
     /* 마이페이지 추가*/
@@ -58,7 +58,7 @@ public class AuthController {
             e.printStackTrace();
         }
 
-        return "login/mypage";  // JSP 경로
+        return "member/mypage";  // JSP 경로
     }
 
 
@@ -93,7 +93,7 @@ public class AuthController {
         } catch (Exception e) {
             System.out.println("로그인 전입니다");
         }
-        return "login/login";
+        return "member/login";
     }
     
     @RequestMapping("/signupAction.do")
@@ -115,7 +115,7 @@ public class AuthController {
         // 1. 비밀번호 일치 여부 확인
         if (!userpw.equals(userpw_confirm)) {
             model.addAttribute("pwError", "비밀번호가 일치하지 않습니다.");
-            return "login/signup";
+            return "member/signup";
         }
 
         Connection conn = null;
@@ -158,7 +158,7 @@ public class AuthController {
             rs = ps.executeQuery();
             if (rs.next() && rs.getInt(1) > 0) {
                 model.addAttribute("activityNameError", "이미 사용 중인 활동명입니다.");
-                return "login/signup";
+                return "member/signup";
             }
             rs.close();
             ps.close();
@@ -170,7 +170,7 @@ public class AuthController {
             rs = ps.executeQuery();
             if (rs.next() && rs.getInt(1) > 0) {
                 model.addAttribute("phoneError", "중복된 번호가 존재합니다.");
-                return "login/signup";
+                return "member/signup";
             }
             rs.close();
             ps.close();
@@ -199,7 +199,7 @@ public class AuthController {
         } catch (Exception e) {
             e.printStackTrace();
             model.addAttribute("signupError", "회원가입 중 오류가 발생했습니다: " + e.getMessage());
-            return "login/signup";
+            return "member/signup";
         } finally {
             try {
                 if (rs != null) rs.close();
