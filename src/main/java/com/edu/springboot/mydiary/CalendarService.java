@@ -11,7 +11,7 @@ public class CalendarService {
 	
 	//db에서 데이터 조회
 	@Autowired
-	IMyDiary dao;
+	IMyDiaryMapper dao;
 	
 	public List<DiaryPostResponse> getPostsByMonth(int year, int month, String userId) {
 		String yearStr = String.valueOf(year);

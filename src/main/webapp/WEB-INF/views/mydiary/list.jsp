@@ -4,109 +4,87 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
-<title>식꾸</title>
-<link rel="stylesheet" href="/css/myDiarystyle.css" />
-<link rel="stylesheet" href="/css/main.css">
+	<meta charset="UTF-8">
+	<title>식꾸</title>
+	<link rel="stylesheet" href="/css/common/layout.css" />
+	<link rel="stylesheet" href="/css/myDiarystyle.css" />
 </head>
 <body>
-	<!-- Header Section -->
-	<div class="header">
-		<div class="header-content">
-			<div class="logo">
-				<span class="home-btn" onclick="location.href='/'">로고</span> <span
-					class="site-name">그린다이어리(예명)</span>
-			</div>
-			<div class="nav-icons">
-				<div class="nav-item">
-					<div class="icon-box"></div>
-					<span>궁금해?</span>
-				</div>
-				<div class="nav-item" onclick="location.href='/freeBoardList.do'">
-					<div class="icon-box"></div>
-					<span>커뮤니티</span>
-				</div>
-				<div class="nav-item" onclick="location.href='/mydiary/list.do'">
-					<div class="icon-box"></div>
-					<span>다이어리</span>
-				</div>
-				<div class="nav-item" onclick="location.href='/info.do'">
-					<div class="icon-box"></div>
-					<span>식물도감</span>
-				</div>
-				<div class="nav-item" onclick="location.href='/mbti.do'">
-					<div class="icon-box"></div>
-					<span>MBTI</span>
+<%@ include file="/WEB-INF/views/common/header.jsp" %>
+
+		<!-- 다이어리 목록 Top -->
+		<div class="mydiary-container">
+			<div class="mydiary-top-wrapper">
+				<div class="mydiary-top">
+					<nav class="mydiary-nav">
+						<a href="./calender.do" class="mydiary-calendar-btn">캘린더</a>
+					</nav>
+					<h2 class="mydiary-title">나만의 식물 꾸미기</h2>
+					<button type="button" class="mydiary-write-btn"
+						onclick="location.href='./write.do';">글쓰기</button>
 				</div>
 			</div>
-			<!-- 로그인 시 -->
-			<sec:authorize access="isAuthenticated()">
-				<span class="mypage-link"
-					onclick="location.href='/member/mypage.do'">마이페이지</span>
-				<span class="logout-link" onclick="location.href='/myLogout.do'">로그아웃</span>
-				<div class="user-icon">👤</div>
-			</sec:authorize>
+
+			<!-- 다이어리 카드 그리드 -->
+			<c:choose>
+				<c:when test="${ empty lists }">
+					<div class="mydiary-empty-state">등록된 게시물이 없습니다^^*</div>
+				</c:when>
+				<c:otherwise>
+					<div class="mydiary-grid">
+						<c:forEach items="${ lists }" var="row" varStatus="loop">
+							<div class="mydiary-card">
+								<!-- 카드 헤더 (날씨 영역) -->
+								<div class="mydiary-card-header">
+									<div class="mydiary-card-number">${ maps.totalCount - (((maps.pageNum-1) * maps.pageSize) + loop.index)}
+									</div>
+									<div class="mydiary-weather-icons">
+										<span>☀️</span> <span>☁️</span> <span>🌈</span> <span>🌡️</span>
+									</div>
+									<div class="mydiary-date">${ row.postdate }</div>
+								</div>
+
+								<!-- 이미지 박스 -->
+								<div class="mydiary-image-box"
+									onclick="location.href='./view.do?diaryIdx=${ row.diaryIdx }'">
+									<c:if test="${not empty row.sfile}">
+										<img src="/uploads/${row.sfile}" class="mydiary-main-image"
+											alt="식물 이미지" />
+									</c:if>
+									<c:if test="${empty row.sfile}">
+										<div class="mydiary-no-image-large">이미지 없음</div>
+									</c:if>
+								</div>
+
+								<!-- 카드 내용 (줄글 영역) -->
+								<div class="mydiary-card-content">
+									<div class="mydiary-lines">
+										<div class="mydiary-line">오늘의 식물 관찰 기록</div>
+										<div class="mydiary-line">${ row.description }</div>
+										<div class="mydiary-line">
+											<span class="mydiary-data-item temp">${ row.temperature }°C</span>
+											<span class="mydiary-data-item humidity">${ row.humidity }%</span>
+											<span class="mydiary-data-item sunlight">${ row.sunlight }lux</span>
+										</div>
+										<div class="mydiary-empty-line"></div>
+										<div class="mydiary-empty-line"></div>
+										<div class="mydiary-empty-line"></div>
+									</div>
+								</div>
+							</div>
+						</c:forEach>
+					</div>
+				</c:otherwise>
+			</c:choose>
+
+			<!-- 페이징 -->
+			<div class="mydiary-paging-wrapper">
+				<div class="mydiary-paging-container">${ pagingImg }</div>
+			</div>
 
 		</div>
 	</div>
-
-	<!-- 다이어리 목록 Top -->
-	<div class="mydiary-top-wrapper"></div>
-	<div class="mydiary-top">
-		<nav>
-			<a href="/mycalendar/calendar.html">캘린더</a>
-		</nav>
-		<h2 align="center">나만의 식물 꾸미기</h2>
-		<button type="button" onclick="location.href='./write.do';">글쓰기</button>
-	</div>
-	<!-- 목록 테이블 -->
-	<table border="1" width="90%">
-		<tr>
-			<th width="10%">번호</th>
-			<th width="*">이미지</th>
-			<th width="15%">설명</th>
-			<th width="10%">온도</th>
-			<th width="10%">습도</th>
-			<th width="10%">일조량</th>
-			<th width="15%">작성일</th>
-		</tr>
-		<c:choose>
-			<c:when test="${ empty lists }">
-				<tr>
-					<td colspan="5" align="center">등록된 게시물이 없습니다^^*</td>
-				</tr>
-			</c:when>
-			<c:otherwise>
-				<c:forEach items="${ lists }" var="row" varStatus="loop">
-					<tr align="center">
-						<td>
-							<!-- 게시물의갯수, 페이지번호, 페이지사이즈를 통해 가상번호를 계산해서
-            출력한다. --> ${ maps.totalCount - 
-                (((maps.pageNum-1) * maps.pageSize)	+ loop.index)}
-						</td>
-						<td style="text-align: center;"><a
-							href="./view.do?diaryIdx=${ row.diaryIdx }"> <c:if
-									test="${not empty row.sfile}">
-									<img src="/uploads/${row.sfile}" class="mydiary-thumbnail" />
-								</c:if> <c:if test="${empty row.sfile}">
-									<span>이미지 없음</span>
-								</c:if></a></td>
-						<td>${ row.description }</td>
-						<td>${ row.temperature }</td>
-						<td>${ row.humidity}</td>
-						<td>${ row.sunlight}</td>
-						<td>${ row.postdate }</td>
-					</tr>
-				</c:forEach>
-			</c:otherwise>
-		</c:choose>
-	</table>
-
-	<!-- 하단 메뉴(바로가기, 글쓰기) -->
-	<table border="1" width="90%">
-		<tr align="center">
-			<td>${ pagingImg }</td>
-		</tr>
-	</table>
+	
+<%@ include file="/WEB-INF/views/common/footer.jsp"%>
 </body>
 </html>

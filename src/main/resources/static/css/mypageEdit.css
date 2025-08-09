@@ -1,0 +1,168 @@
+/* 기본 초기화 및 폰트 설정 */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  font-family: 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif;
+  background-color: #f9fafb;
+}
+
+/* 📦 폼 컨테이너 */
+.edit-container {
+  z-index: 10;
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  padding: 30px;
+  width: 100%;
+  max-width: 600px;
+  min-width: 320px;
+  margin: 80px auto;
+  animation: fadeInUp 0.6s ease forwards;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* 📌 제목 */
+.edit-container h2 {
+  font-size: 24px;
+  font-weight: 600;
+  margin-bottom: 20px;
+  text-align: center;
+  color: #1e2a3a;
+}
+
+/* 📋 입력 라벨 및 필드 */
+.edit-container label {
+  font-size: 14px;
+  font-weight: 500;
+  color: #444;
+  margin-top: 10px;
+  margin-bottom: 6px;
+  display: block;
+}
+
+.edit-container input {
+  width: 100%;
+  padding: 14px 16px;
+  border: 1px solid #dcdfe6;
+  border-radius: 10px;
+  background-color: #fafafa;
+  font-size: 15px;
+  transition: border 0.2s ease;
+  outline: none;
+}
+
+.edit-container input:focus {
+  border-color: #4ecb9f;
+  background-color: #fff;
+}
+
+/* ☎ 전화번호 세 칸 입력 */
+.phone-inputs {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.phone-inputs input {
+  width: 100px;
+  padding: 14px 10px;
+  text-align: center;
+  border: 1px solid #dcdfe6;
+  border-radius: 10px;
+  background-color: #fafafa;
+  font-size: 15px;
+  transition: border 0.2s ease;
+}
+
+.phone-inputs input:focus {
+  border-color: #4ecb9f;
+  background-color: #fff;
+}
+
+.hyphen {
+  font-size: 20px;
+  color: #999;
+  user-select: none;
+}
+
+/* ✅ 버튼 */
+.edit-button {
+  width: 100%;
+  padding: 16px;
+  background: linear-gradient(to right, #3ccfcf, #1fd286);
+  border: none;
+  border-radius: 12px;
+  color: white;
+  font-weight: bold;
+  font-size: 16px;
+  cursor: pointer;
+  margin-top: 20px;
+  transition: 0.3s ease;
+}
+
+.edit-button:hover {
+  background: linear-gradient(to right, #2fb1b1, #19bb73);
+}
+
+/* ❌ 에러 메시지 */
+.edit-error {
+  color: #e74c3c;
+  font-size: 13px;
+  margin-top: 10px;
+  text-align: center;
+  line-height: 1.4;
+}
+
+/* ✨ 배경 blob */
+.edit-background {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.edit-blob {
+  position: absolute;
+  width: 500px;
+  height: 500px;
+  opacity: 0.5;
+  border-radius: 50%;
+  filter: blur(80px);
+  animation: blobMove 12s ease-in-out infinite alternate;
+  mix-blend-mode: overlay;
+}
+
+.edit-blob1 { top: 10%; left: 5%; background: #a0ffd0; animation-delay: 0s; }
+.edit-blob2 { top: 30%; left: 70%; background: #b6f477; animation-delay: 1s; }
+.edit-blob3 { top: 65%; left: 20%; background: #8ff5d3; animation-delay: 2s; }
+.edit-blob4 { top: 20%; left: 40%; background: #ffffff; opacity: 0.2; animation-delay: 3s; }
+
+@keyframes blobMove {
+  0% { transform: translate(0, 0) scale(1); }
+  100% { transform: translate(100px, -80px) scale(1.2); }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

@@ -27,7 +27,7 @@ import utils.PagingUtil;
 public class MyDiaryController {
 
 	@Autowired
-	IMyDiary dao;
+	IMyDiaryMapper dao;
 
 	@RequestMapping("/mydiary/list.do")
 	public String mydiaryList(Model model, HttpServletRequest req, 
@@ -47,7 +47,7 @@ public class MyDiaryController {
 		int totalCount = dao.getTotalCount(parameterDTO);
 
 		// 페이징을 위한 설정값(하드코딩)
-		int pageSize = 7; // 페이지 당 출력할 게시물의 갯수
+		int pageSize = 3; // 페이지 당 출력할 게시물의 갯수
 		int blockPage = 5; // 한 블럭당 출력할 페이지번호의 갯수
 
 		int pageNum = (req.getParameter("pageNum") == null || req.getParameter("pageNum").equals("")) ? 1
@@ -85,7 +85,7 @@ public class MyDiaryController {
 
 	// 입력1 : 작성페이지 매핑
 	@GetMapping("/mydiary/write.do")
-	public String mydiaryWrite(Model model) {
+	public String mydiaryWrite() {
 		return "mydiary/write";
 	}
 
@@ -214,6 +214,12 @@ public class MyDiaryController {
 		int result = dao.delete(params);
 		System.out.println("글삭제결과:" + result);
 		return "redirect:list.do";
+	}
+	
+	// 입력1 : 작성페이지 매핑
+	@GetMapping("/mydiary/calender.do")
+	public String calender() {
+		return "mydiary/calender";
 	}
 
 }

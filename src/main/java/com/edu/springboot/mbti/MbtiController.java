@@ -14,9 +14,9 @@ import jakarta.servlet.http.HttpServletRequest;
 public class MbtiController {
 	
 	@Autowired
-	MbtiService dao;
+	IMbtiService dao;
 
-	@GetMapping("/mbti.do")
+	@GetMapping("/mbti/list.do")
 	public String mbti(Model model) {
 		
 		List<MbtiDTO> MBTIs = dao.MbtiSelectAll();
@@ -24,15 +24,15 @@ public class MbtiController {
 		System.out.println("MBTIs: " + MBTIs);
 		model.addAttribute("MBTIs", MBTIs);
 		
-		return "mbti/mbti_list";
+		return "mbti/mbtiList";
 	}
 	
-	@GetMapping("/mbtiView.do")
+	@GetMapping("mbti/view.do")
 	public String mbtiView(Model model, HttpServletRequest req) {
 		int mbtiIdx = Integer.parseInt(req.getParameter("idx"));
 		System.out.println("mbtiIdx: "+ mbtiIdx);
 		
-		return "mbti/mbti_view";
+		return "mbti/mbtiView";
 	}
 	
 

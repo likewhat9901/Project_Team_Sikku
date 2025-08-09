@@ -1,8 +1,6 @@
 package com.edu.springboot.auth;
-
-import jakarta.servlet.DispatcherType;
-
 import javax.sql.DataSource;
+// 필요하면: import org.springframework.security.crypto.password.PasswordEncoder;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -15,6 +13,8 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.firewall.HttpFirewall;
 import org.springframework.security.web.firewall.StrictHttpFirewall;
 
+import jakarta.servlet.DispatcherType;
+
 @Configuration
 public class WebSecurityConfig {
 
@@ -22,13 +22,16 @@ public class WebSecurityConfig {
     private MyAuthFailureHandler myAuthFailureHandler;
 
     @Autowired
-    private MyAuthSuccessHandler myAuthSuccessHandler; 
+    private MyAuthSuccessHandler myAuthSuccessHandler;
 
     @Autowired
     private DataSource dataSource;
 
+    // ✅ 여기: Bean 만들지 말고 주입만 받기
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
+    // 혹시 PasswordEncoderConfig가 PasswordEncoder 타입으로 Bean을 내보내면 위 줄을
+    // private PasswordEncoder bCryptPasswordEncoder; 로 바꿔도 됩니다.
 
     @Autowired
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
@@ -36,6 +39,7 @@ public class WebSecurityConfig {
             .dataSource(dataSource)
             .usersByUsernameQuery("SELECT userid, userpw, enabled FROM members WHERE userid = ?")
             .authoritiesByUsernameQuery("SELECT userid, authority FROM members WHERE userid = ?")
+            // ✅ 메서드 호출이 아니라, 주입된 객체를 그대로 전달
             .passwordEncoder(bCryptPasswordEncoder);
     }
 
@@ -43,35 +47,47 @@ public class WebSecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.csrf(csrf -> csrf.disable())
             .cors(cors -> cors.disable())
-            .authorizeHttpRequests(request -> request
-            	    .dispatcherTypeMatchers(DispatcherType.FORWARD).permitAll()
-            	    .requestMatchers("/css/**", "/js/**", "/images/**").permitAll()
-            	    .requestMatchers("/", "/signup.do", "/signupAction.do", "/guest/**", "/about/**", "/mbti.**").permitAll() // ← 추가!
-            	    .requestMatchers("/member/**").hasAnyRole("USER", "ADMIN")
-            	    .requestMatchers("/admin/**").hasRole("ADMIN")
-            	    .anyRequest().permitAll()
-            	);
-
-        http.formLogin(formLogin -> formLogin
-            .loginPage("/myLogin.do")
-            .loginProcessingUrl("/myLoginAction.do")
-            .usernameParameter("my_id")
-            .passwordParameter("my_pass")
-            .successHandler(myAuthSuccessHandler) 
-            .failureHandler(myAuthFailureHandler)
-            .permitAll());
-
-        http.logout(logout -> logout
-            .logoutUrl("/myLogout.do")
-            .logoutSuccessUrl("/about/no")
-            .permitAll());
-
-        http.exceptionHandling(exp -> exp
-            .accessDeniedPage("/denied.do"));
-
+            .authorizeHttpRequests(req -> req
+                .dispatcherTypeMatchers(DispatcherType.FORWARD).permitAll()
+                //정적/공개 리소스
+                .requestMatchers("/css/**","/js/**","/images/**").permitAll()
+                .requestMatchers("/uploads/**").permitAll()
+                
+                //비회원 메인
+                .requestMatchers("/main/nonMember.do").permitAll()
+                
+                //날씨 정보는 비회원도 공개
+                .requestMatchers("/api/weather").permitAll()
+                .requestMatchers("/api/ranking").permitAll()
+                
+                //이미 공기 중인 엔드 포인트
+                .requestMatchers("/", "/signup.do", "/signupAction.do",
+                                 "/guest/**", "/about/**", "/mbti/**",
+                                 "/myLogin.do", "/myLoginAction.do", "/myLogout.do").permitAll()
+                //보호 구간
+                .requestMatchers("/admin/**").hasRole("ADMIN")
+                .requestMatchers("/member/**").hasAnyRole("USER","ADMIN")
+                .requestMatchers("/mypage/**").authenticated()
+                .anyRequest().authenticated()
+            )
+            .formLogin(form -> form
+                .loginPage("/myLogin.do")
+                .loginProcessingUrl("/myLoginAction.do")
+                .usernameParameter("my_id")
+                .passwordParameter("my_pass")
+                .successHandler(myAuthSuccessHandler)
+                .failureHandler(myAuthFailureHandler)
+                .permitAll()
+            )
+            .logout(logout -> logout
+                .logoutUrl("/myLogout.do")
+                .logoutSuccessUrl("/main/nonMember.do")
+                .permitAll()
+            )
+            .exceptionHandling(exp -> exp.accessDeniedPage("/denied.do"));
         return http.build();
     }
-    // URL 조합할때 // 안생기게 보장 -> // 슬래쉬 두개 생기면 400에러
+
     @Bean
     public HttpFirewall allowUrlEncodedDoubleSlashHttpFirewall() {
         StrictHttpFirewall firewall = new StrictHttpFirewall();

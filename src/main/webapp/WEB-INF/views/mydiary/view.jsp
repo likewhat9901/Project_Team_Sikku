@@ -3,10 +3,10 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
-<link rel="stylesheet" href="/css/myDiarystyle.css" />
-<link rel="stylesheet" href="/css/main.css">
+	<meta charset="UTF-8">
+	<title>Insert title here</title>
+	<link rel="stylesheet" href="/css/common/layout.css" />
+	<link rel="stylesheet" href="/css/myDiarystyle.css" />
 </head>
 <script>
 function deletePost(idx){
@@ -20,96 +20,102 @@ function deletePost(idx){
 }
 </script>
 <body>
+<%@ include file="/WEB-INF/views/common/header.jsp" %>
 
-	<!-- Header Section -->
-	<div class="header">
-		<div class="header-content">
-			<div class="logo">
-				<span class="home-btn">로고</span> <span class="site-name">그린다이어리(예명)</span>
-			</div>
-			<div class="nav-icons">
-				<div class="nav-item">
-					<div class="icon-box"></div>
-					<span>궁금해?</span>
-				</div>
-				<div class="nav-item" onclick="location.href='/freeBoardList.do'">
-					<div class="icon-box"></div>
-					<span>커뮤니티</span>
-				</div>
-				<div class="nav-item" onclick="location.href='/mydiary/list.do'">
-					<div class="icon-box"></div>
-					<span>다이어리</span>
-				</div>
-				<div class="nav-item" onclick="location.href='/info.do'">
-					<div class="icon-box"></div>
-					<span>식물도감</span>
-				</div>
-				<div class="nav-item" onclick="location.href='/mbti.do'">
-					<div class="icon-box"></div>
-					<span>MBTI</span>
-				</div>
-			</div>
-			<div class="user-section">
-				<span class="login-link">로그인</span> <span class="register-link">회원가입</span>
-				<div class="user-icon">👤</div>
-			</div>
-		</div>
-	</div>
-
+	<h2 align="center">나의 식꾸</h2>
 	<h2>게시판 읽기(Mybatis)</h2>
 	<!-- 아래 form은 확인용. hidden으로 멤버 아이디 확인 -->
 	<form name="writeFrm">
 		<input type="hidden" name="diaryIdx" value="${myDiaryDTO.diaryIdx }" />
 	</form>
-	<table border="1" width="90%">
-		<colgroup>
-			<col width="18%" />
-			<col width="18%" />
-			<col width="18%" />
-			<col width="18%" />
-			<col width="28" />
-		</colgroup>
-		<!-- 게시글 정보 -->
-		<tr>
-			<td>작성일</td>
-			<td colspan="4">${ myDiaryDTO.postdate }</td>
-		</tr>
-		<tr>
-			<td>이미지</td>
-			<td colspan="4" height="100" style="text-align: center;"><img
-				src="/uploads/${myDiaryDTO.sfile }" class="mydiary-img" /></td>
-		</tr>
-		<tr>
-			<td>내용</td>
-			<td colspan="4" height="100">${ myDiaryDTO.description }</td>
-		</tr>
-		<tr>
-			<td>온도</td>
-			<td>습도</td>
-			<td>일조량</td>
-			<td>키</td>
-			<td>열매개수</td>
-		</tr>
-		<tr>
-			<td>${ myDiaryDTO.temperature }</td>
-			<td>${ myDiaryDTO.humidity }</td>
-			<td>${ myDiaryDTO.sunlight }</td>
-			<td>${ myDiaryDTO.height }</td>
-			<td>${ myDiaryDTO.fruit }</td>
-		</tr>
-		<!-- 하단 메뉴(버튼) -->
-		<tr>
-			<td colspan="5" align="center">
-				<button type="button"
-					onclick="location.href='./edit.do?diaryIdx=${ param.diaryIdx }';">
-					수정하기</button>
-				<button type="button" onclick="deletePost(${ param.diaryIdx });">
-					삭제하기</button>
-				<button type="button" onclick="location.href='./list.do';">
-					목록 바로가기</button>
-			</td>
-		</tr>
-	</table>
+	<!-- View 페이지 HTML -->
+	<div class="mydiary-container">
+		<!-- 상단 메뉴는 동일하게 유지 -->
+		<div class="mydiary-top-wrapper">
+			<div class="mydiary-top">
+				<nav class="mydiary-nav">
+					<a href="/mycalendar/calendar.html" class="mydiary-calendar-btn">캘린더</a>
+				</nav>
+				<h2 class="mydiary-title">나만의 식물 꾸미기</h2>
+				<button type="button" class="mydiary-write-btn"
+					onclick="location.href='./list.do';">목록보기</button>
+			</div>
+		</div>
+
+		<!-- View 카드 (기존 카드 스타일 재활용) -->
+		<div class="mydiary-view-single-card">
+			<div class="mydiary-card">
+				<!-- 카드 헤더 (날씨 영역) -->
+				<div class="mydiary-card-header">
+					<div class="mydiary-card-number">View</div>
+					<div class="mydiary-weather-icons">
+						<span>☀️</span> <span>☁️</span> <span>🌈</span> <span>🌡️</span>
+					</div>
+					<div class="mydiary-date">${ myDiaryDTO.postdate }</div>
+				</div>
+
+				<!-- 이미지 박스 -->
+				<div class="mydiary-view-image-box">
+					<c:if test="${not empty myDiaryDTO.sfile}">
+						<img src="/uploads/${myDiaryDTO.sfile}" class="mydiary-main-image"
+							alt="식물 이미지" />
+					</c:if>
+					<c:if test="${empty myDiaryDTO.sfile}">
+						<div class="mydiary-no-image-large">이미지 없음</div>
+					</c:if>
+				</div>
+
+				<!-- 카드 내용 (줄글 영역) -->
+				<div class="mydiary-card-content">
+					<div class="mydiary-view-lines">
+
+						<!-- 데이터 라인 -->
+						<div class="mydiary-view-data-line">
+							<div class="mydiary-view-data-item temp">
+								<div class="mydiary-view-data-label">온도</div>
+								<div class="mydiary-view-data-value">${ myDiaryDTO.temperature }°C</div>
+							</div>
+							<div class="mydiary-view-data-item humidity">
+								<div class="mydiary-view-data-label">습도</div>
+								<div class="mydiary-view-data-value">${ myDiaryDTO.humidity }%</div>
+							</div>
+							<div class="mydiary-view-data-item sunlight">
+								<div class="mydiary-view-data-label">일조량</div>
+								<div class="mydiary-view-data-value">${ myDiaryDTO.sunlight }lux</div>
+							</div>
+							<div class="mydiary-view-data-item height">
+								<div class="mydiary-view-data-label">키</div>
+								<div class="mydiary-view-data-value">${ myDiaryDTO.height }cm</div>
+							</div>
+							<div class="mydiary-view-data-item fruit">
+								<div class="mydiary-view-data-label">열매</div>
+								<div class="mydiary-view-data-value">${ myDiaryDTO.fruit }개</div>
+							</div>
+						</div>
+
+						<div class="mydiary-view-line title">📝 관찰 내용</div>
+						<div class="mydiary-view-line description">${ myDiaryDTO.description }</div>
+
+						<div class="mydiary-empty-line"></div>
+						<div class="mydiary-empty-line"></div>
+
+						<!-- 버튼 영역 -->
+						<div class="mydiary-view-buttons">
+							<button type="button" class="mydiary-view-btn edit"
+								onclick="location.href='./edit.do?diaryIdx=${ param.diaryIdx }';">
+								수정하기</button>
+							<button type="button" class="mydiary-view-btn delete"
+								onclick="deletePost(${ param.diaryIdx });">삭제하기</button>
+							<button type="button" class="mydiary-view-btn list"
+								onclick="location.href='./list.do';">목록 바로가기</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+<%@ include file="/WEB-INF/views/common/footer.jsp" %>
 </body>
 
 </html>
