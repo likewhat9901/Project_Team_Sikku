@@ -11,23 +11,22 @@
 </head>
 <body>
 <%@ include file="/WEB-INF/views/common/header.jsp" %>    
-	<div class="container">
 
-        <!-- 식물 그리드 -->
-        <div class="plant_grid">
-            <!-- 샘플 식물 데이터 -->
+	<!-- 식물 그리드 -->
+	<div class="plant_grid">
+	    <!-- 샘플 식물 데이터 -->
 <c:forEach items="${ plants }" var="row" varStatus="loop">
-            <a href="./view.do?plantidx=${row.plantidx }" class="plant_card">
-                <div class="plant_image">
-                    <img src="/images/${row.ofile }" alt="식물사진">
-                </div>
-                <div class="plant_name">${row.name }</div>
-                <div class="plant_scientific">${row.sfile}</div>
-                <div class="plant_category">관상용</div>
-            </a>
+	    <a href="./view.do?plantidx=${row.plantidx }" class="plant_card">
+	        <div class="plant_image">
+	            <img src="/images/dict/${row.ofile }" alt="식물사진">
+	        </div>
+	        <div class="plant_name">${row.name }</div>
+	        <div class="plant_scientific">${row.sfile}</div>
+	        <div class="plant_category">관상용</div>
+	    </a>
 </c:forEach>
-        </div>
-    </div>
+	</div>
+	
 <%@ include file="/WEB-INF/views/common/footer.jsp" %>
 </body>
 </html>

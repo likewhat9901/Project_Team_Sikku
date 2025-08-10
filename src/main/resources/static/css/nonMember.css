@@ -1,6 +1,6 @@
 /* Weather Section */
 .weather {
-	width: 90%; min-height: 170px;
+	width: 100%; min-height: 170px;
     background: linear-gradient(135deg, #a8e6a3, #7dd3c0);
     border-radius: 25px;
     padding: 20px 25px;
@@ -48,34 +48,9 @@
     opacity: 0.85;
 }
 
-/* 로딩 애니메이션 */
-.loading {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 20px;
-    color: #2e7d32;
-    font-weight: 600;
-}
-
-.loading-spinner {
-    width: 30px;
-    height: 30px;
-    border: 5px solid #aaa;
-    border-top: 5px solid #000;
-    border-radius: 50%;
-    animation: spin 1s linear infinite;
-    margin-right: 20px;
-}
-
-@keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
-}
-
 /* ============ Ranking ============ */
 .ranking-container {
-	width: 90%;
+	width: 100%;
 	min-height: 420px;
 	border-radius: 20px;
     background: linear-gradient(135deg, #a8e6a3, #7dd3c0);
@@ -227,7 +202,7 @@
 
 /*==================== Hero Section ========================*/
 .hero-section {
-	width: 90%; 
+	width: 100%; 
 	display: flex;
 	flex-direction: row;
 	justify-content: center;
@@ -246,13 +221,13 @@
 }
 /* 슬라이드의 내부 영역 */
 .banner {
-    width: 100%;
-    height: 100%;
     display: flex; /* 이미지를 가로로 나열 */
+    height: 100%;
     transition: transform 1s ease-in-out; /* 슬라이드 애니메이션 */
 }
 .banner-img {
-	width: 100%; /* 각 배너 이미지는 전체 너비 차지 */
+	flex-shrink: 0; /* 크기 줄어들지 않도록 */
+    width: 100%;   /* 컨테이너 너비와 같게 고정 */
     height: 100%;
     object-fit: cover; /* 이미지를 컨테이너에 맞게 자름 */
 }
@@ -286,9 +261,80 @@
 /* popular board */
 .popular-board {
 	flex: 1;
-	min-height: 500px; 
-	background: #f0f0f0;
+	height: 500px; 
+	background: 
+          linear-gradient(
+		    to bottom right, 
+		    rgba(255, 255, 255, 0.5),  /* 0.25 → 0.5로 증가 */
+		    rgba(255, 255, 255, 0.3)   /* 0.1 → 0.3로 증가 */
+		  ),
+		  url(/images/header/leaf-background2.png) no-repeat center center / cover;
 	border-radius: 16px;
+	display: flex;
+	flex-direction: column;
+	justify-content: center; /* h2가 위에 오게 하려면 center 대신 flex-start */
+	align-items: center;
+	padding: 30px;
+	box-sizing: border-box;
+	position: relative;
 }
+.popular-board h2 {
+	position: sticky;
+	top: 0;
+	font-size: 1.2rem;
+	font-weight: 400;
+	padding: 15px 0;
+	color: #2f5536;
+	text-align: center;
+	background: transparent; /* 배경 유지 */
+}
+
+.board-container {
+ 	width: 100%; height: 400px;
+	border-radius: 12px;
+	overflow: auto;
+	font-size: 1.2rem;
+	box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+	background: white;
+}
+.board-container table {
+	width: 100%;
+	border-collapse: collapse;
+	border: 2px solid #a5c199;
+}
+.board-container thead tr {
+  background-color: #d1e7c4; /* 연한 녹색 */
+}
+
+.board-container thead th {
+	position: sticky;
+	top: 0;
+	background: #d1e7c4;
+	z-index: 10;
+	padding: 10px 15px;
+	text-align: center;
+	color: #336633;
+	font-weight: 400;
+	box-shadow: 0 2px 0 rgba(0,0,0,0.04);
+}
+
+.board-container tbody tr {
+	border-bottom: 1px solid #e3edd9;
+}
+
+.board-container tbody tr:hover {
+  background-color: #eaf4df; /* 마우스 올리면 연한 녹색 하이라이트 */
+}
+
+.board-container tbody td {
+  padding: 10px 20px;
+  color: #4a5d23;
+}
+
+.board-container tbody td:first-child, 
+.board-container tbody td:last-child {
+  text-align: center;
+}
+
 
 

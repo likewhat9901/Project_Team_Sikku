@@ -1,7 +1,7 @@
 
 /* Weather Section */
 .weather {
-	width: 90%; min-height: 170px;
+	width: 100%; min-height: 170px;
     background: linear-gradient(135deg, #a8e6a3, #7dd3c0);
     border-radius: 25px;
     padding: 20px 25px;
@@ -77,6 +77,7 @@
 
 /* Dashboard Section */
 .dashboard {
+	width: 100%;
     background: transparent;
     display: flex;
     flex-direction: column;

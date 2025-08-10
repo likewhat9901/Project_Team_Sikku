@@ -8,8 +8,8 @@ from datetime import datetime, timedelta
 from dotenv import load_dotenv		# 환경변수 사용
 
 
-load_dotenv()	# 환경변수 불러오기
 
+# 환경변수 불러오기
 CLIENT_ID = os.getenv('NAVER_AD_API_CLIENT_ID')
 CLIENT_SECRET = os.getenv('NAVER_AD_API_CLIENT_SECRET')
 
@@ -20,9 +20,9 @@ def clean_html(text):
 
 def ranking_data(category):
 	# 디버깅 코드(스프링부트 실행 시 주석)
-	# print("▶ 시작 - 카테고리:", category, file=sys.stderr)
-	# print("▶ CLIENT_ID:", CLIENT_ID, file=sys.stderr)
-	# print("▶ CLIENT_SECRET:", CLIENT_SECRET, file=sys.stderr)
+	print("▶ [DEBUG] 시작 - 카테고리:", category, file=sys.stderr)
+	print("▶ CLIENT_ID:", CLIENT_ID, file=sys.stderr)
+	print("▶ CLIENT_SECRET:", CLIENT_SECRET, file=sys.stderr)
 	
 	# 카테고리 분기
 	if category == "foliage":
@@ -153,6 +153,8 @@ def ranking_data(category):
 		"브로콜리": "/images/ranking/farm/broccoli.jpg",
 		"망고": "/images/ranking/farm/mango.jpg",
 		"상추": "/images/ranking/farm/상추.jpg",
+		"배추": "/images/ranking/farm/배추.jpg",
+		"고추": "/images/ranking/farm/고추.jpg",
 		
 		"알로카시아": "/images/ranking/foliage/alocasia.jpg",
 		"행운목": "/images/ranking/foliage/happy_plant.jpg",

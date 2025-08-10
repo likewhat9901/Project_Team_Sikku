@@ -16,10 +16,7 @@
         <span class="weather-title">🌿 현재 날씨</span>
 		<div class="weather-content">
 		    <!-- 날씨 정보가 들어갈 공간 -->
-		    <div class="loading">
-		        <div class="loading-spinner"></div>
-		        날씨 정보를 불러오는 중...
-		    </div>
+		    <%@ include file="/WEB-INF/views/common/features/loading.jsp" %>
     	</div>
     </div>
     
@@ -32,10 +29,7 @@
 		    </select>
 	    </div>
 		<div class="ranking">
-			<div class="loading">
-		        <div class="loading-spinner"></div>
-		        랭킹 정보를 불러오는 중...
-		    </div>
+			<%@ include file="/WEB-INF/views/common/features/loading.jsp" %>
 	    </div>
 	</div>
 
@@ -56,7 +50,10 @@
 		</div>
 		
 		<div class="popular-board">
-			<p>인기게시물 테이블 들어가는 부분</p>
+			<!-- 인기게시물 테이블이 들어갈 공간 -->
+			<div class="board-container">
+				<%@ include file="/WEB-INF/views/common/features/loading.jsp" %>
+			</div>
 		</div>
 		
 	</div>
@@ -67,9 +64,6 @@
 <!-- 날씨 정보 불러오기 -->
 <script type="text/javascript">
 window.addEventListener('DOMContentLoaded', function () {
-	const container = document.querySelector('.weather-content');
-	container.innerHTML = '<p>날씨 정보를 불러오는 중...</p>';
-	
     fetch('/api/weather')
         .then(response => response.json())
         .then(data => {
@@ -113,13 +107,10 @@ window.addEventListener('DOMContentLoaded', function () {
 <!-- 랭킹 시상대 불러오기 -->
 <script>
 function fetchRanking(category) {
-	console.log("category: "+category);
+	console.log("식물랭킹 category: "+category);
 	const rankingContainer = document.querySelector('.ranking');
 	rankingContainer.innerHTML = 
-		`<div class="loading">
-	        <div class="loading-spinner"></div>
-	        랭킹 정보를 불러오는 중...
-	    </div>`;
+		`<%@ include file="/WEB-INF/views/common/features/loading.jsp" %>`;
 	
     fetch('/api/ranking?category='+category)
         .then(response => response.json())
@@ -183,5 +174,66 @@ function changeSlideRight() {
 // 5초마다 자동으로 이미지 변경
 setInterval(changeSlideRight, 5000);
 
+</script>
+
+<script type="text/javascript">
+function fetchPopularBoards(category) {
+	console.log("인기게시물 category: "+category);
+	const boardContainer = document.querySelector('.board-container');
+	
+	// 로딩 표시
+	boardContainer.innerHTML = 
+		`<%@ include file="/WEB-INF/views/common/features/loading.jsp" %>`;
+	
+    fetch('/api/popularBoards?category='+category)
+        .then(response => response.json())
+        .then(data => {
+        	boardContainer.innerHTML = ''; // 기존 시상대 초기화
+
+            if (data.error) {
+            	boardContainer.innerHTML = `<p style="color:red;">\${data.error}</p>`;
+                return;
+            }
+			
+            const top10 = data.top10;
+            const category_name = data.category_name;
+            
+         	// 테이블 헤더 만들기
+            let tableHTML = `
+               	<h2>\${category_name} 인기 Top10</h2>
+                <table border="1" style="width:100%; ">
+                    <thead>
+                        <tr>
+                            <th>번호</th>
+                            <th>제목</th>
+                            <th>날짜</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+            `;
+            
+            top10.forEach((item, index) => {
+                // 날짜가 없으면 빈칸 처리
+                const date = item.date || '';
+                tableHTML += `
+                    <tr>
+                        <td style="text-align:center;">\${index + 1}</td>
+                        <td>\${item.title || '제목 없음'}</td>
+                        <td style="text-align:center;">\${date}</td>
+                    </tr>
+                `;
+            });
+            
+            tableHTML += '</tbody></table>';
+
+            boardContainer.innerHTML = tableHTML;
+        })
+        .catch(err => {
+            console.error("API 호출 에러:", err);
+            boardContainer.innerHTML = '<p style="color:red;">인기게시물을 불러오는 중 오류가 발생했습니다.</p>';
+        });
+}
+
+fetchPopularBoards('free');
 </script>
 </html>

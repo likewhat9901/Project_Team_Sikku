@@ -33,7 +33,7 @@
 		<div class="plant-card">
 			<div class="plant-left">
 			    <div class="plant-image">
-			        <img src="/images/dash/${row.ofile }" alt="식물사진">
+			        <img src="/images/status/${row.ofile }" alt="식물사진">
 			    </div>
 			    <div class="plant-info-box">
 			        <p class="plant-name">식물명 : ${ row.name }</p>
