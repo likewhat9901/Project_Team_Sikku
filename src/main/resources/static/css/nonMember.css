@@ -274,17 +274,17 @@
 	flex-direction: column;
 	justify-content: center; /* h2가 위에 오게 하려면 center 대신 flex-start */
 	align-items: center;
-	padding: 30px;
+	padding: 10px 30px 30px 30px;
 	box-sizing: border-box;
 	position: relative;
 }
 .popular-board h2 {
 	position: sticky;
 	top: 0;
-	font-size: 1.2rem;
+	font-size: 1.5rem;
 	font-weight: 400;
 	padding: 15px 0;
-	color: #2f5536;
+	color: black;
 	text-align: center;
 	background: transparent; /* 배경 유지 */
 }

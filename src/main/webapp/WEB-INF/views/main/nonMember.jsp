@@ -50,6 +50,7 @@
 		</div>
 		
 		<div class="popular-board">
+			<h2>자유게시판 인기 Top10</h2>
 			<!-- 인기게시물 테이블이 들어갈 공간 -->
 			<div class="board-container">
 				<%@ include file="/WEB-INF/views/common/features/loading.jsp" %>
@@ -180,6 +181,7 @@ setInterval(changeSlideRight, 5000);
 function fetchPopularBoards(category) {
 	console.log("인기게시물 category: "+category);
 	const boardContainer = document.querySelector('.board-container');
+	const board_header = document.querySelector('.popular-board h2');
 	
 	// 로딩 표시
 	boardContainer.innerHTML = 
@@ -189,7 +191,7 @@ function fetchPopularBoards(category) {
         .then(response => response.json())
         .then(data => {
         	boardContainer.innerHTML = ''; // 기존 시상대 초기화
-
+        	
             if (data.error) {
             	boardContainer.innerHTML = `<p style="color:red;">\${data.error}</p>`;
                 return;
@@ -197,10 +199,10 @@ function fetchPopularBoards(category) {
 			
             const top10 = data.top10;
             const category_name = data.category_name;
+            board_header.innerHTML = category_name+ ' 인기 Top10';
             
          	// 테이블 헤더 만들기
             let tableHTML = `
-               	<h2>\${category_name} 인기 Top10</h2>
                 <table border="1" style="width:100%; ">
                     <thead>
                         <tr>
