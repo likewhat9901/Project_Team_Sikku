@@ -24,9 +24,9 @@ public class PopularBoardApiController {
 	
 	@GetMapping("/api/top10boards")
 	// Map<String, Object>	{"key": value} 형태의 JSON
-    public Map<String, Object> getTop10Boards(@RequestParam(name="category", defaultValue="free") String category){
+    public Map<String, Object> getTop10Boards(@RequestParam(name="category", defaultValue="1") Integer category){
 		try {
-			List<BoardEntity> top10Boards = boardService.getTop10Boards();
+			List<BoardEntity> top10Boards = boardService.getTop10BoardsByCategory((Integer)category);
 			
 			Map<String, Object> response = new HashMap<>();
 			response.put("category", category);  // 원하는 필드를 추가

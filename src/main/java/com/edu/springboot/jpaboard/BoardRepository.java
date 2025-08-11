@@ -14,7 +14,7 @@ public interface BoardRepository extends JpaRepository<BoardEntity, Long> {
 	// 제목 LIKE 검색을 위한 메서드 (예: %검색어%)
     Page<BoardEntity> findByTitleLike(String title, Pageable pageable);
     
-    List<BoardEntity> findTop10ByOrderByLikesDesc();
+    List<BoardEntity> findTop10ByCategoryOrderByLikesDesc(Integer category);
     
     
     

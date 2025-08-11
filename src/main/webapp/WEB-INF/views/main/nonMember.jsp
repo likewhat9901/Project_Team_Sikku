@@ -51,6 +51,10 @@
 		
 		<div class="popular-board">
 			<h2>자유게시판 인기 Top10</h2>
+			<select onchange="fetchPopularBoards(this.value);">
+		        <option value="1">자유게시판</option>
+		        <option value="2">갤러리게시판</option>
+		    </select>
 			<!-- 인기게시물 테이블이 들어갈 공간 -->
 			<div class="board-container">
 				<%@ include file="/WEB-INF/views/common/features/loading.jsp" %>
@@ -198,7 +202,7 @@ function fetchPopularBoards(category) {
             }
 			
             const top10 = data.top10Boards;
-            const category_name = (data.category === "free") ? "자유게시판" : "갤러리게시판";
+            const category_name = (data.category === "1") ? "자유게시판" : "갤러리게시판";
             board_header.innerHTML = category_name+ ' 인기 Top10';
             
          	// 테이블 헤더 만들기
@@ -235,6 +239,6 @@ function fetchPopularBoards(category) {
         });
 }
 
-fetchPopularBoards('free');
+fetchPopularBoards(1);
 </script>
 </html>

@@ -1,7 +1,8 @@
 /* 전체 레이아웃 */
 @font-face {
   font-family: 'MyFont'; /* 사용할 이름 */
-  src: url('/fonts/PinkfongBabySharkFont_Regular.ttf') format('truetype');
+  src: url('/fonts/PinkfongBabySharkFont_Regular.ttf') format('truetype'),
+  	   url('/fonts/PinkfongBabySharkFont_Regular.otf') format('opentype');
   font-weight: normal;
   font-style: normal;
 }
@@ -13,7 +14,7 @@
 }
 
 body {
-	font-family: 'MyFont', 'Malgun Gothic', sans-serif;
+	font-family: 'MyFont', 'Malgun Gothic', sans-serif !important;
     font-size: 1.2rem;
 }
 

@@ -55,11 +55,14 @@ public class WebSecurityConfig {
                 //날씨 정보는 비회원도 공개
                 .requestMatchers("/api/weather").permitAll()
                 .requestMatchers("/api/ranking").permitAll()
+                .requestMatchers("/api/top10boards").permitAll()
                 
                 //이미 공기 중인 엔드 포인트
                 .requestMatchers("/", "/signup.do", "/signupAction.do",
                                  "/guest/**", "/about/**", "/mbti/**",
-                                 "/myLogin.do", "/myLoginAction.do", "/myLogout.do").permitAll()
+                                 "/myLogin.do", "/myLoginAction.do", "/myLogout.do",
+                                 "/fonts/**"
+                		).permitAll()
                 //보호 구간
                 .requestMatchers("/admin/**").hasRole("ADMIN")
                 .requestMatchers("/member/**").hasAnyRole("USER","ADMIN")

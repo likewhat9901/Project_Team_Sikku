@@ -103,9 +103,9 @@ public class BoardService {
     }
     
     
-    public List<BoardEntity> getTop10Boards() {
+    public List<BoardEntity> getTop10BoardsByCategory(Integer category) {
         // 좋아요 수 기준으로 내림차순 정렬하여 상위 10개 게시글을 조회
-        return br.findTop10ByOrderByLikesDesc();
+        return br.findTop10ByCategoryOrderByLikesDesc(category);
     }
 
 	
