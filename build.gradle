@@ -34,7 +34,6 @@ eclipse.wtp.facet {
 dependencies {
 	// Spring Data JPA 의존성 추가
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-
 	//시큐리티 추가
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 	implementation 'org.springframework.security:spring-security-taglibs'
@@ -65,7 +64,12 @@ dependencies {
 	implementation 'com.fasterxml.jackson.core:jackson-databind'
 	
 	implementation 'org.json:json:20240303'
-     
+	
+    //WebSocket을 사용하여 실시간 양방향 통신을 구현하기 위한 의존성
+	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-websocket', version: '3.3.1'
+
+	// mustache 탬플릿을 위한 의존
+	implementation 'org.springframework.boot:spring-boot-starter-mustache'
 }
 
 tasks.named('test') {
