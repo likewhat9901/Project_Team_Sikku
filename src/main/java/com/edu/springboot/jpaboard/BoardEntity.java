@@ -68,15 +68,18 @@ public class BoardEntity {
     @Column(columnDefinition = "NUMBER DEFAULT 0")
     private Integer visitcount;
 
-//    @Column(columnDefinition = "NUMBER DEFAULT 0")
-//    private Integer likes;
+    
+    // 좋아요 갯수
+    @Column(name = "likes", columnDefinition = "NUMBER DEFAULT 0")
+    private Integer likesCount;
     
     // 게시글(Board) 과 좋아요(Like) 는 '1:다(One-to-Many)' 관계를 형성
-    
     @OneToMany(mappedBy = "board", fetch = FetchType.EAGER,
     				cascade = CascadeType.ALL, orphanRemoval = true)
     private List<LikeEntity> likes = new ArrayList<>();
 
+    
+    
     @Column(columnDefinition = "NUMBER DEFAULT 0")
     private Integer report;
 
