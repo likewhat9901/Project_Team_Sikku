@@ -45,6 +45,7 @@ public class WebSecurityConfig {
             .cors(cors -> cors.disable())
             .authorizeHttpRequests(req -> req
                 .dispatcherTypeMatchers(DispatcherType.FORWARD).permitAll()
+                
                 //정적/공개 리소스
                 .requestMatchers("/css/**","/js/**","/images/**").permitAll()
                 .requestMatchers("/uploads/**").permitAll()

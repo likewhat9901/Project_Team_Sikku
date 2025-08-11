@@ -1,4 +1,7 @@
 /* 기본 초기화 및 폰트 설정 */
+
+
+/*
 * {
   margin: 0;
   padding: 0;
@@ -11,6 +14,7 @@ html, body {
   font-family: 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif;
   background-color: #f9fafb;
 }
+*/
 
 /* 📦 폼 컨테이너 */
 .edit-container {
@@ -49,7 +53,7 @@ html, body {
 }
 
 .edit-container input {
-  width: 100%;
+  width: 95%;
   padding: 14px 16px;
   border: 1px solid #dcdfe6;
   border-radius: 10px;
@@ -72,7 +76,7 @@ html, body {
 }
 
 .phone-inputs input {
-  width: 100px;
+  width: 165px;
   padding: 14px 10px;
   text-align: center;
   border: 1px solid #dcdfe6;

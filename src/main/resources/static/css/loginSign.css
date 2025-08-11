@@ -143,6 +143,8 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  margin-top: 52px;
+  margin-bottom: 20px;
 }
 
 
@@ -192,7 +194,7 @@
 
 .email-inputs input#email_id,
 .email-inputs input#email_domain {
-  width: 40%;
+  width: 150%;
   text-align: left;
 }
 

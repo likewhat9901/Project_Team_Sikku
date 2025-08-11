@@ -25,9 +25,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.edu.springboot.auth.WebConfig;
-
-import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 @Controller
 public class AuthController {
@@ -42,26 +40,29 @@ public class AuthController {
     public String signup() {
         return "member/signup";
     }
-    
+
     @GetMapping("/mypage.do")
-    public String myPage(Principal principal, Model model) {
+    public String myPage(Principal principal, Model model, HttpSession session) {
         try {
             String userid = principal.getName();
-            Connection conn = dataSource.getConnection();
-            PreparedStatement ps = conn.prepareStatement(
-                    "SELECT username, email, profileImgPath FROM members WHERE userid = ?");
-            ps.setString(1, userid);
-            ResultSet rs = ps.executeQuery();
-
-            if (rs.next()) {
-                model.addAttribute("username", rs.getString("username"));
-                model.addAttribute("email", rs.getString("email"));
-                model.addAttribute("profileImgPath", rs.getString("profileImgPath"));
+            try (Connection conn = dataSource.getConnection();
+                 PreparedStatement ps = conn.prepareStatement(
+                     "SELECT username, email, profileImgPath FROM members WHERE userid = ?")) {
+                ps.setString(1, userid);
+                try (ResultSet rs = ps.executeQuery()) {
+                    if (rs.next()) {
+                        model.addAttribute("username", rs.getString("username"));
+                        model.addAttribute("email", rs.getString("email"));
+                        String path = rs.getString("profileImgPath");
+                        model.addAttribute("profileImgPath", path);
+                        if (path != null && !path.isEmpty()) {
+                            session.setAttribute("profileImgPath", path); // ★ 세션에도 넣어 전역 사용
+                        } else {
+                            session.removeAttribute("profileImgPath");
+                        }
+                    }
+                }
             }
-
-            rs.close();
-            ps.close();
-            conn.close();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -70,12 +71,12 @@ public class AuthController {
         return "member/mypage";
     }
 
-
-    // ⬇️ 업로드: JSON으로 새 경로 반환
+    // ⬇️ 업로드: JSON으로 새 경로 반환 + 세션 갱신
     @PostMapping("/mypage/uploadProfile")
     public ResponseEntity<Map<String, String>> uploadProfile(
             @RequestParam("profileImage") MultipartFile file,
-            Principal principal) {
+            Principal principal,
+            HttpSession session) {
 
         String userid = principal.getName();
 
@@ -84,7 +85,6 @@ public class AuthController {
         }
 
         try {
-            // 외부 저장 경로 (WebConfig와 동일한 위치)
             String uploadDir = WebConfig.UPLOAD_ROOT;
             File dir = new File(uploadDir);
             if (!dir.exists()) dir.mkdirs();
@@ -110,6 +110,9 @@ public class AuthController {
                 ps.executeUpdate();
             }
 
+            //세션 갱신
+            session.setAttribute("profileImgPath", dbPath);
+
             Map<String, String> body = new HashMap<>();
             body.put("path", dbPath);
             return ResponseEntity.ok(body);
@@ -121,20 +124,21 @@ public class AuthController {
     }
 
     @PostMapping("/mypage/resetProfile")
-    public String resetProfile(Principal principal, Model model) {
+    public String resetProfile(Principal principal, Model model, HttpSession session) {
         try {
             String userid = principal.getName();
-            Connection conn = dataSource.getConnection();
-            PreparedStatement ps = conn.prepareStatement(
-                    "UPDATE members SET profileImgPath = NULL WHERE userid = ?");
-            ps.setString(1, userid);
-            ps.executeUpdate();
-            ps.close();
-            conn.close();
+            try (Connection conn = dataSource.getConnection();
+                 PreparedStatement ps = conn.prepareStatement(
+                     "UPDATE members SET profileImgPath = NULL WHERE userid = ?")) {
+                ps.setString(1, userid);
+                ps.executeUpdate();
+            }
+            // 세션 정리
+            session.removeAttribute("profileImgPath");
         } catch (Exception e) {
             e.printStackTrace();
             model.addAttribute("errorMsg", "기본 이미지로 변경 중 오류 발생");
-            return myPage(principal, model);
+            return myPage(principal, model, session);
         }
         return "redirect:/mypage.do";
     }
@@ -143,29 +147,26 @@ public class AuthController {
     public String mypageEdit(Principal principal, Model model) {
         try {
             String userid = principal.getName();
-            Connection conn = dataSource.getConnection();
-            PreparedStatement ps = conn.prepareStatement(
-                    "SELECT username, phonenumber, email FROM members WHERE userid = ?");
-            ps.setString(1, userid);
-            ResultSet rs = ps.executeQuery();
-
-            if (rs.next()) {
-                model.addAttribute("username", rs.getString("username"));
-                model.addAttribute("email", rs.getString("email"));
-                String phone = rs.getString("phonenumber");
-                if (phone != null) {
-                    phone = phone.replaceAll("-", "");
-                    if (phone.length() == 11) {
-                        model.addAttribute("phone1", phone.substring(0, 3));
-                        model.addAttribute("phone2", phone.substring(3, 7));
-                        model.addAttribute("phone3", phone.substring(7));
+            try (Connection conn = dataSource.getConnection();
+                 PreparedStatement ps = conn.prepareStatement(
+                     "SELECT username, phonenumber, email FROM members WHERE userid = ?")) {
+                ps.setString(1, userid);
+                try (ResultSet rs = ps.executeQuery()) {
+                    if (rs.next()) {
+                        model.addAttribute("username", rs.getString("username"));
+                        model.addAttribute("email", rs.getString("email"));
+                        String phone = rs.getString("phonenumber");
+                        if (phone != null) {
+                            phone = phone.replaceAll("-", "");
+                            if (phone.length() == 11) {
+                                model.addAttribute("phone1", phone.substring(0, 3));
+                                model.addAttribute("phone2", phone.substring(3, 7));
+                                model.addAttribute("phone3", phone.substring(7));
+                            }
+                        }
                     }
                 }
             }
-
-            rs.close();
-            ps.close();
-            conn.close();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -177,12 +178,13 @@ public class AuthController {
             @RequestParam("action") String action,
             @RequestParam(value = "profileImage", required = false) MultipartFile file,
             Principal principal,
-            Model model) {
+            Model model,
+            HttpSession session) {
 
         if ("upload".equals(action)) {
             return "redirect:/mypage.do";
         } else if ("reset".equals(action)) {
-            return resetProfile(principal, model);
+            return resetProfile(principal, model, session);
         }
         return "redirect:/mypage.do";
     }
@@ -321,32 +323,36 @@ public class AuthController {
     }
 
     @RequestMapping("/myLogin.do")
-    public String login1(Principal principal, Model model) {
+    public String login1(Principal principal, Model model, HttpSession session) {
         try {
             String userid = principal.getName();
             model.addAttribute("userid", userid);
 
-            Connection conn = dataSource.getConnection();
-            PreparedStatement ps = conn.prepareStatement(
-                "SELECT username FROM members WHERE userid = ?"
-            );
-            ps.setString(1, userid);
-            ResultSet rs = ps.executeQuery();
+            try (Connection conn = dataSource.getConnection();
+                 PreparedStatement ps = conn.prepareStatement(
+                     "SELECT username, profileImgPath FROM members WHERE userid = ?")) {
+                ps.setString(1, userid);
+                try (ResultSet rs = ps.executeQuery()) {
+                    if (rs.next()) {
+                        String activityName = rs.getString("username");
+                        String path = rs.getString("profileImgPath");
+                        model.addAttribute("username", activityName);
 
-            if (rs.next()) {
-                String activityName = rs.getString("username");
-                model.addAttribute("username", activityName);
+                        // 세션에 프로필 경로 반영
+                        if (path != null && !path.isEmpty()) {
+                            session.setAttribute("profileImgPath", path);
+                        } else {
+                            session.removeAttribute("profileImgPath");
+                        }
+                    }
+                }
             }
-
-            rs.close();
-            ps.close();
-            conn.close();
         } catch (Exception e) {
             System.out.println("로그인 전입니다");
         }
         return "member/login";
     }
-    
+
     @RequestMapping("/signupAction.do")
     public String signupAction(@RequestParam("userid") String userid,
             @RequestParam("userpw") String userpw,
