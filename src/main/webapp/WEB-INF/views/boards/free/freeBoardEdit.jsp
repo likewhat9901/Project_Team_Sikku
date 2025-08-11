@@ -6,7 +6,6 @@
 <meta charset="UTF-8">
 <title>게시판 수정</title>
 <link rel="stylesheet" href="/css/free.css">
-<link rel="stylesheet" href="/css/member.css">
 </head>
 <body>
 <%@ include file="/WEB-INF/views/common/header.jsp" %>
@@ -16,26 +15,24 @@
 
 	<main class="board-edit">
 		<form action="freeBoardEditProc.do" method="post">
-			<input type="hidden" name="boardIdx" value="${row.boardIdx}" />
+			<input type="hidden" name="boardIdx" value="${board.boardIdx}" />
 
 			<div class="form-group">
 				<label for="title">제목</label> <input type="text" id="title"
-					name="title" value="${row.title}" required />
+					name="title" value="${board.title}" required />
 			</div>
 
-			<div class="form-group">
-				<label for="writer">작성자</label> <input type="text" id="writer"
-					name="userId" value="${row.userId}" readonly />
-			</div>
+			<input type="hidden" name="userId" value="${board.userId}" />
+			<input type="hidden" name="postdate" value="${board.postdate}" />
 
 			<div class="form-group">
 				<label for="content">내용</label>
-				<textarea id="content" name="content" rows="10" required>${row.content}</textarea>
+				<textarea id="content" name="content" rows="10" required>${board.content}</textarea>
 			</div>
 
 			<div class="form-actions">
 				<button type="submit">수정 완료</button>
-				<a href="freeBoardView.do?boardIdx=${row.boardIdx}">취소</a>
+				<button type="button" onclick= "location.href='freeBoardView.do?boardIdx=${board.boardIdx}'">취소</button>
 			</div>
 		</form>
 	</main>

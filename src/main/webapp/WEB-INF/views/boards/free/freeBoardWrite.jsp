@@ -30,25 +30,22 @@ function validateWriteForm() {
 </head>
 <body>
 <%@ include file="/WEB-INF/views/common/header.jsp" %>
+
 	<div class="write-container">
 	    <h2>게시글 작성</h2>
 	    <form action="/boards/free/freeBoardWriteProc.do" method="post" class="write-form">
-	        <input type="text" name="userId" placeholder="userId" />
+	        <input type="hidden" name="userId" value="${loginUserId}" />
+	        <input type="hidden" name="postdate" value="${postdate}" />
 	        <input type="text" name="title" placeholder="제목을 입력하세요" />
 	        <textarea name="content" placeholder="내용을 입력하세요" ></textarea>
 	        <div class="write-actions">
 	            <button type="submit">작성 완료</button>
-	            <a href="/boards/free/freeBoardList.do" class="cancel-btn">취소</a>
+	            <button type="button" class="cancel-btn" 
+	            	onclick = "location.href='/boards/free/freeBoardList.do'">취소</button>
 	        </div>
 	    </form>
 	</div>
 	
-	<!-- 이미지 업로드 영역 -->
-	<div class="image-upload-section">
-	  <label for="imageInput" class="image-upload-label">📷 이미지 업로드</label>
-	  <input type="file" id="imageInput" name="uploadImage" accept="image/*" onchange="previewImage(event)">
-	  <div class="image-preview" id="imagePreview"></div>
-	</div>
 <%@ include file="/WEB-INF/views/common/footer.jsp" %>
 </body>
 </html>
