@@ -27,11 +27,9 @@ public class WebSecurityConfig {
     @Autowired
     private DataSource dataSource;
 
-    // ✅ 여기: Bean 만들지 말고 주입만 받기
+
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
-    // 혹시 PasswordEncoderConfig가 PasswordEncoder 타입으로 Bean을 내보내면 위 줄을
-    // private PasswordEncoder bCryptPasswordEncoder; 로 바꿔도 됩니다.
 
     @Autowired
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
@@ -39,7 +37,6 @@ public class WebSecurityConfig {
             .dataSource(dataSource)
             .usersByUsernameQuery("SELECT userid, userpw, enabled FROM members WHERE userid = ?")
             .authoritiesByUsernameQuery("SELECT userid, authority FROM members WHERE userid = ?")
-            // ✅ 메서드 호출이 아니라, 주입된 객체를 그대로 전달
             .passwordEncoder(bCryptPasswordEncoder);
     }
 

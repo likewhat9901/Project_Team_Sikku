@@ -11,16 +11,15 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
 
-    // 운영 환경에 맞게 변경 가능 (프로젝트 밖 경로 권장)
+    // 프로젝트 내부 경로로 변경
     public static final String UPLOAD_ROOT =
-            Paths.get(System.getProperty("user.home"), "app-uploads", "profile").toString();
+            Paths.get(System.getProperty("user.dir"), "src/main/resources/static/uploads/profile").toString();
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        // /uploads/profile/** → 파일시스템 경로 매핑
         registry.addResourceHandler("/uploads/profile/**")
                 .addResourceLocations("file:" + UPLOAD_ROOT + "/")
-                .setCacheControl(CacheControl.noCache())  // 이미지 즉시 반영
+                .setCacheControl(CacheControl.noCache()) // 캐시 없이 바로 반영
                 .resourceChain(false);
     }
 }
