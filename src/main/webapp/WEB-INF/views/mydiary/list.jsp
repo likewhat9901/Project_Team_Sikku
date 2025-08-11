@@ -21,7 +21,7 @@
 					</nav>
 					<h2 class="mydiary-title">나만의 식물 꾸미기</h2>
 					<button type="button" class="mydiary-write-btn"
-						onclick="location.href='./write.do';">글쓰기</button>
+						onclick="location.href='./write.do';">글쓰기!!</button>
 				</div>
 			</div>
 

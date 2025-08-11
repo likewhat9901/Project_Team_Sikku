@@ -18,25 +18,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 
-/*
- * CREATE TABLE hboard (
-  board_idx     NUMBER          PRIMARY KEY,
-  member_idx   NUMBER          NOT NULL,
-  title        VARCHAR2(100)   NOT NULL,
-  content      CLOB            NOT NULL,
-  ofile        VARCHAR2(255),
-  sfile        VARCHAR2(255),
-  postdate     DATE            DEFAULT SYSDATE,              
-  category     NUMBER(1)       DEFAULT 1 CHECK (category IN (1, 2)),
-  visitcount   NUMBER          DEFAULT 0,  
-  likes        NUMBER          DEFAULT 0,
-  report       NUMBER          DEFAULT 0,
-  CONSTRAINT fk_board_member FOREIGN KEY (member_idx) REFERENCES hmember(member_idx)
-);
- * 오라클 컬럼명은 언더바(board_idx)를 이용한 스네이크_표기법이므로
- * 자바언어로 작성할때는 자바표준인 카멜 표기법(boardIdx)으로 적습니다. 
-*/
-
 
 @Data
 @AllArgsConstructor
@@ -53,11 +34,11 @@ public class BoardEntity {
         sequenceName = "boardSeq",        // 실제 오라클 시퀀스 이름
         allocationSize = 1                 // 오라클 시퀀스 INCREMENT BY와 일치
     )
-    @Column(name = "boardIdx", nullable = false, length = 100)
+    @Column(name = "boardidx", nullable = false, length = 100)
     private Long boardIdx;
 
-    @Column(nullable = false)
-    private Long memberIdx; // 외래키 (실제로는 MemberEntity와 연결 가능)
+    @Column(name = "userid", nullable = false)
+    private String userId; // 외래키 (실제로는 MemberEntity와 연결 가능)
 
     @Column(nullable = false, length = 100)
     private String title;

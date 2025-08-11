@@ -8,7 +8,6 @@
 
 <!-- CSS import -->
 <link rel="stylesheet" href="/css/free.css">
-<link rel="stylesheet" href="/css/member.css">
 <script>
 function validateWriteForm() {
     const title = document.querySelector('[name="title"]').value.trim();
@@ -34,7 +33,7 @@ function validateWriteForm() {
 	<div class="write-container">
 	    <h2>게시글 작성</h2>
 	    <form action="/boards/free/freeBoardWriteProc.do" method="post" class="write-form">
-	        <input type="text" name="memberIdx" placeholder="memberIdx" />
+	        <input type="text" name="userId" placeholder="userId" />
 	        <input type="text" name="title" placeholder="제목을 입력하세요" />
 	        <textarea name="content" placeholder="내용을 입력하세요" ></textarea>
 	        <div class="write-actions">

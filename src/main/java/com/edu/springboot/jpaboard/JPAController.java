@@ -158,37 +158,36 @@ public class JPAController {
 	//댓글 작성하기
 	@PostMapping("/boards/free/freeBoardCommentWriteProc.do")
 	public String commentWriteProc(@RequestParam("boardIdx") Long boardIdx,
-					@RequestParam("memberIdx") Long memberIdx, CommentEntity ce,
-					MemberEntity me) {
-		BoardEntity be = new BoardEntity();
-	    be.setBoardIdx(boardIdx); // idx만 세팅해서 참조
-	    be.setMemberIdx(memberIdx); // idx만 세팅해서 참조
-	    cs.insertPost(ce, be, me);
-	    return "redirect:freeBoardView.do?boardIdx=" + boardIdx;
+					@RequestParam("userId") String userId, 
+					@RequestParam("content") String content) {
+		
+		// CommentService에서 모든 처리를 담당하도록 변경
+		cs.insertPost(boardIdx, userId, content);
+		return "redirect:freeBoardView.do?boardIdx=" + boardIdx;
 	}
 	
 	
-	//댓글 수정 진입
-	@RequestMapping("/boards/free/freeBoardCommentEdit.do")
-	public String commentEdit(@RequestParam("commentIdx") Long commentIdx,
-			@RequestParam("boardIdx") Long boardIdx, Model model) {
-	    // 기존 댓글 정보를 가져와서 모델에 담는 로직 (예: cs.selectComment(commentIdx))
-	    CommentEntity comment = cs.selectComment(commentIdx); // selectComment 메서드가 필요함
-	    model.addAttribute("comment", comment);
-
-	    return "redirect:freeBoardView.do?boardIdx="+ boardIdx;
-	}
-	
+	/* 댓글은 freeBoardView에 CommentEntity타입의 댓글 리스트가 이미 넘어갔으므로
+	GETMapping은 필요 하지 않다.
+	*/
 	//댓글 수정하기
 	@PostMapping("/boards/free/freeBoardCommentEditProc.do")
-	public String commentEditProc(@RequestParam("boardIdx") Long boardIdx,
-					@RequestParam("memberIdx") Long memberIdx, CommentEntity ce,
-					MemberEntity me) {
-		BoardEntity be = new BoardEntity();
-	    be.setBoardIdx(boardIdx);
-	    be.setMemberIdx(memberIdx);
-		cs.updatePost(ce, be, me);
-		return "redirect:freeBoardView.do?boardIdx="+ boardIdx;
+	public String commentEditProc(@RequestParam("commentIdx") Long commentIdx,
+					@RequestParam("boardIdx") Long boardIdx,
+					@RequestParam("userId") String userId,
+					@RequestParam("content") String content) {
+		
+		// CommentService에서 모든 처리를 담당하도록 변경
+		cs.updatePost(commentIdx, boardIdx, userId, content);
+		return "redirect:freeBoardView.do?boardIdx=" + boardIdx;
+	}
+	
+	// 댓글 삭제하기
+	@GetMapping("/boards/free/freeBoardCommentDelete.do")
+	public String commentDelete(@RequestParam("commentIdx") Long commentIdx,
+	                          @RequestParam("boardIdx") Long boardIdx) {
+	    cs.deletePost(commentIdx);
+	    return "redirect:freeBoardView.do?boardIdx=" + boardIdx;
 	}
 		
 	@GetMapping("/boards/gallery/galleryBoardList.do")
