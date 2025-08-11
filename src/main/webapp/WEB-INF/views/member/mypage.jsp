@@ -4,68 +4,48 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<meta charset="UTF-8">
-	<title>마이페이지</title>
-	<link rel="stylesheet" href="/css/common/layout.css" />
-	<link rel="stylesheet" href="/css/mypage.css">
+  <meta charset="UTF-8">
+  <title>마이페이지</title>
+  <link rel="stylesheet" href="/css/common/layout.css" />
+  <link rel="stylesheet" href="/css/mypage.css">
 </head>
 <body>
 
-<!-- ✅ 상단 네비게이션 바 -->
-<div class="header">
-  <div class="header-content">
-    <div class="logo">
-      <span class="home-btn" onclick="location.href='/'">로고</span> 
-      <span class="site-name">그린다이어리(예명)</span>
-    </div>
+<%@ include file="/WEB-INF/views/common/header.jsp" %>
 
-    <div class="nav-icons">
-      <div class="nav-item"><div class="icon-box"></div><span>궁금해?</span></div>
-      <div class="nav-item" onclick="location.href='/freeBoardList.do'"><div class="icon-box"></div><span>커뮤니티</span></div>
-      <div class="nav-item" onclick="location.href='/mydiary/list.do'"><div class="icon-box"></div><span>다이어리</span></div>
-      <div class="nav-item" onclick="location.href='/info.do'"><div class="icon-box"></div><span>식물도감</span></div>
-      <div class="nav-item" onclick="location.href='/mbti.do'"><div class="icon-box"></div><span>MBTI</span></div>
-    </div>
 
-    <div class="user-section">
-      <sec:authorize access="!isAuthenticated()">
-        <span class="login-link" onclick="location.href='/myLogin.do'">로그인</span>
-        <span class="register-link" onclick="location.href='/signup.do'">회원가입</span>
-      </sec:authorize>
-      <sec:authorize access="isAuthenticated()">
-        <span class="mypage-link" onclick="location.href='/mypage.do'">마이페이지</span>
-        <span class="logout-link" onclick="location.href='/myLogout.do'">로그아웃</span>
-        <div class="user-icon">👤</div>
-      </sec:authorize>
-    </div>
-  </div>
+<div class="mypage1-title">
+  <h1 align="right">마이페이지</h1>
 </div>
 
-<!-- ✅ 마이페이지 제목 (프로필 박스 바로 위) -->
-<div class="mypage-title">
-  <h1>마이페이지</h1>
-</div>
-
-<!-- ✅ 마이페이지 전체 컨테이너 -->
 <div class="mypage-container">
 
-  <!-- 📌 프로필 영역 -->
   <div class="profile-card">
-    <form action="/mypage/uploadProfile" method="post" enctype="multipart/form-data">
+    <form id="profileForm" enctype="multipart/form-data">
       <input type="file" id="profileImageInput" name="profileImage" accept="image/*" style="display: none;" onchange="previewImage(event)">
-      <label for="profileImageInput">
-        <img id="profilePreview" src="${user.profileImgPath != null ? user.profileImgPath : '/images/프로필.png'}" alt="프로필 이미지" />
+      <label class="imggang" for="profileImageInput">
+        <img id="profilePreview"
+             src="${(profileImgPath != null ? profileImgPath : '/images/프로필.png')}?t=${timestamp}"
+             alt="프로필 이미지" />
       </label>
       <p class="profile-name">${username} 님</p>
       <p class="profile-id">${email}</p>
-      <button class="edit-btn" type="submit">프로필 사진 저장</button>
+
+      <div class="profile-btn-group">
+        <button class="edit-btn" type="button" onclick="uploadProfile()">프로필 사진 저장</button>
+      </div>
     </form>
-    <form action="/mypage/editInfo" method="get">
+
+    <form action="/mypage/profileAction" method="post">
+      <input type="hidden" name="action" value="reset">
+      <button class="edit-btn" type="submit">기본 이미지로</button>
+    </form>
+
+    <form action="mypageEdit.do" method="get">
       <button class="edit-btn" type="submit">정보 수정</button>
     </form>
   </div>
 
-  <!-- 📌 나의 활동 영역 -->
   <div class="activity-section">
     <h2>나의 활동</h2>
 
@@ -110,21 +90,39 @@
   </div>
 </div>
 
-<!-- 이미지 미리보기 스크립트 -->
 <script>
   function previewImage(event) {
     const input = event.target;
     const preview = document.getElementById("profilePreview");
-
     if (input.files && input.files[0]) {
       const reader = new FileReader();
-      reader.onload = function (e) {
-        preview.src = e.target.result;
-      };
+      reader.onload = e => { preview.src = e.target.result; };
       reader.readAsDataURL(input.files[0]);
     }
   }
+
+  function uploadProfile() {
+    const form = document.getElementById("profileForm");
+    const formData = new FormData(form);
+
+    const btn = document.querySelector('.profile-btn-group .edit-btn');
+    btn.disabled = true;
+
+    fetch("/mypage/uploadProfile", { method: "POST", body: formData })
+      .then(r => { if (!r.ok) throw new Error("업로드 실패"); return r.json(); })
+      .then(() => {
+        // 서버 DB 저장 완료 → 페이지 재렌더링(PRG처럼)
+        location.replace('/mypage.do?t=' + Date.now());
+      })
+      .catch(err => {
+        alert('업로드 오류: ' + err.message);
+      })
+      .finally(() => {
+        btn.disabled = false;
+      });
+  }
 </script>
 
+<%@ include file="/WEB-INF/views/common/footer.jsp" %>
 </body>
 </html>

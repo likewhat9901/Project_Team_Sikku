@@ -5,7 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <title>정보 수정</title>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/mypageEdit.css">
+    <link rel="stylesheet" href="/css/mypageEdit.css">
 </head>
 <body>
 
