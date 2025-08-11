@@ -8,83 +8,22 @@ show parameter service_names;
 alter system set local_listener='(ADDRESS=(PROTOCOL=TCP)(HOST=localhost)(PORT=1521))' scope=both;
 
 
-
 /*-------------------------테이블 create-----------------------------------*/
-/*member*/
-CREATE TABLE hmember (
-  member_idx     NUMBER         PRIMARY KEY,
-  userid         VARCHAR2(20)   NOT NULL UNIQUE,
-  password       VARCHAR2(50)   NOT NULL,
-  email          VARCHAR2(30)   UNIQUE,
-  address        VARCHAR2(100),
-  username       VARCHAR2(20)   NOT NULL UNIQUE,
-  phonenumber    VARCHAR2(20)   NOT NULL,
-  role           NUMBER(2)      NOT NULL CHECK (role IN (0, 1)),
-  grade          NUMBER(1)      DEFAULT 1 CHECK (grade IN (1, 2, 3)), 
-  created_at     DATE DEFAULT SYSDATE
-);
-
-
-/*board - */
-CREATE TABLE hboard (
-  boardidx     NUMBER          PRIMARY KEY,
-  userid   NUMBER          NOT NULL,
-  title        VARCHAR2(100)   NOT NULL,
-  content      CLOB            NOT NULL,
-  ofile        VARCHAR2(255),
-  sfile        VARCHAR2(255),
-  postdate     DATE            DEFAULT SYSDATE,              
-  category     NUMBER(1)       DEFAULT 1 CHECK (category IN (1, 2)),
-  visitcount   NUMBER          DEFAULT 0,  
-  likes        NUMBER          DEFAULT 0,
-  report       NUMBER          DEFAULT 0,
-  CONSTRAINT fk_board_member FOREIGN KEY (userid) REFERENCES hmember(member_idx)
-);
-
-/*comment*/
-CREATE TABLE comments (
-  comment_idx   NUMBER PRIMARY KEY,
-  member_idx    NUMBER NOT NULL,
-  board_idx      NUMBER NOT NULL,
-  likes        NUMBER          DEFAULT 0,
-  content       VARCHAR2(500) NOT NULL,
-  postdate    DATE DEFAULT SYSDATE,
-  CONSTRAINT fk_comment_board FOREIGN KEY (board_idx) REFERENCES hboard(board_idx),
-  CONSTRAINT fk_comment_member FOREIGN KEY (member_idx) REFERENCES hmember(member_idx)
-);
-
-
-/*diary*/
-CREATE TABLE diary (
-  diary_idx     NUMBER          PRIMARY KEY,   
-  member_idx    NUMBER          NOT NULL,
-  ofile         VARCHAR2(255),     
-  sfile         VARCHAR2(255),     
-  postdate      DATE            DEFAULT SYSDATE,
-  description   VARCHAR2(500),                  
-  temperature   NUMBER(5, 2),        
-  humidity      NUMBER(5, 2),      
-  sunlight      NUMBER(5, 2),   
-  CONSTRAINT fk_diary_member FOREIGN KEY (member_idx) REFERENCES hmember(member_idx)
-);
-
-
-/*info*/
-CREATE TABLE info (
-  plant_idx         NUMBER         PRIMARY KEY,
+/*plant dictionary*/
+CREATE TABLE plantdict (
+  plantidx         NUMBER         PRIMARY KEY,
   name              VARCHAR2(100)  NOT NULL,
-  ofile             VARCHAR2(255),
-  sfile             VARCHAR2(255),
-  grow_season       VARCHAR2(50),
-  blooming_season   VARCHAR2(50),
+  imgpath             VARCHAR2(255),
+  summary           VARCHAR2(500),
+  note              VARCHAR2(1000),
+  growseason       VARCHAR2(50),
+  bloomingseason   VARCHAR2(50),
   humidity          VARCHAR2(50),
   sunlight          VARCHAR2(50),
-  temperature_min   NUMBER(5,2),
-  temperature_max   NUMBER(5,2),
+  temperaturemin   NUMBER(5,2),
+  temperaturemax   NUMBER(5,2),
   postdate          DATE DEFAULT SYSDATE,
-  member_idx        NUMBER,
-  description       VARCHAR2(255),
-  CONSTRAINT fk_plant_member FOREIGN KEY (member_idx) REFERENCES hmember(member_idx)
+  userid        NUMBER
 );
 
 /*mbti*/
@@ -139,109 +78,10 @@ CREATE SEQUENCE mbti_seq
   NOCYCLE;
 
 /*-----------------------------------update---------------------------------*/
-/* member 테이블 insert */
-/* 사용자 - 8 */
-INSERT INTO hmember (member_idx, userid, password, email, address, username, phonenumber, role) VALUES (
-  member_seq.NEXTVAL, 'user01', '1234', 'user01@example.com', '서울특별시 강남구 테헤란로 1', '홍길동', '010-1111-1111', 0
-);
-INSERT INTO hmember (member_idx, userid, password, email, address, username, phonenumber, role) VALUES (
-  member_seq.NEXTVAL, 'user02', '1234', 'user02@example.com', '부산광역시 해운대구 우동 123', '김철수', '010-2222-2222', 0
-);
-INSERT INTO hmember (member_idx, userid, password, email, address, username, phonenumber, role) VALUES (
-  member_seq.NEXTVAL, 'user03', '1234', 'user03@example.com', '대구광역시 수성구 범어동 456', '이영희', '010-3333-3333', 0
-);
-INSERT INTO hmember (member_idx, userid, password, email, address, username, phonenumber, role) VALUES (
-  member_seq.NEXTVAL, 'user04', '1234', 'user04@example.com', '인천광역시 연수구 송도동 789', '박민수', '010-4444-4444', 0
-);
-INSERT INTO hmember (member_idx, userid, password, email, address, username, phonenumber, role) VALUES (
-  member_seq.NEXTVAL, 'user05', '1234', 'user05@example.com', '서울특별시 강남구 테헤란로 1', '이한이', '010-1111-1111', 0
-);
-INSERT INTO hmember (member_idx, userid, password, email, address, username, phonenumber, role) VALUES (
-  member_seq.NEXTVAL, 'user06', '1234', 'user06@example.com', '부산광역시 해운대구 우동 123', '김동수', '010-2222-2222', 0
-);
-INSERT INTO hmember (member_idx, userid, password, email, address, username, phonenumber, role) VALUES (
-  member_seq.NEXTVAL, 'user07', '1234', 'user07@example.com', '대구광역시 수성구 범어동 456', '박천', '010-3333-3333', 0
-);
-INSERT INTO hmember (member_idx, userid, password, email, address, username, phonenumber, role) VALUES (
-  member_seq.NEXTVAL, 'user08', '1234', 'user08@example.com', '인천광역시 연수구 송도동 789', '박진경', '010-4444-4444', 0
-);
-/* 관리자 - 2 */
-INSERT INTO hmember (member_idx, userid, password, email, address, username, phonenumber, role) VALUES (
-  member_seq.NEXTVAL, 'admin01','1234', 'admin01@example.com', '광주광역시 북구 일곡동 101', '가나디', '010-5555-5555', 1
-);
-INSERT INTO hmember (member_idx, userid, password, email, address, username, phonenumber, role) VALUES (
-  member_seq.NEXTVAL, 'admin02','1234', 'admin02@example.com', '광주광역시 북구 일곡동 101', '하츄핑', '010-5555-5555', 1
-);
 
-
-/* freeboard 테이블 insert */
-INSERT INTO hboard (board_idx, member_idx, title, content, ofile, sfile) VALUES (
-  board_seq.NEXTVAL, 6, '텃밭에 상추 심기', '오늘은 상추를 심었어요. 흙 준비부터 씨앗 심기까지 완료!', 'lettuce.jpg', 'lettuce_2025.jpg'
-);
-
-INSERT INTO hboard (board_idx, member_idx, title, content) VALUES (
-  board_seq.NEXTVAL, 7, '비가 와서 걱정이네요', '장마가 시작됐어요. 식물 뿌리 썩을까봐 걱정입니다.'
-);
-
-INSERT INTO hboard (board_idx, member_idx, title, content, ofile, sfile) VALUES (
-  board_seq.NEXTVAL, 8, '잡초 제거 팁', '잡초는 아침 일찍 뽑는 게 제일 효과적입니다!', 'weed.jpg', 'weed_2025.jpg'
-);
-
-INSERT INTO hboard (board_idx, member_idx, title, content) VALUES (
-  board_seq.NEXTVAL, 9, '오늘의 수확', '방울토마토랑 고추를 수확했어요. 색도 곱고 맛도 좋아요!'
-);
-
-INSERT INTO hboard (board_idx, member_idx, title, content) VALUES (
-  board_seq.NEXTVAL, 10, '병충해 방제 질문', '잎에 점이 생겼는데 무슨 병인지 아시는 분 계신가요?'
-);
-
-/* galleryboard insert */
-INSERT INTO hboard (board_idx, member_idx, title, content, ofile, sfile, category) VALUES (
-  board_seq.NEXTVAL, 6, '토마토가 안 자라요', '물을 주고 있는데도 토마토가 잘 자라지 않아요.', 'lettuce.jpg', 'lettuce_2025.jpg', 2
-);
-
-INSERT INTO hboard (board_idx, member_idx, title, content, category) VALUES (
-  board_seq.NEXTVAL, 7, '수확 사진 공유합니다', '오늘 수확한 오이와 가지 사진입니다!', 2
-);
-
-INSERT INTO hboard (board_idx, member_idx, title, content, ofile, sfile, category) VALUES (
-  board_seq.NEXTVAL, 8, '새싹 채소 키우기 도전', '작은 화분에 새싹 채소 심어봤어요.', 'weed.jpg', 'weed_2025.jpg', 2
-);
-
-INSERT INTO hboard (board_idx, member_idx, title, content, category) VALUES (
-  board_seq.NEXTVAL, 9, '텃밭 분양 정보', '서울 지역 텃밭 분양 공고가 떴습니다.', 2
-);
-
-INSERT INTO hboard (board_idx, member_idx, title, content, category) VALUES (
-  board_seq.NEXTVAL, 10, '병충해 방제 질문', '잎에 점이 생겼는데 무슨 병인지 아시는 분 계신가요?', 2
-);
-
-
-/* comment 테이블 insert */
-INSERT INTO comments (comment_idx, member_idx, board_idx, content) VALUES (
-  comment_seq.NEXTVAL, 6, 1, '좋은 정보 감사합니다! 저도 상추 심어볼게요.'
-);
-
-INSERT INTO comments (comment_idx, member_idx, board_idx, content) VALUES (
-  comment_seq.NEXTVAL, 7, 2, '비 많이 오면 흙 배수 잘 되게 해야 해요!'
-);
-
-INSERT INTO comments (comment_idx, member_idx, board_idx, content) VALUES (
-  comment_seq.NEXTVAL, 8, 3, '잡초 제거 팁 유용하네요. 저도 새벽에 해봐야겠어요.'
-);
-
-INSERT INTO comments (comment_idx, member_idx, board_idx, content) VALUES (
-  comment_seq.NEXTVAL, 9, 5, '저도 같은 병 있었는데 칼슘 부족일 수 있어요.'
-);
-
-INSERT INTO comments (comment_idx, member_idx, board_idx, content) VALUES (
-  comment_seq.NEXTVAL, 10, 7, '분양 정보 감사합니다. 신청해볼게요!'
-);
-
-
-/* info 테이블 insert */
+/* plantdict 테이블 insert */
 -- 1. 상추 (봄, 여름용 채소)
-INSERT INTO info (
+INSERT INTO plantdict (
   plant_idx, name, ofile, sfile, grow_season, blooming_season, humidity, sunlight,
   temperature_min, temperature_max, member_idx, description
 ) VALUES (
@@ -251,7 +91,7 @@ INSERT INTO info (
 );
 
 -- 2. 방울토마토
-INSERT INTO info (
+INSERT INTO plantdict (
   plant_idx, name, ofile, sfile, grow_season, blooming_season, humidity, sunlight,
   temperature_min, temperature_max, member_idx, description
 ) VALUES (
@@ -261,7 +101,7 @@ INSERT INTO info (
 );
 
 -- 3. 바질
-INSERT INTO info (
+INSERT INTO plantdict (
   plant_idx, name, ofile, sfile, grow_season, blooming_season, humidity, sunlight,
   temperature_min, temperature_max, member_idx, description
 ) VALUES (
@@ -271,7 +111,7 @@ INSERT INTO info (
 );
 
 -- 4. 고추
-INSERT INTO info (
+INSERT INTO plantdict (
   plant_idx, name, ofile, sfile, grow_season, blooming_season, humidity, sunlight,
   temperature_min, temperature_max, member_idx, description
 ) VALUES (
@@ -281,7 +121,7 @@ INSERT INTO info (
 );
 
 -- 5. 애플민트
-INSERT INTO info (
+INSERT INTO plantdict (
   plant_idx, name, ofile, sfile, grow_season, blooming_season, humidity, sunlight,
   temperature_min, temperature_max, member_idx, description
 ) VALUES (
@@ -291,7 +131,7 @@ INSERT INTO info (
 );
 -- 8.9 추가
 -- 6. 루꼴라
-INSERT INTO info (
+INSERT INTO plantdict (
   plant_idx, name, ofile, sfile, grow_season, blooming_season, humidity, sunlight,
   temperature_min, temperature_max, member_idx, description
 ) VALUES (
@@ -300,7 +140,7 @@ INSERT INTO info (
   10.0, 25.0, 10, '샐러드나 파스타에 활용되며 특유의 향과 맛이 있음'
 );
 -- 7. 스테비아
-INSERT INTO info (
+INSERT INTO plantdict (
   plant_idx, name, ofile, sfile, grow_season, blooming_season, humidity, sunlight,
   temperature_min, temperature_max, member_idx, description
 ) VALUES (
@@ -309,7 +149,7 @@ INSERT INTO info (
   15.0, 30.0, 10, '천연 감미료로 사용되며 달콤한 잎을 가짐'
 );
 -- 8. 애플수박
-INSERT INTO info (
+INSERT INTO plantdict (
   plant_idx, name, ofile, sfile, grow_season, blooming_season, humidity, sunlight,
   temperature_min, temperature_max, member_idx, description
 ) VALUES (
@@ -318,7 +158,7 @@ INSERT INTO info (
   20.0, 35.0, 10, '작은 크기와 달콤한 맛으로 가정 재배에 적합'
 );
 -- 9. 무
-INSERT INTO info (
+INSERT INTO plantdict (
   plant_idx, name, ofile, sfile, grow_season, blooming_season, humidity, sunlight,
   temperature_min, temperature_max, member_idx, description
 ) VALUES (
@@ -327,7 +167,7 @@ INSERT INTO info (
   5.0, 25.0, 10, '재배가 쉽고 다양한 요리에 활용되는 뿌리채소'
 );
 -- 10. 대파
-INSERT INTO info (
+INSERT INTO plantdict (
   plant_idx, name, ofile, sfile, grow_season, blooming_season, humidity, sunlight,
   temperature_min, temperature_max, member_idx, description
 ) VALUES (
@@ -400,7 +240,7 @@ INSERT INTO mbti VALUES (
 DROP TABLE comments CASCADE CONSTRAINTS;
 DROP TABLE hboard CASCADE CONSTRAINTS;
 DROP TABLE diary CASCADE CONSTRAINTS;
-DROP TABLE info CASCADE CONSTRAINTS;
+DROP TABLE plantdict CASCADE CONSTRAINTS;
 DROP TABLE hmember CASCADE CONSTRAINTS;
 
 /* 시퀀스 삭제 */
@@ -410,11 +250,7 @@ DROP SEQUENCE board_seq;
 DROP SEQUENCE comment_seq;
 DROP SEQUENCE member_seq;
 
-/*----------------------------delete----------------------------------------*/
+/*----------------------------commit----------------------------------------*/
 commit;
 
 
-/*----------------------------기타----------------------------------------*/
-ALTER TABLE members ADD profileimgpath VARCHAR2(100);
-
-select * from members;

@@ -1,79 +1,3 @@
-/* Weather Section */
-.weather {
-	width: 100%; min-height: 170px;
-    background: linear-gradient(135deg, #a8e6a3, #7dd3c0);
-    border-radius: 25px;
-    padding: 20px 25px;
-    box-shadow: 0 8px 32px rgba(76, 175, 80, 0.2);
-    border: 2px solid rgba(139, 195, 74, 0.3);
-}
-.weather-title {
-    color: black;
-    font-size: 1.2em;
-    font-weight: 800;
-    margin-bottom: 15px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
-.weather-content {
-    display: flex;
-    flex-wrap: wrap;  /* 한 줄에 다 안 들어가면 자동 줄바꿈 */
-    gap: 16px;
-    justify-content: center;
-    align-items: center;
-    padding: 18px 5px;
-    width: 100%;     /* 한 줄에 쭉 나올 수 있게 */
-}
-.weather-item {
-    display: flex;
-    align-items: center;
-    background: #fff;
-    padding: 8px 14px;
-    border-radius: 8px;
-    box-shadow: 0 1px 3px rgba(60,80,120,0.08);
-    min-width: 90px;
-    font-weight: 500;
-    white-space: nowrap;  /* 줄바꿈 금지 */
-}
-.weather-item:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(76, 175, 80, 0.25);
-}
-.weather-label {
-    color: #1b5e20;
-    font-size: 1em;
-    font-weight: 700;
-    margin-right: 8px;
-    opacity: 0.85;
-}
-
-/* 로딩 애니메이션 */
-.loading {
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
-    padding: 20px;
-    color: #2e7d32;
-    font-weight: 600;
-}
-
-.loading-spinner {
-    width: 30px;
-    height: 30px;
-    border: 5px solid #444;
-    border-top: 5px solid #000;
-    border-radius: 50%;
-    animation: spin 1s linear infinite;
-    margin-right: 20px;
-}
-
-@keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
-}
-
-
 /* Dashboard Section */
 .dashboard {
 	width: 100%;
@@ -86,11 +10,11 @@
 .dashboard-title {
     font-size: 28px;
     font-weight: bold;
-    margin-bottom: 10px;
     color: #333;
 }
 
 .plant-container {
+	height: 500px;
     position: relative;
     display: flex;
     align-items: center;
@@ -98,8 +22,8 @@
 }
 
 .navigation-btn {
-    width: 50px;
-    height: 50px;
+    width: 40px;
+    height: 40px;
     background: #333;
     color: white;
     border-radius: 50%;
@@ -119,21 +43,30 @@
 }
 
 .plant-card {
-    background: linear-gradient(135deg, #90EE90, #98FB98);
+	background: 
+          linear-gradient(
+		    to bottom right, 
+		    rgba(255, 255, 255, 0.5),  /* 0.25 → 0.5로 증가 */
+		    rgba(255, 255, 255, 0.5)   /* 0.1 → 0.3로 증가 */
+		  ),
+		  url(/images/header/leaf-background2.png) no-repeat center center / cover;
     border-radius: 25px;
     padding: 25px;
     display: flex;
+    align-items: center;
     gap: 25px;
-    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
     flex: 1;
     min-height: 350px;
+    height: 100%
 }
 
-.plant-left {
+.plant-info {
     display: flex;
     flex-direction: column;
     gap: 20px;
-    flex: 1;
+    flex: 0.5;
+    min-width: 300px;
 }
 
 .plant-image {
@@ -142,7 +75,7 @@
 
 .plant-image img {
     width: 300px;
-    height: 200px;
+    height: 300px;
     border-radius: 15px;
     object-fit: cover;
     box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
@@ -176,6 +109,8 @@
 
 .plant-status {
     flex: 1;
+    width: 100%;
+    height: 100%;
     background: white;
     border-radius: 20px;
     padding: 25px;
@@ -205,16 +140,6 @@
 
 /* 반응형 디자인 */
 @media (max-width: 768px) {
-    .header-content {
-        flex-direction: column;
-        gap: 15px;
-        text-align: center;
-    }
-
-    .nav-icons {
-        gap: 20px;
-    }
-
     .plant-container {
         flex-direction: column;
     }

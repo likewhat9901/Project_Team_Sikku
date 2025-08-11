@@ -12,8 +12,8 @@
 <body class="plant_detail_page">
 <%@ include file="/WEB-INF/views/common/header.jsp" %>
     
-    <!-- 디테일 컨테이너 -->
-  	<div class="detail_container">
+<!-- 디테일 컨테이너 -->
+<div class="detail_container">
     <h1 class="plant_title">${plant.name } <span class="plant_scientific">(식물 영어이름)</span></h1>
     
     <div class="plant_image_section">
@@ -38,6 +38,24 @@
       <p>(아직 빈칸)</p>
     </div>
 </div>
+
+<link href="http://api.nongsaro.go.kr/css/api.css" rel="stylesheet" type="text/css">
+<script type="text/javascript" src="http://api.nongsaro.go.kr/js/framework.js"></script>	
+<script type="text/javascript" src="http://api.nongsaro.go.kr/js/openapi_nongsaro.js"></script>
+	
+<script type="text/javascript">
+nongsaroOpenApiRequest.apiKey = "발급받은인증키";
+nongsaroOpenApiRequest.serviceName = "varietyInfo";
+nongsaroOpenApiRequest.operationName = "insttList";
+nongsaroOpenApiRequest.htmlArea="nongsaroApiLoadingAreaInstt";
+nongsaroOpenApiRequest.callback = "http://yourDomain/ajax_local_callback.jsp";
+</script>
+</head>
+
+<div id="nongsaroApiLoadingAreaInstt"></div><!-- 기관명 목록 HTML 로딩 영역 -->
+<div id="nongsaroApiLoadingArea"></div><!-- 메인카테고리 HTML 로딩 영역 -->
+<div id="nongsaroApiLoadingArea1"></div><!-- 미들카테고리 HTML 로딩 영역 -->
+<div id="nongsaroApiLoadingArea3"></div><!-- 품종 리스트 HTML 로딩 영역 -->
 <%@ include file="/WEB-INF/views/common/footer.jsp" %>
 </body>
 </html>
