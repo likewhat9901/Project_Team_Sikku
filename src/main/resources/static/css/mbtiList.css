@@ -1,10 +1,5 @@
-.main_container {
-    max-width: 90%;
-    margin: 0 auto;
-    padding: 100px;
-}
-
 .mbti-section {
+	width: 100%;
 	padding: 50px 80px;
 }
 
@@ -13,6 +8,7 @@
 }
 
 .mbti-container {
+	width: 100%;
 	display: grid;
 	grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); /* 너비 기준으로 자동 줄바꿈 */
 	gap: 30px;

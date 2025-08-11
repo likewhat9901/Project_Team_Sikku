@@ -34,6 +34,7 @@ eclipse.wtp.facet {
 dependencies {
 	// Spring Data JPA 의존성 추가
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+
 	//시큐리티 추가
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 	implementation 'org.springframework.security:spring-security-taglibs'
@@ -64,8 +65,6 @@ dependencies {
 	implementation 'com.fasterxml.jackson.core:jackson-databind'
 	
 	implementation 'org.json:json:20240303'
-	
-     
 }
 
 tasks.named('test') {

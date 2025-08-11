@@ -20,3 +20,16 @@ body {
 a {
 	text-decoration: none;
 }
+
+.main_container {
+    width: 100%;
+    min-width: 1600px;
+    max-width: 2000px;
+    margin: 0 auto;
+    padding: 50px 100px;
+    gap: 50px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}

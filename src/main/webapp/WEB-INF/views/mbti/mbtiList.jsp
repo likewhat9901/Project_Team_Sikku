@@ -12,26 +12,23 @@
 <body>
 <%@ include file="/WEB-INF/views/common/header.jsp" %>
 
-<!-- Main Container -->
-    <div class="main-container">
     
 <!-- MBTI Section -->
-        <div class="mbti-section">
-	      	<h2 class="title">MBTI별 추천 식물</h2>
-	        <div class="mbti-container">
-        	
+<div class="mbti-section">
+	<h2 class="title">MBTI별 추천 식물</h2>
+		<div class="mbti-container">
+			
 <c:forEach items="${ MBTIs }" var="row" varStatus="loop">
-	            <div class="card">
-	            	<a href="./view.do?idx=${row.mbtiIdx }">
-		                <div class="image">
-		                    <img src="/images/mbti/${row.imgfile }" alt="MBTI사진">
-		                </div>
-		            </a>
-	            </div>
+		<div class="card">
+			<a href="./view.do?idx=${row.mbtiIdx }">
+				<div class="image">
+			    	<img src="/images/mbti/${row.imgfile }" alt="MBTI사진" />
+			    </div>
+			</a>
+		</div>
 </c:forEach>
-			</div>
-        </div>
-    </div>
+	</div>
+</div>
     
 <%@ include file="/WEB-INF/views/common/footer.jsp" %>
 </body>

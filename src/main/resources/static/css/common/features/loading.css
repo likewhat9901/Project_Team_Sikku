@@ -1,0 +1,24 @@
+/* 로딩 애니메이션 */
+.loading {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    color: #2e7d32;
+    font-weight: 500;
+}
+
+.loading-spinner {
+    width: 30px;
+    height: 30px;
+    border: 5px solid #aaa;
+    border-top: 5px solid #000;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-right: 20px;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}

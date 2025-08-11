@@ -4,6 +4,7 @@ package com.edu.springboot.restApi;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -13,7 +14,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-
+/*
+ * 파이썬 경로설정, 모듈 설치 필요
+ * 경로설정: ProcessBuilder 부분
+ * 모듈설치(cmd에서):
+ * 	C:\01DevelopKits\miniconda3\python.exe -m pip install pandas requests python-dotenv
+ */
 
 @RestController
 public class RankingApiController {
@@ -26,7 +32,7 @@ public class RankingApiController {
 	
 	@GetMapping("/api/ranking")
 	// Map<String, Object>	{"key": value} 형태의 JSON
-    public Map<String, Object> getRanking(@RequestParam(name="category", defaultValue="farm") String category){
+    public Map<String, Object> getRanking(@RequestParam(name="category") String category){
 		try {
 			//===========디버깅==============
 			// Python 스크립트 경로 객체 생성
@@ -50,26 +56,35 @@ public class RankingApiController {
             		"src/main/python/ranking.py", category);	// category는 py파일에 넘길 인자
             pb.environment().put("NAVER_AD_API_CLIENT_ID", apiId);
             pb.environment().put("NAVER_AD_API_CLIENT_SECRET", apiSecret);
-            pb.redirectErrorStream(false);	//오류 메시지도 같이 읽을 수 있도록 설정
+            pb.redirectErrorStream(false);	//true: 오류 메시지도 같이 읽을 수 있도록 설정
             Process process = pb.start();	//ranking.py 실행
             
-            // 결과 읽을 준비
-            BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream(), "MS949"));
+            // stdout 읽기
+            BufferedReader reader = new BufferedReader(
+            		new InputStreamReader(process.getInputStream(), "MS949"));
             StringBuilder output = new StringBuilder(); //Python이 출력한 결과를 한 줄씩 모아 저장할 변수 선언
             String line;	//한줄을 담을 변수
-            
             // 한줄씩 읽어서 output에 담기
             while ((line = reader.readLine()) != null) {
-                output.append(line);
+                output.append(line).append("\n");
             }
-
+            
+            // stderr 읽기
+            BufferedReader errorReader = new BufferedReader(
+                    new InputStreamReader(process.getErrorStream(), "MS949"));
+            StringBuilder errorOutput = new StringBuilder();
+            while ((line = errorReader.readLine()) != null) {
+                errorOutput.append(line).append("\n");
+            }
+            
             process.waitFor();	//Python 프로그램이 끝날 때까지 기다림
-
+            
             // JSON 문자열 → Map으로 변환
             ObjectMapper mapper = new ObjectMapper();	//JSON 문자열을 Java 객체로 변환하기 위한 도구(Jackson 라이브러리)
             
             //디버깅용
-            System.out.println("Python 출력 결과: " + output.toString());
+            System.out.println("[DEBUG] Python STDOUT:\n" + output);
+            System.err.println("[DEBUG] Python STDERR:\n" + errorOutput);
             
             //JSON 문자열을 Map<String, Object>로 변환하여 리턴
             return mapper.readValue(output.toString(), Map.class);

@@ -14,9 +14,13 @@
 
 <!-- Weather Section -->
 <div class="weather">
-    <span class="weather-label">날씨정보</span>
+    <span class="weather-title">🌿 현재 날씨</span>
     <div class="weather-content">
         <!-- 날씨 정보가 들어갈 공간 -->
+        <div class="loading">
+            <div class="loading-spinner"></div>
+            날씨 정보를 불러오는 중...
+        </div>
     </div>
 </div>
 
@@ -29,7 +33,7 @@
 		<div class="plant-card">
 			<div class="plant-left">
 			    <div class="plant-image">
-			        <img src="/images/dash/${row.ofile }" alt="식물사진">
+			        <img src="/images/status/${row.ofile }" alt="식물사진">
 			    </div>
 			    <div class="plant-info-box">
 			        <p class="plant-name">식물명 : ${ row.name }</p>
@@ -49,14 +53,10 @@
 </div>
 
 <%@ include file="/WEB-INF/views/common/footer.jsp" %>
-
 </body>
 
 <script type="text/javascript">
 window.addEventListener('DOMContentLoaded', function () {
-	const container = document.querySelector('.weather-content');
-	container.innerHTML = '<p>날씨 정보를 불러오는 중...</p>';
-	
     fetch('/api/weather')
         .then(response => response.json())
         .then(data => {
