@@ -12,7 +12,6 @@
 <!-- JS import -->
 <script src="/js/freeBoardView.js"></script>
 
-
 </head>
 <body>
 <%@ include file="/WEB-INF/views/common/header.jsp" %>

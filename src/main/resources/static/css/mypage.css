@@ -31,6 +31,18 @@
   box-shadow: 2px 2px 8px rgba(0,0,0,0.1);
 }
 
+.profile-btn-group {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.profile-btn-group form {
+  margin: 0;
+}
+
+
 /* 프로필 이미지 */
 #profilePreview {
   width: 150px;

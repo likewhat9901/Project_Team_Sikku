@@ -6,6 +6,18 @@ import lombok.*;
 import java.time.LocalDateTime;
 
 
+/*
+CREATE TABLE comments (
+  comment_idx   NUMBER PRIMARY KEY,
+  member_idx    NUMBER NOT NULL,
+  board_idx      NUMBER NOT NULL,
+  likes        NUMBER          DEFAULT 0,
+  content       VARCHAR2(500) NOT NULL,
+  postdate    DATE DEFAULT SYSDATE,
+  CONSTRAINT fk_comment_board FOREIGN KEY (board_idx) REFERENCES hboard(board_idx),
+  CONSTRAINT fk_comment_member FOREIGN KEY (member_idx) REFERENCES hmember(member_idx)
+);
+*/
 @Data
 @Entity
 @Table(name = "comments")
@@ -21,7 +33,7 @@ public class CommentEntity {
         sequenceName = "commentSeq",        // 실제 오라클 시퀀스 이름
         allocationSize = 1                 // 오라클 시퀀스 INCREMENT BY와 일치
     )
-    @Column(name = "commentidx")
+    @Column(name = "commentIdx")
     private Long commentIdx;
 
     /*
@@ -31,11 +43,11 @@ public class CommentEntity {
     */
     
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "userid", nullable = false)
+    @JoinColumn(name = "memberIdx", nullable = false)
     private MemberEntity member;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "boardidx", nullable = false) // 오라클 DB의 컬럼명
+    @JoinColumn(name = "boardIdx", nullable = false) // 오라클 DB의 컬럼명
     private BoardEntity board;  // JPA에서 사용할 객체 이름(별칭)
 
     @Column(nullable = false, length = 500)

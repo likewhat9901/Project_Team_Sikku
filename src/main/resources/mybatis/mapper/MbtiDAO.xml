@@ -11,4 +11,5 @@
 		resultType="com.edu.springboot.mbti.MbtiDTO">
 		SELECT * from MBTI
 	</select>
+	
 </mapper>

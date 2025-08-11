@@ -6,7 +6,6 @@
 <head>
 <meta charset="UTF-8">
 <title>freeBoardList</title>
-
 <link rel="stylesheet" href="/css/free.css">
 
 <!-- JS import -->
@@ -46,7 +45,6 @@
 	  
 	  
 	</div>
-
 
 	
 <%@ include file="/WEB-INF/views/common/footer.jsp" %>

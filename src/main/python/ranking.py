@@ -8,7 +8,6 @@ from datetime import datetime, timedelta
 from dotenv import load_dotenv		# 환경변수 사용
 
 
-
 # 환경변수 불러오기
 CLIENT_ID = os.getenv('NAVER_AD_API_CLIENT_ID')
 CLIENT_SECRET = os.getenv('NAVER_AD_API_CLIENT_SECRET')

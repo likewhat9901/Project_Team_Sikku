@@ -6,6 +6,7 @@
 <meta charset="UTF-8">
 <title>게시판 수정</title>
 <link rel="stylesheet" href="/css/free.css">
+<link rel="stylesheet" href="/css/member.css">
 </head>
 <body>
 <%@ include file="/WEB-INF/views/common/header.jsp" %>

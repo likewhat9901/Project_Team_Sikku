@@ -5,10 +5,24 @@ import lombok.*;
 
 import java.time.LocalDateTime;
 
+/*
+CREATE TABLE hmember (
+  member_idx     NUMBER         PRIMARY KEY,
+  userid         VARCHAR2(20)   NOT NULL UNIQUE,
+  password       VARCHAR2(50)   NOT NULL,
+  email          VARCHAR2(30)   UNIQUE,
+  address        VARCHAR2(100),
+  username       VARCHAR2(10)   NOT NULL UNIQUE,
+  phonenumber    VARCHAR2(20)   NOT NULL,
+  role           NUMBER(2)      NOT NULL CHECK (role IN (0, 1)),
+  grade          NUMBER(1)      DEFAULT 1 CHECK (grade IN (1, 2, 3)), 
+  created_at     DATE DEFAULT SYSDATE
+);
+*/
 
 @Data
 @Entity
-@Table(name = "members")
+@Table(name = "hmember")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -16,29 +30,40 @@ import java.time.LocalDateTime;
 @Builder
 public class MemberEntity {
 
-	@Id
-    @Column(name = "userid", length = 30)
-    private String userId;
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "memberSeqGenerator")
+    @SequenceGenerator(
+        name = "memberSeqGenerator",      // JPA에서 사용할 이름
+        sequenceName = "memberSeq",        // 실제 오라클 시퀀스 이름
+        allocationSize = 1                 // 오라클 시퀀스 INCREMENT BY와 일치
+    )
+    @Column(name = "memberIdx")
+    private Long memberIdx;
 
-    @Column(name = "userpw", nullable = false, length = 200)
-    private String userpw;
+    @Column(name = "userid", nullable = false, unique = true, length = 20)
+    private String userid;
 
-    @Column(name = "authority", length = 20, insertable = false) 
-    private String authority;
+    @Column(name = "password", nullable = false, length = 50)
+    private String password;
 
-    @Column(name = "enabled", insertable = false) 
-    private Integer enabled;
-
-    @Column(name = "username", unique = true, length = 100)
-    private String username;
-
-    @Column(name = "phonenumber", unique = true, length = 20)
-    private String phonenumber;
-
-    @Column(name = "email", unique = true, length = 100)
+    @Column(name = "email", unique = true, length = 30)
     private String email;
 
-    @Column(name = "address", length = 200)
+    @Column(name = "address", length = 100)
     private String address;
-	
+
+    @Column(name = "username", nullable = false, unique = true, length = 10)
+    private String username;
+
+    @Column(name = "phonenumber", nullable = false, length = 20)
+    private String phoneNumber;
+
+    @Column(name = "role", nullable = false)
+    private Integer role;
+
+    @Column(name = "grade")
+    private Integer grade;
+
+    @Column(name = "created_at", insertable = false, updatable = false)
+    private LocalDateTime createdAt;
 }
