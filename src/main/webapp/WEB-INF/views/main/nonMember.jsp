@@ -187,7 +187,7 @@ function fetchPopularBoards(category) {
 	boardContainer.innerHTML = 
 		`<%@ include file="/WEB-INF/views/common/features/loading.jsp" %>`;
 	
-    fetch('/api/popularBoards?category='+category)
+    fetch('/api/top10boards?category='+category)
         .then(response => response.json())
         .then(data => {
         	boardContainer.innerHTML = ''; // 기존 시상대 초기화
@@ -197,8 +197,8 @@ function fetchPopularBoards(category) {
                 return;
             }
 			
-            const top10 = data.top10;
-            const category_name = data.category_name;
+            const top10 = data.top10Boards;
+            const category_name = (data.category === "free") ? "자유게시판" : "갤러리게시판";
             board_header.innerHTML = category_name+ ' 인기 Top10';
             
          	// 테이블 헤더 만들기
@@ -216,12 +216,11 @@ function fetchPopularBoards(category) {
             
             top10.forEach((item, index) => {
                 // 날짜가 없으면 빈칸 처리
-                const date = item.date || '';
                 tableHTML += `
                     <tr>
                         <td style="text-align:center;">\${index + 1}</td>
                         <td>\${item.title || '제목 없음'}</td>
-                        <td style="text-align:center;">\${date}</td>
+                        <td style="text-align:center;">\${item.postdate}</td>
                     </tr>
                 `;
             });

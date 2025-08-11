@@ -101,6 +101,12 @@ public class BoardService {
     public void deletePost(Long boardIdx) {
         br.deleteById(boardIdx);
     }
+    
+    
+    public List<BoardEntity> getTop10Boards() {
+        // 좋아요 수 기준으로 내림차순 정렬하여 상위 10개 게시글을 조회
+        return br.findTop10ByOrderByLikesDesc();
+    }
 
 	
 }
