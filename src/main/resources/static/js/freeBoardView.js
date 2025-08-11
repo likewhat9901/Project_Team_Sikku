@@ -92,6 +92,7 @@
   document.addEventListener('DOMContentLoaded', function() {
       const likeButton = document.getElementById('board-like-btn');
       const likesCountSpan = document.getElementById('likes-count');
+      const heartIcon = document.getElementById('heart-icon');
 
       if (likeButton) {
           likeButton.addEventListener('click', function() {
@@ -106,17 +107,23 @@
 			      body: `boardIdx=${boardIdx}`  // 문자열로 key=value 전달
 			  })
 			  // 서버 응답을 JSON 형식으로 변환
-              .then(response => response.json())
+			  .then(response => {
+			                  console.log('서버 응답 상태:', response.status);
+			                  return response.json();
+			              })
 			  .then(data => {
+				console.log('서버 응답 데이터:', data);
 			      if (data.success) {
 			          likesCountSpan.textContent = data.likesCount;
 					  if(data.isLiked) {
-					      likeButton.innerHTML = `🧡 좋아요 <span id="likes-count">${data.likesCount}</span>`;
-					  }
-					  else {
-					      likeButton.innerHTML = `❤ 좋아요 <span id="likes-count">${data.likesCount}</span>`;
-					  }
+                          heartIcon.textContent = '🧡';
+						  console.log('좋아요 추가됨 - 개수:', data.likesCount);
+                      } else {
+                          heartIcon.textContent = '🤍';
+						  console.log('좋아요 취소됨 - 개수:', data.likesCount);
+                      }
 			      } else {
+					console.error('서버 에러:', data.message);
 			          alert(data.message);
 			      }
 			  })

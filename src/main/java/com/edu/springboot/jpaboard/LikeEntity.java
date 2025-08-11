@@ -30,4 +30,6 @@ public class LikeEntity {
 
     @Column(name="LIKEDDATE", nullable = false)
     private LocalDateTime likedDate;
+    
+
 }

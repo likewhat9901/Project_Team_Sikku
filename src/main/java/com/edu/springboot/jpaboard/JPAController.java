@@ -27,6 +27,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import utils.DateUtils;
 
 @Controller
@@ -109,7 +110,8 @@ public class JPAController {
 	//게시물 상세보기
 	@GetMapping("/boards/free/freeBoardView.do")
 	public String view(@RequestParam("boardIdx") Long boardIdx, Model model,
-										Principal principal) {
+										Principal principal,
+							HttpServletRequest req, HttpServletResponse resp) {
 		
 		// 게시물 정보
 		Optional<BoardEntity> board = bs.selectPost(boardIdx);
@@ -143,12 +145,16 @@ public class JPAController {
 		//좋아요 갯수 조회
 		long likesCount = lr.countByBoard_BoardIdx(boardIdx);
 		System.out.println("상세보기 좋아요 디버깅:likesCountMap=" + likesCount);
-		model.addAttribute("likesCountMap", likesCount);
+		model.addAttribute("likesCount", likesCount);
 		
 		// 현재 사용자가 이 게시물에 좋아요를 눌렀는지 확인
 		Optional<LikeEntity> userLike = lr.findByBoard_BoardIdxAndUserId(boardIdx, loginUserId);
 		boolean isLiked = userLike.isPresent();
 		model.addAttribute("isLiked", isLiked);
+		
+		//조회수 한번만 오르도록 쿠키 사용하기
+		//HttpServletRequest, HttpServletResponse
+		
 		
 		return "/boards/free/freeBoardView";
 	}

@@ -42,17 +42,15 @@
 		</div>
 
 		<div class="board-view-footer">
-		
 			<div class="like-group" style="display: flex; align-items: center;">
 			    <button type="button" id="board-like-btn" data-board-idx="${board.boardIdx}">
-			        <c:choose>
-			            <c:when test="${isLiked}">
-			                🧡 좋아요 <span id="likes-count">${likesCount}</span>
-			            </c:when>
-			            <c:otherwise>
-			                ❤ 좋아요 <span id="likes-count">${likesCount}</span>
-			            </c:otherwise>
-			        </c:choose>
+			        <span id="heart-icon">
+			            <c:choose>
+			                <c:when test="${isLiked}"> 🧡 </c:when>
+			                <c:otherwise> 🤍 </c:otherwise>
+			            </c:choose>
+			        </span>
+			        좋아요 <span id="likes-count">${likesCount}</span>
 			    </button>
 			</div>
 
