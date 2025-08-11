@@ -8,4 +8,5 @@ import org.apache.ibatis.annotations.Mapper;
 @Mapper
 public interface IMbtiService {
 	public List<MbtiDTO> MbtiSelectAll();
+	public MbtiDTO MbtiSelectOne(int idx);
 }

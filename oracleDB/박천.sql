@@ -12,7 +12,7 @@ alter system set local_listener='(ADDRESS=(PROTOCOL=TCP)(HOST=localhost)(PORT=15
 /* board */
 CREATE TABLE hboard (
   boardidx     NUMBER          PRIMARY KEY,
-  memberidx   NUMBER          NOT NULL,
+  userid   NUMBER          NOT NULL,
   title        VARCHAR2(100)   NOT NULL,
   content      CLOB            NOT NULL,
   ofile        VARCHAR2(255),
@@ -43,10 +43,14 @@ CREATE TABLE plantdict (
 
 /*mbti*/
 CREATE TABLE mbti (
-  mbtiIdx           NUMBER         PRIMARY KEY,
-  name              VARCHAR2(100)  NOT NULL,
-  imgFile           VARCHAR2(100)  NOT NULL,
-  description       VARCHAR2(500)
+  mbtiidx               NUMBER          PRIMARY KEY,    
+  name              VARCHAR2(50)   NOT NULL,
+  imgFile               VARCHAR2(50)   NOT NULL,
+  indoor                VARCHAR2(100),
+  inreason              VARCHAR2(500),
+  outdoor               VARCHAR2(100),
+  outreason             VARCHAR2(500),
+  note                  VARCHAR2(300)
 );
 
 
@@ -94,44 +98,44 @@ CREATE SEQUENCE mbti_seq
 
 /*-----------------------------------update---------------------------------*/
 /* freeboard 테이블 insert */
-INSERT INTO hboard (boardidx, memberidx, title, content, ofile, sfile) VALUES (
+INSERT INTO hboard (boardidx, userid, title, content, ofile, sfile) VALUES (
   board_seq.NEXTVAL, 6, '텃밭에 상추 심기', '오늘은 상추를 심었어요. 흙 준비부터 씨앗 심기까지 완료!', 'lettuce.jpg', 'lettuce_2025.jpg'
 );
 
-INSERT INTO hboard (boardidx, memberidx, title, content) VALUES (
+INSERT INTO hboard (boardidx, userid, title, content) VALUES (
   board_seq.NEXTVAL, 7, '비가 와서 걱정이네요', '장마가 시작됐어요. 식물 뿌리 썩을까봐 걱정입니다.'
 );
 
-INSERT INTO hboard (boardidx, memberidx, title, content, ofile, sfile) VALUES (
+INSERT INTO hboard (boardidx, userid, title, content, ofile, sfile) VALUES (
   board_seq.NEXTVAL, 8, '잡초 제거 팁', '잡초는 아침 일찍 뽑는 게 제일 효과적입니다!', 'weed.jpg', 'weed_2025.jpg'
 );
 
-INSERT INTO hboard (boardidx, memberidx, title, content) VALUES (
+INSERT INTO hboard (boardidx, userid, title, content) VALUES (
   board_seq.NEXTVAL, 9, '오늘의 수확', '방울토마토랑 고추를 수확했어요. 색도 곱고 맛도 좋아요!'
 );
 
-INSERT INTO hboard (boardidx, memberidx, title, content) VALUES (
+INSERT INTO hboard (boardidx, userid, title, content) VALUES (
   board_seq.NEXTVAL, 10, '병충해 방제 질문', '잎에 점이 생겼는데 무슨 병인지 아시는 분 계신가요?'
 );
 
 /* galleryboard insert */
-INSERT INTO hboard (boardidx, memberidx, title, content, ofile, sfile, category) VALUES (
+INSERT INTO hboard (boardidx, userid, title, content, ofile, sfile, category) VALUES (
   board_seq.NEXTVAL, 6, '토마토가 안 자라요', '물을 주고 있는데도 토마토가 잘 자라지 않아요.', 'lettuce.jpg', 'lettuce_2025.jpg', 2
 );
 
-INSERT INTO hboard (boardidx, memberidx, title, content, category) VALUES (
+INSERT INTO hboard (boardidx, userid, title, content, category) VALUES (
   board_seq.NEXTVAL, 7, '수확 사진 공유합니다', '오늘 수확한 오이와 가지 사진입니다!', 2
 );
 
-INSERT INTO hboard (boardidx, memberidx, title, content, ofile, sfile, category) VALUES (
+INSERT INTO hboard (boardidx, userid, title, content, ofile, sfile, category) VALUES (
   board_seq.NEXTVAL, 8, '새싹 채소 키우기 도전', '작은 화분에 새싹 채소 심어봤어요.', 'weed.jpg', 'weed_2025.jpg', 2
 );
 
-INSERT INTO hboard (boardidx, memberidx, title, content, category) VALUES (
+INSERT INTO hboard (boardidx, userid, title, content, category) VALUES (
   board_seq.NEXTVAL, 9, '텃밭 분양 정보', '서울 지역 텃밭 분양 공고가 떴습니다.', 2
 );
 
-INSERT INTO hboard (boardidx, memberidx, title, content, category) VALUES (
+INSERT INTO hboard (boardidx, userid, title, content, category) VALUES (
   board_seq.NEXTVAL, 10, '병충해 방제 질문', '잎에 점이 생겼는데 무슨 병인지 아시는 분 계신가요?', 2
 );
 
@@ -275,6 +279,7 @@ DROP TABLE hboard CASCADE CONSTRAINTS;
 DROP TABLE diary CASCADE CONSTRAINTS;
 DROP TABLE plantdict CASCADE CONSTRAINTS;
 DROP TABLE hmember CASCADE CONSTRAINTS;
+DROP TABLE mbti CASCADE CONSTRAINTS;
 
 /* 시퀀스 삭제 */
 DROP SEQUENCE plant_seq;
@@ -282,6 +287,7 @@ DROP SEQUENCE diary_seq;
 DROP SEQUENCE board_seq;
 DROP SEQUENCE comment_seq;
 DROP SEQUENCE member_seq;
+DROP SEQUENCE mbti_seq;
 
 /*----------------------------commit----------------------------------------*/
 commit;

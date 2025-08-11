@@ -12,4 +12,10 @@
 		SELECT * from MBTI
 	</select>
 	
+	<select id="MbtiSelectOne"
+		parameterType="int"
+		resultType="com.edu.springboot.mbti.MbtiDTO">
+		SELECT * from MBTI where mbtiidx = #{idx}
+	</select>
+	
 </mapper>
