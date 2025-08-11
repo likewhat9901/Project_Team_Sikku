@@ -40,9 +40,12 @@ public class RankingApiController {
 	        if (!scriptFile.exists()) {
 	            return Map.of("error", "Python 스크립트를 찾을 수 없습니다.");
 	        }
-	        //=============================
 	        
-			// 외부 프로그램(여기서는 Python)을 실행하기 위한 도구 (python.exe 경로 설정 필수)
+	        System.out.println("Java PATH=" + System.getenv("PATH"));
+	        System.out.println("category=" + category);
+	        //============================
+	        
+	        // 외부 프로그램(여기서는 Python)을 실행하기 위한 도구 (python.exe 경로 설정 필수)
             ProcessBuilder pb = new ProcessBuilder("C:\\01DevelopmentKits\\Python313\\python.exe", 
             		"src/main/python/ranking.py", category);	// category는 py파일에 넘길 인자
             pb.environment().put("NAVER_AD_API_CLIENT_ID", apiId);
