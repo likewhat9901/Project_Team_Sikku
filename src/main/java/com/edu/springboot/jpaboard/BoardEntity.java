@@ -2,12 +2,18 @@ package com.edu.springboot.jpaboard;
 
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Lob;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
@@ -17,25 +23,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-
-/*
- * CREATE TABLE hboard (
-  board_idx     NUMBER          PRIMARY KEY,
-  member_idx   NUMBER          NOT NULL,
-  title        VARCHAR2(100)   NOT NULL,
-  content      CLOB            NOT NULL,
-  ofile        VARCHAR2(255),
-  sfile        VARCHAR2(255),
-  postdate     DATE            DEFAULT SYSDATE,              
-  category     NUMBER(1)       DEFAULT 1 CHECK (category IN (1, 2)),
-  visitcount   NUMBER          DEFAULT 0,  
-  likes        NUMBER          DEFAULT 0,
-  report       NUMBER          DEFAULT 0,
-  CONSTRAINT fk_board_member FOREIGN KEY (member_idx) REFERENCES hmember(member_idx)
-);
- * 오라클 컬럼명은 언더바(board_idx)를 이용한 스네이크_표기법이므로
- * 자바언어로 작성할때는 자바표준인 카멜 표기법(boardIdx)으로 적습니다. 
-*/
 
 
 @Data
@@ -53,11 +40,11 @@ public class BoardEntity {
         sequenceName = "boardSeq",        // 실제 오라클 시퀀스 이름
         allocationSize = 1                 // 오라클 시퀀스 INCREMENT BY와 일치
     )
-    @Column(name = "boardIdx", nullable = false, length = 100)
+    @Column(name = "boardidx", nullable = false, length = 100)
     private Long boardIdx;
 
-    @Column(nullable = false)
-    private Long memberIdx; // 외래키 (실제로는 MemberEntity와 연결 가능)
+    @Column(name = "userid", nullable = false)
+    private String userId; // 외래키 (실제로는 MemberEntity와 연결 가능)
 
     @Column(nullable = false, length = 100)
     private String title;
@@ -81,8 +68,14 @@ public class BoardEntity {
     @Column(columnDefinition = "NUMBER DEFAULT 0")
     private Integer visitcount;
 
-    @Column(columnDefinition = "NUMBER DEFAULT 0")
-    private Integer likes;
+//    @Column(columnDefinition = "NUMBER DEFAULT 0")
+//    private Integer likes;
+    
+    // 게시글(Board) 과 좋아요(Like) 는 '1:다(One-to-Many)' 관계를 형성
+    
+    @OneToMany(mappedBy = "board", fetch = FetchType.EAGER,
+    				cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<LikeEntity> likes = new ArrayList<>();
 
     @Column(columnDefinition = "NUMBER DEFAULT 0")
     private Integer report;
@@ -92,7 +85,7 @@ public class BoardEntity {
         this.postdate = LocalDateTime.now();
         if (this.category == null) this.category = 1;
         if (this.visitcount == null) this.visitcount = 0;
-        if (this.likes == null) this.likes = 0;
+//        if (this.likes == null) this.likes = 0;
         if (this.report == null) this.report = 0;
     }
 }

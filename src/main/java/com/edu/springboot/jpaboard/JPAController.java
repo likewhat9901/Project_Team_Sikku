@@ -1,6 +1,13 @@
 package com.edu.springboot.jpaboard;
 
+import java.security.Principal;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,9 +15,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -18,6 +27,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 
 import jakarta.servlet.http.HttpServletRequest;
+import utils.DateUtils;
 
 @Controller
 public class JPAController {
@@ -29,10 +39,13 @@ public class JPAController {
 	@Autowired
 	CommentService cs;
 	
+	@Autowired
+	LikeRepository lr;
+	
 	
 	//게시물 리스트
 	@GetMapping("/boards/free/freeBoardList.do")
-	public String list(Model model, HttpServletRequest req) {
+	public String list(Model model, HttpServletRequest req, Principal principal) {
 		
 		String searchWord = req.getParameter("searchWord");
 		String pageNum = req.getParameter("pageNum");
@@ -63,6 +76,20 @@ public class JPAController {
 		
 		model.addAttribute("rows", rows);
 		
+		
+		//현재 로그인한 userId 가져오기
+		String loginUserId = principal.getName();
+		model.addAttribute("loginUserId", loginUserId);
+		
+		//좋아요 model에 담아 넘기기
+		Map<Long, Long> likesCountMap = new HashMap<>();
+		for (BoardEntity board : rows) {
+			long likesCount = lr.countByBoard_BoardIdx(board.getBoardIdx());
+			likesCountMap.put(board.getBoardIdx(), likesCount);
+			System.out.println("디버깅:likesCountMap=" + likesCountMap);
+		}
+		model.addAttribute("likesCountMap", likesCountMap);
+		
 		return "/boards/free/freeBoardList";
 	}
 	
@@ -81,7 +108,8 @@ public class JPAController {
 	
 	//게시물 상세보기
 	@GetMapping("/boards/free/freeBoardView.do")
-	public String view(@RequestParam("boardIdx") Long boardIdx, Model model) {
+	public String view(@RequestParam("boardIdx") Long boardIdx, Model model,
+										Principal principal) {
 		
 		// 게시물 정보
 		Optional<BoardEntity> board = bs.selectPost(boardIdx);
@@ -96,18 +124,82 @@ public class JPAController {
 		if (!comment.isEmpty()) {
 		    for (CommentEntity ce : comment) {
 		        ce.setContent(ce.getContent().replaceAll("\r\n", "<br>"));
+		        //날짜 포맷팅 (댓글)
+		        String ceFormattedDate = DateUtils.formatPostDate(ce.getPostdate());
+		        model.addAttribute("ceFormattedDate", ceFormattedDate);
 		    }
 		}
-		
 		model.addAttribute("comment", comment);
+		
+		//현재 로그인한 userId 가져오기
+		String loginUserId = principal.getName();
+		model.addAttribute("loginUserId", loginUserId);
+		
+		
+		//날짜 포맷팅 (게시물)
+		String beFormattedDate = DateUtils.formatPostDate(be.getPostdate());
+		model.addAttribute("beFormattedDate", beFormattedDate);
+		
+		//좋아요 갯수 조회
+		long likesCount = lr.countByBoard_BoardIdx(boardIdx);
+		System.out.println("상세보기 좋아요 디버깅:likesCountMap=" + likesCount);
+		model.addAttribute("likesCountMap", likesCount);
+		
+		// 현재 사용자가 이 게시물에 좋아요를 눌렀는지 확인
+		Optional<LikeEntity> userLike = lr.findByBoard_BoardIdxAndUserId(boardIdx, loginUserId);
+		boolean isLiked = userLike.isPresent();
+		model.addAttribute("isLiked", isLiked);
 		
 		return "/boards/free/freeBoardView";
 	}
 	
+	// 좋아요 토글(추가/취소) API
+	@PostMapping("/boards/free/toggleLike.do")
+	/* ResponseEntity<Map<String, Object>>
+	 -> HTTP 응답의 모든 것을 직접 제어할 수 있는 객체.
+	 * 
+	 */
+	public ResponseEntity<Map<String, Object>> toggleLike(
+	        @RequestParam("boardIdx") Long boardIdx, Principal principal) {
+	    
+		//현재 로그인 사용자 ID 추출.
+	    String userId = principal.getName();
+	    Map<String, Object> response = new HashMap<>();
+
+	    try {
+	        // Service 계층의 좋아요 처리 로직 호출
+	        Map<String, Object> result = bs.toggleLike(boardIdx, userId);
+
+	        // "성공 여부"와 "좋아요 개수", "현재 좋아요 상태"를 response 맵에 저장.
+	        response.put("success", true);
+	        response.put("likesCount", result.get("likesCount"));
+	        response.put("isLiked", result.get("isLiked")); // isLiked 필드 추가
+	        
+	        // HTTP 200 OK 상태와 함께 response 데이터를 클라이언트에 보냄
+	        return ResponseEntity.ok(response);
+	        
+	    }
+	    /* 예외 발생 시, 실패 결과와 메시지를 응답 맵에 넣고
+	     	HTTP 500 (서버 오류) 상태와 함께 반환. */ 
+	    catch (Exception e) {
+	        response.put("success", false);
+	        response.put("message", "좋아요 처리 중 오류가 발생했습니다.");
+	        
+	        return ResponseEntity.status(500).body(response);
+	    }
+	}
+	
+	
+	
 	
 	//글쓰기
 	@GetMapping("/boards/free/freeBoardWrite.do")
-	public String write() {
+	public String write(Principal principal, Model model) {
+		
+		//현재 로그인한 userId 가져오기
+		String loginUserId = principal.getName();
+		model.addAttribute("loginUserId", loginUserId);
+		
 		return "/boards/free/freeBoardWrite";
 	}
 	
@@ -121,15 +213,13 @@ public class JPAController {
 	
 	//수정하기 (수정 페이지에 진입)
 	@GetMapping("/boards/free/freeBoardEdit.do")
-	public String edit(Model model, HttpServletRequest req) {
-		
-		String idx= req.getParameter("boardIdx");
-		Optional<BoardEntity> result = bs.selectPost(Long.parseLong(idx));
+	public String edit(Model model, @RequestParam("boardIdx") Long boardIdx) {
+		Optional<BoardEntity> result = bs.selectPost(boardIdx);
 		if(result.isPresent()) {
-			model.addAttribute("row", result.get());
+			model.addAttribute("board", result.get());
 		}
 		else {
-			model.addAttribute("row", null);
+			model.addAttribute("board", null);
 		}
 		return "/boards/free/freeBoardEdit";
 	}
@@ -158,37 +248,36 @@ public class JPAController {
 	//댓글 작성하기
 	@PostMapping("/boards/free/freeBoardCommentWriteProc.do")
 	public String commentWriteProc(@RequestParam("boardIdx") Long boardIdx,
-					@RequestParam("memberIdx") Long memberIdx, CommentEntity ce,
-					MemberEntity me) {
-		BoardEntity be = new BoardEntity();
-	    be.setBoardIdx(boardIdx); // idx만 세팅해서 참조
-	    be.setMemberIdx(memberIdx); // idx만 세팅해서 참조
-	    cs.insertPost(ce, be, me);
-	    return "redirect:freeBoardView.do?boardIdx=" + boardIdx;
+					@RequestParam("userId") String userId, 
+					@RequestParam("content") String content) {
+		
+		// CommentService에서 모든 처리를 담당하도록 변경
+		cs.insertPost(boardIdx, userId, content);
+		return "redirect:freeBoardView.do?boardIdx=" + boardIdx;
 	}
 	
 	
-	//댓글 수정 진입
-	@RequestMapping("/boards/free/freeBoardCommentEdit.do")
-	public String commentEdit(@RequestParam("commentIdx") Long commentIdx,
-			@RequestParam("boardIdx") Long boardIdx, Model model) {
-	    // 기존 댓글 정보를 가져와서 모델에 담는 로직 (예: cs.selectComment(commentIdx))
-	    CommentEntity comment = cs.selectComment(commentIdx); // selectComment 메서드가 필요함
-	    model.addAttribute("comment", comment);
-
-	    return "redirect:freeBoardView.do?boardIdx="+ boardIdx;
-	}
-	
+	/* 댓글은 freeBoardView에 CommentEntity타입의 댓글 리스트가 이미 넘어갔으므로
+	GETMapping은 필요 하지 않다.
+	*/
 	//댓글 수정하기
 	@PostMapping("/boards/free/freeBoardCommentEditProc.do")
-	public String commentEditProc(@RequestParam("boardIdx") Long boardIdx,
-					@RequestParam("memberIdx") Long memberIdx, CommentEntity ce,
-					MemberEntity me) {
-		BoardEntity be = new BoardEntity();
-	    be.setBoardIdx(boardIdx);
-	    be.setMemberIdx(memberIdx);
-		cs.updatePost(ce, be, me);
-		return "redirect:freeBoardView.do?boardIdx="+ boardIdx;
+	public String commentEditProc(@RequestParam("commentIdx") Long commentIdx,
+					@RequestParam("boardIdx") Long boardIdx,
+					@RequestParam("userId") String userId,
+					@RequestParam("content") String content) {
+		
+		// CommentService에서 모든 처리를 담당하도록 변경
+		cs.updatePost(commentIdx, boardIdx, userId, content);
+		return "redirect:freeBoardView.do?boardIdx=" + boardIdx;
+	}
+	
+	// 댓글 삭제하기
+	@GetMapping("/boards/free/freeBoardCommentDelete.do")
+	public String commentDelete(@RequestParam("commentIdx") Long commentIdx,
+	                          @RequestParam("boardIdx") Long boardIdx) {
+	    cs.deletePost(commentIdx);
+	    return "redirect:freeBoardView.do?boardIdx=" + boardIdx;
 	}
 		
 	@GetMapping("/boards/gallery/galleryBoardList.do")
