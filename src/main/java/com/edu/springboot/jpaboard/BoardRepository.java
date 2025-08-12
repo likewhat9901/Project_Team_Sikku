@@ -2,11 +2,14 @@ package com.edu.springboot.jpaboard;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 
 import com.edu.springboot.jpaboard.BoardEntity;
+import com.edu.springboot.jpaboard.dto.MyPostDto;
 
 public interface BoardRepository extends JpaRepository<BoardEntity, Long> {
     // 기본적인 CRUD + findAll(Sort sort) 등 제공
@@ -26,6 +29,17 @@ public interface BoardRepository extends JpaRepository<BoardEntity, Long> {
 //
 //    // 특정 작성자의 게시글만
 //    Page<BoardEntity> findByWriter(String writer, Pageable pageable);
+    
+    
+    @Query("""
+            select new com.edu.springboot.jpaboard.dto.MyPostDto(
+                b.boardIdx, b.title, b.postdate
+            )
+            from BoardEntity b
+            where b.userId = :userId
+            order by b.postdate desc
+        """)
+        List<MyPostDto> findMyPosts(@Param("userId") String userId);
 
     
 }

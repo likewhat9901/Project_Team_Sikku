@@ -161,10 +161,6 @@ public class JPAController {
 	
 	// 좋아요 토글(추가/취소) API
 	@PostMapping("/boards/free/toggleLike.do")
-	/* ResponseEntity<Map<String, Object>>
-	 -> HTTP 응답의 모든 것을 직접 제어할 수 있는 객체.
-	 * 
-	 */
 	public ResponseEntity<Map<String, Object>> toggleLike(
 	        @RequestParam("boardIdx") Long boardIdx, Principal principal) {
 	    
@@ -194,8 +190,6 @@ public class JPAController {
 	        return ResponseEntity.status(500).body(response);
 	    }
 	}
-	
-	
 	
 	
 	//글쓰기

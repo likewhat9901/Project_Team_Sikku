@@ -28,7 +28,7 @@ public class LikeEntity {
     @Column(name="USER_ID", nullable = false, length = 255)
     private String userId;
 
-    @Column(name="LIKEDDATE", nullable = false)
+    @Column(name="LIKED_DATE", nullable = false)
     private LocalDateTime likedDate;
     
 
