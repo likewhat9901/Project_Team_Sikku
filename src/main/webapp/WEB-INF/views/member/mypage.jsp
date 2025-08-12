@@ -129,8 +129,8 @@
     btn.disabled = true;
 
     fetch("/mypage/uploadProfile", { method: "POST", body: formData })
-      .then(r => { if (!r.ok) throw new Error("업로드 실패"); return r.json(); })
-      .then(() => {
+      .then(r => { if (!r.ok) throw new Error("사진을 먼저 등록해주세요!"); return r.json(); })
+      .then(() => {	
         // 서버 DB 저장 완료 → 페이지 재렌더링(PRG처럼)
         location.replace('/mypage.do?t=' + Date.now());
       })

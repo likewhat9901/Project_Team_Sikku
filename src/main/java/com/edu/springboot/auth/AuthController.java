@@ -32,7 +32,6 @@ import com.edu.springboot.jpaboard.CommentService;
 import com.edu.springboot.jpaboard.dto.LikedPostDto;
 import com.edu.springboot.jpaboard.dto.MyCommentDto;
 import com.edu.springboot.jpaboard.dto.MyPostDto;
-
 import jakarta.servlet.http.HttpSession;
 
 @Controller
