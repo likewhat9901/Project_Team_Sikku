@@ -1,0 +1,36 @@
+/* 전체 레이아웃 */
+@font-face {
+  font-family: 'MyFont'; /* 사용할 이름 */
+  src: url('/fonts/PinkfongBabySharkFont_Regular.ttf') format('truetype'),
+  	   url('/fonts/PinkfongBabySharkFont_Regular.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+	font-family: 'MyFont', 'Malgun Gothic', sans-serif !important;
+    font-size: 1.2rem;
+}
+
+a {
+	text-decoration: none;
+}
+
+.main_container {
+    width: 100%;
+    min-width: 1600px;
+    max-width: 2000px;
+    margin: 0 auto;
+    padding: 50px 100px;
+    gap: 50px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}

@@ -1,0 +1,214 @@
+/* ===== My Page (mypage.css) ===== */
+
+/* 전체 배경 & 기본 타이포 */
+
+
+/*
+body {
+  background: #f6f7f8;
+  color: #222;
+}
+*/
+
+/* 페이지 타이틀 */
+.mypage-title {
+  margin: 10px 0 1px;  /* 위 10px, 아래 4px */
+  padding: 0;
+  display: flow-root;  /* margin 겹침 방지 */
+}
+
+.mypage1-title h1 {
+  margin: 0;         
+  padding: 2px 0 4px;
+  line-height: 1.2;
+ 
+}
+
+/* 메인 레이아웃 */
+.mypage-container {
+  margin-top: 0 !important;
+  max-width: 1200px;
+  margin: 0 auto 60px auto;
+  padding: 20px;
+  display: grid;
+  grid-template-columns: 360px minmax(700px, 1fr); /* 수정: 오른쪽 넓힘 */
+  gap: 20px; /* 수정: 간격 튜닝 */
+}
+
+/* ===== 좌측: 프로필 카드 ===== */
+.profile-card {
+  background: #fff;
+  border-radius: 18px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+  padding: 28px 24px 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 350px;
+  height: 600px;
+}
+
+.imggang{
+	width:180px;
+	height: 180px;
+	border-radius: 50%;
+	display: block;
+	border: 4px solid #fff;
+	box-shadow: 0 6px 16px rgba(0,0,0,0.12);
+	cursor: pointer; /* 라벨 클릭 유도 */
+	overflow: hidden;
+}
+
+#profilePreview {
+	width: 100%;
+	height: 100%;
+  object-fit: contain;
+}
+
+.profile-name {
+  margin-top: 14px;
+  font-size: 20px;
+  font-weight: 700;
+}
+.profile-id {
+  margin-top: 6px;
+  font-size: 14px;
+  color: #6b7280; /* gray-500 */
+}
+
+/* 버튼 그룹 */
+.profile-btn-group {
+  width: 100%;
+  margin-top: 16px;
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.edit-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 160px;
+  height: 42px;
+  padding: 0 16px;
+  font-size: 14px;
+  border-radius: 12px;
+  border: 1px solid #e5e7eb; /* gray-200 */
+  background: #111827;       /* gray-900 */
+  color: #fff;
+  cursor: pointer;
+  transition: transform .05s ease, box-shadow .15s ease, background .2s ease;
+}
+.edit-btn:hover { background: #0b1220; }
+.edit-btn:active { transform: translateY(1px); }
+.edit-btn:disabled { opacity: .6; cursor: not-allowed; }
+
+/* 기본 이미지/정보수정 버튼 폼들도 같은 폭으로 보이게 */
+.profile-card form + form { margin-top: 10px; }
+.profile-card form + form .edit-btn {
+  width: 100%;
+  min-width: 0;
+}
+
+/* ===== 우측: 활동 영역 ===== */
+.activity-section { background: transparent; }
+
+/* 섹션 제목 */
+.activity-section > h2 {
+  font-size: 22px;
+  font-weight: 800;
+  margin: 6px 0 16px 0;
+}
+
+/* 활동 박스 공통 */
+.activity-box {
+  background: #fff;
+  border-radius: 18px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+  padding: 20px; /* 수정: 여백 조금 늘림 */
+  margin-bottom: 16px;
+}
+
+/* 박스 타이틀 (아이콘 이모지 포함) */
+.activity-box > h3 {
+  font-size: 18px;
+  font-weight: 700;
+  margin: 4px 6px 12px 6px;
+  color: #111827;
+}
+
+/* 표 공통 */
+.activity-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  overflow: hidden;
+  border-radius: 12px;
+  background: #f9fafb; /* 아주 옅은 회색 바탕 */
+}
+
+.activity-table th,
+.activity-table td {
+  padding: 14px 16px;
+  text-align: left;
+  font-size: 14px;
+  line-height: 1.4;
+  border-bottom: 1px solid #eef0f2;
+  background: #fff;
+}
+
+.activity-table tr:first-child th {
+  background: #f3f4f6; /* 헤더 회색 */
+  font-weight: 700;
+  color: #374151;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.activity-table tr:last-child td,
+.activity-table tr:last-child th {
+  border-bottom: none;
+}
+
+/* 셀 너비 밸런스 (수정: 제목 75%, 날짜 25%) */
+.activity-table th:nth-child(1),
+.activity-table td:nth-child(1) { width: 75%; }
+.activity-table th:nth-child(2),
+.activity-table td:nth-child(2) { width: 25%; color: #6b7280; }
+
+/* 행 호버 */
+.activity-table tbody tr:hover td { background: #f9fafb; }
+
+/* ===== 반응형 ===== */
+
+/* 표 셀 너비를 고정해서 넘침 방지 */
+.activity-table { table-layout: fixed; }
+
+/* 댓글(첫 번째 컬럼) 넓게, 날짜는 오른쪽 정렬 */
+.activity-table th:nth-child(1),
+.activity-table td:nth-child(1) { width: 70%; }
+.activity-table th:nth-child(2),
+.activity-table td:nth-child(2) { width: 30%; text-align: right; }
+
+/* 댓글 내용 1줄까지만 보이고 말줄임 */
+.comment-cell a {
+  display: -webkit-box;
+  -webkit-line-clamp: 1;          
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: normal;
+  word-break: break-word;     
+}
+
+
+/* ===== (옵션) 활동 박스를 카드형 2열로 쓰고 싶다면 주석 해제 ===== */
+/*
+.activity-section {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(280px, 1fr));
+  gap: 16px;
+}
+.activity-section > h2 { grid-column: 1 / -1; }
+*/
