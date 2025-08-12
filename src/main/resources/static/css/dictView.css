@@ -103,3 +103,112 @@
 .plant_info_section ul {
   list-style-type: disc;
 }
+
+/*========================= 디자인 1: 모던 글래스 카드 ==========================*/
+.design-section {
+    width: 1600px;
+    min-height: 600px;
+    margin-bottom: 60px;
+}
+
+.design-title {
+    color: #2d5a2d;
+    margin-bottom: 40px;
+    text-align: center;
+}
+
+.plant-card-1 {
+	width: 100%; height: auto;
+    display: flex;
+    background: rgba(255, 255, 255, 0.25);
+    border-radius: 24px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    border: 1px solid #a5c199;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.plant-card-1:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5);
+}
+
+.plant-image-1 {
+    flex: 0.5;
+    min-height: 400px;
+    background: linear-gradient(45deg, #4CAF50, #81C784);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    position: relative;
+}
+
+.plant-info-1 {
+    flex: 1;
+    background: rgba(255, 255, 255, 0.8);
+    display: flex;
+    box-sizing: border-box;
+    padding: 30px;
+}
+
+.plant-profile {
+	flex: 1;
+	border-right-color: black;
+}
+
+.plant-name-1 {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #2d5a2d;
+    margin-bottom: 10px;
+}
+
+.plant-name-1 .subtitle {
+    font-size: 1.1rem;
+    color: #666;
+    font-weight: normal;
+}
+
+.plant-description-1 {
+    color: #555;
+    margin-bottom: 25px;
+    line-height: 1.5;
+}
+
+.plant-description-2 {
+	color: #555;
+    margin-bottom: 25px;
+    line-height: 1.5;
+    font-size: 1rem;
+}
+
+.info-grid-1 {
+	flex: 1;
+    display: grid;
+    gap: 15px;
+}
+
+.info-item-1 {
+    display: flex;
+    align-items: center;
+    padding: 12px;
+    background: rgba(76, 175, 80, 0.1);
+    border-radius: 12px;
+    border-left: 4px solid #4CAF50;
+}
+
+.info-icon-1 {
+    margin-right: 12px;
+    font-size: 1.2rem;
+}
+
+.info-label-1 {
+    font-weight: 600;
+    color: #2d5a2d;
+    margin-right: 10px;
+}
+
+.info-value-1 {
+    color: #555;
+}

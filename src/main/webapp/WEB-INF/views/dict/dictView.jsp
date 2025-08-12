@@ -39,6 +39,57 @@
     </div>
 </div>
 
+<div class="design-section">
+    <h1 class="design-title">식물도감 상세정보</h1>
+    <div class="plant-card-1">
+        <div class="plant-image-1">
+            🌿 식물 이미지
+        </div>
+        <div class="plant-info-1">
+        	<div class="plant-profile">
+	            <h2 class="plant-name-1">
+	                바질 <span class="subtitle">(식물 영어이름)</span>
+	            </h2>
+	            <h3>🧾 개요</h3>
+	            <p class="plant-description-1">허브의 일종으로 달 빨간 줄잎 흙과 따뜻한 온도를 선호</p>
+	            
+	            <h4>📌 기타 정보</h4>
+	     		<p class="plant-description-2">(아직 빈칸)</p>
+        	</div>
+            
+            <div class="info-grid-1">
+            	<h3>🌱 생육 정보</h3>
+                <div class="info-item-1">
+                    <span class="info-icon-1">☀️</span>
+                    <span class="info-label-1">생육 시기:</span>
+                    <span class="info-value-1">여름</span>
+                </div>
+                <div class="info-item-1">
+                    <span class="info-icon-1">📅</span>
+                    <span class="info-label-1">개화 시기:</span>
+                    <span class="info-value-1">7~8월</span>
+                </div>
+                <div class="info-item-1">
+                    <span class="info-icon-1">🏠</span>
+                    <span class="info-label-1">햇빛 환경:</span>
+                    <span class="info-value-1">반양지~양빛 많은 곳</span>
+                </div>
+                <div class="info-item-1">
+                    <span class="info-icon-1">💧</span>
+                    <span class="info-label-1">재배 습도:</span>
+                    <span class="info-value-1">높음</span>
+                </div>
+                <div class="info-item-1">
+                    <span class="info-icon-1">🌡️</span>
+                    <span class="info-label-1">재배 온도:</span>
+                    <span class="info-value-1">18°C ~ 30°C</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 
 </body>
 </html>

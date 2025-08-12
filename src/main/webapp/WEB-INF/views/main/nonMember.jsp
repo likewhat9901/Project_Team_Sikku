@@ -174,7 +174,7 @@ function fetchPopularBoards(category) {
                 tableHTML += `
                     <tr>
                         <td style="text-align:center;">\${index + 1}</td>
-                        <td>\${item.title || '제목 없음'}</td>
+                        <td><a href="/boards/free/freeBoardView.do?boardIdx=\${item.boardIdx}">\${item.title || '제목 없음'}</a></td>
                         <td style="text-align:center;">\${item.postdate}</td>
                     </tr>
                 `;
