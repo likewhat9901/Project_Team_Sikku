@@ -10,12 +10,12 @@
 	<select id="selectOne"
 		parameterType="int"
 		resultType="com.edu.springboot.dict.DictDTO">
-		SELECT * from info where plantidx = ${plantidx}
+		SELECT * from plantdict where plantidx = ${plantidx}
 	</select>
 	
 	<select id="selectAll"
 		resultType="com.edu.springboot.dict.DictDTO">
-		SELECT * from info
+		SELECT * from plantdict
 	</select>
 
 </mapper>

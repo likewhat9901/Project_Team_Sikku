@@ -4,12 +4,14 @@ import lombok.Data;
 
 @Data
 public class MbtiDTO {
-	private int mbtiIdx;
+	private int mbtiidx;
 	private String name;
-	private String imgfile;
-	private String indoor;
-	private String inreason;
-	private String outdoor;
-	private String outreason;
-	private String note;
+	private String imgFile;
+	private String category;
+	private String plants;
+	private String character;
+	private String growperiod;
+	private String growenv;
+	private String difflevel;
+	private String reason;
 }

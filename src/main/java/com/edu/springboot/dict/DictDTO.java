@@ -8,8 +8,9 @@ import lombok.Data;
 public class DictDTO {
 	private int plantidx;
 	private String name;
-	private String ofile;
-	private String sfile;
+	private String imgpath;
+	private String summary;
+	private String note;
 	private String growseason;
 	private String bloomingseason;
 	private String humidity;
@@ -17,6 +18,4 @@ public class DictDTO {
 	private int temperaturemin;
 	private int temperaturemax;
 	private Date postdate;
-	private String userId;
-	private String description;
 }

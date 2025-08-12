@@ -12,7 +12,7 @@ alter system set local_listener='(ADDRESS=(PROTOCOL=TCP)(HOST=localhost)(PORT=15
 /*-------------------------테이블 create-----------------------------------*/
 /*member*/
 CREATE TABLE hmember (
-  member_idx     NUMBER         PRIMARY KEY,
+  memberidx     NUMBER         PRIMARY KEY,
   userid         VARCHAR2(20)   NOT NULL UNIQUE,
   password       VARCHAR2(50)   NOT NULL,
   email          VARCHAR2(30)   UNIQUE,

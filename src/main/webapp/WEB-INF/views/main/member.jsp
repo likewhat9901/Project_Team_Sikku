@@ -22,11 +22,11 @@
 		<div class="plant-card">
 			<div class="plant-info">
 			    <div class="plant-image">
-			        <img src="/images/status/${row.ofile }" alt="식물사진">
+			        <img src="/images/status/${row.imgpath }" alt="식물사진">
 			    </div>
 			    <div class="plant-info-box">
 			        <p class="plant-name">식물명 : ${ row.name }</p>
-			        <p class="plant-description">${ row.description }</p>
+			        <p class="plant-description">${ row.summary }</p>
 			    </div>
 			</div>
 			<div class="navigation-btn prev-btn">&#8249;</div>
