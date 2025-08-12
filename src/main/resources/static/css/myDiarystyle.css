@@ -538,7 +538,6 @@
     padding: 10px;
     background: #f0f8f0;
     border-radius: 8px;
-    border-left: 4px solid #4caf50;
 }
 
 /* VIEW 페이지 스타일 - 기존 스타일 재활용 */
@@ -829,3 +828,7 @@
   .mydiary-top button {
     flex-shrink: 0;
   }
+.mydiary-radio-group { display:flex; flex-wrap:wrap; gap:8px; align-items:center; }
+.mydiary-radio { display:inline-flex; gap:6px; align-items:center; padding:4px 8px; border:1px solid #ddd; border-radius:8px; cursor:pointer; }
+.mydiary-radio input { margin:0; }
+.mydiary-radio-clear { margin-left:6px; padding:4px 8px; border:1px dashed #ccc; background:#fff; border-radius:8px; cursor:pointer; }

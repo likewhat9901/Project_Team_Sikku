@@ -96,4 +96,91 @@ window.addEventListener('DOMContentLoaded', function () {
         });
 });
 </script>
+
+<!-- ===== 예측 그래프 렌더링(식물 db 완성되면 매핑처리해서 그래프 띄워야함) ===== -->
+<script type="text/javascript">
+(async function renderOneChart() {
+  const FAIL_MSG = '데이터 불러오기에 실패했습니다.';
+  const LIB_FAIL_MSG = '그래프 라이브러리 로드에 실패했습니다.';
+
+  // 첫 번째 카드만 사용
+  const container = document.querySelector('.plant-container');
+  if (!container) return;
+
+  // 카드 내부 영역 헬퍼
+  const card   = container.querySelector('.plant-card');
+  const box    = card.querySelector('.plant-status .status-content') || card.querySelector('.status-content') || card;
+  const header = card.querySelector('.plant-status .status-header');
+  const setHeader = (t) => { if (header) header.textContent = t; };
+  const showMsg = (msg) => { box.innerHTML = `<div style="padding:12px;color:#666;">${msg}</div>`; };
+
+  // Chart.js(UMD) 동적 로드
+  async function ensureChart() {
+    if (window.Chart) return true;
+    return new Promise((resolve, reject) => {
+      const s = document.createElement('script');
+      s.src = 'https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js';
+      s.onload = () => resolve(true);
+      s.onerror = () => reject(new Error('Chart load failed'));
+      document.head.appendChild(s);
+    });
+  }
+
+  // 1) 라이브러리 확보
+  try {
+    await ensureChart();
+  } catch {
+    showMsg(LIB_FAIL_MSG);
+    return;
+  }
+
+  // 2) 데이터 가져오기
+  let json;
+  try {
+    const res = await fetch('/api/predict/outdoor', { headers: { 'Accept': 'application/json' } });
+    if (!res.ok) { showMsg(FAIL_MSG); return; }
+    json = await res.json();
+  } catch {
+    showMsg(FAIL_MSG);
+    return;
+  }
+
+  const entries = Object.entries(json || {});
+  if (!entries.length) { showMsg(FAIL_MSG); return; }
+
+  // 3) 첫 번째 시리즈로 차트 1개(Height) 렌더
+  const [name, rows] = entries[0];
+  const labels = rows.map(r => Number(r.date));
+  const height = rows.map(r => Number(r.height));
+  if (!labels.length || height.some(isNaN)) { showMsg(FAIL_MSG); return; }
+
+  console.log('JSON keys =', Object.keys(json));
+
+  setHeader(`예측 그래프 · ${name}`);
+  box.innerHTML = '';
+  const canvas = document.createElement('canvas');
+  canvas.style.height = '300px';
+  box.appendChild(canvas);
+
+  const chart = new window.Chart(canvas.getContext('2d'), {
+    type: 'line',
+    data: {
+      labels,
+      datasets: [{ label: 'Height', data: height, tension: 0.2 }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      scales: {
+        x: { title: { display: true, text: 'date' } },
+        y: { title: { display: true, text: 'height' } }
+      }
+    }
+  });
+
+  // 필요시 나중에 파괴할 수 있게 저장
+  container._charts = [chart];
+})();
+</script>
+
 </html>

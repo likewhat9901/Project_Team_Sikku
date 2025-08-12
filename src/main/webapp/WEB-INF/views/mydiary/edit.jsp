@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -39,6 +41,30 @@
 						action="./edit.do" onsubmit="return validateForm(this);">
 						<input type="hidden" name="diaryIdx"
 							value="${myDiaryDTO.diaryIdx}" />
+
+						<!-- 식물명 (라디오: 선택 옵션, 기본값 미선택) -->
+<div class="mydiary-write-row">
+  <label class="mydiary-write-label">식물명</label>
+  <div class="mydiary-write-input-area">
+    <div class="mydiary-radio-group" role="radiogroup" aria-label="식물명">
+      <c:forEach var="p" items="${plants}">
+        <label class="mydiary-radio">
+          <input type="radio"
+                 name="plantidx"
+                 value="${p.plantidx}"
+                 <c:if test="${myDiaryDTO.plantidx == p.plantidx}">checked</c:if>>
+          <span>${fn:escapeXml(p.name)}</span>
+        </label>
+      </c:forEach>
+      <!-- 선택 해제(미선택으로 바꾸기) -->
+      <button type="button" class="mydiary-radio-clear"
+              onclick="document.querySelectorAll('input[name=plantidx]').forEach(r=>r.checked=false)">
+        선택 해제
+      </button>
+    </div>
+    <div class="mydiary-write-help">선택 시 해당 식물 기준 예측에 사용됩니다. (미선택 가능)</div>
+  </div>
+</div>
 
 						<div class="mydiary-write-row">
 							<label class="mydiary-write-label"> 온도 <span
