@@ -32,6 +32,9 @@ public class MbtiController {
 		int mbtiIdx = Integer.parseInt(req.getParameter("idx"));
 		System.out.println("mbtiIdx: "+ mbtiIdx);
 		
+		MbtiDTO MBTI = dao.MbtiSelectOne(mbtiIdx);
+		model.addAttribute("MBTI", MBTI);
+		
 		return "mbti/mbtiView";
 	}
 	

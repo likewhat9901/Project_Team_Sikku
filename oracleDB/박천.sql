@@ -9,7 +9,22 @@ alter system set local_listener='(ADDRESS=(PROTOCOL=TCP)(HOST=localhost)(PORT=15
 
 
 /*-------------------------테이블 create-----------------------------------*/
-/*plant dictionary*/
+/* board */
+CREATE TABLE hboard (
+  boardidx     NUMBER          PRIMARY KEY,
+  userid   NUMBER          NOT NULL,
+  title        VARCHAR2(100)   NOT NULL,
+  content      CLOB            NOT NULL,
+  ofile        VARCHAR2(255),
+  sfile        VARCHAR2(255),
+  postdate     DATE            DEFAULT SYSDATE,              
+  category     NUMBER(1)       DEFAULT 1 CHECK (category IN (1, 2)),
+  visitcount   NUMBER          DEFAULT 0,  
+  likes        NUMBER          DEFAULT 0,
+  report       NUMBER          DEFAULT 0
+);
+
+/* plant dictionary */
 CREATE TABLE plantdict (
   plantidx         NUMBER         PRIMARY KEY,
   name              VARCHAR2(100)  NOT NULL,
@@ -28,10 +43,14 @@ CREATE TABLE plantdict (
 
 /*mbti*/
 CREATE TABLE mbti (
-  mbtiIdx           NUMBER         PRIMARY KEY,
-  name              VARCHAR2(100)  NOT NULL,
-  imgFile           VARCHAR2(100)  NOT NULL,
-  description       VARCHAR2(500)
+  mbtiidx               NUMBER          PRIMARY KEY,    
+  name              VARCHAR2(50)   NOT NULL,
+  imgFile               VARCHAR2(50)   NOT NULL,
+  indoor                VARCHAR2(100),
+  inreason              VARCHAR2(500),
+  outdoor               VARCHAR2(100),
+  outreason             VARCHAR2(500),
+  note                  VARCHAR2(300)
 );
 
 
@@ -78,6 +97,48 @@ CREATE SEQUENCE mbti_seq
   NOCYCLE;
 
 /*-----------------------------------update---------------------------------*/
+/* freeboard 테이블 insert */
+INSERT INTO hboard (boardidx, userid, title, content, ofile, sfile) VALUES (
+  board_seq.NEXTVAL, 6, '텃밭에 상추 심기', '오늘은 상추를 심었어요. 흙 준비부터 씨앗 심기까지 완료!', 'lettuce.jpg', 'lettuce_2025.jpg'
+);
+
+INSERT INTO hboard (boardidx, userid, title, content) VALUES (
+  board_seq.NEXTVAL, 7, '비가 와서 걱정이네요', '장마가 시작됐어요. 식물 뿌리 썩을까봐 걱정입니다.'
+);
+
+INSERT INTO hboard (boardidx, userid, title, content, ofile, sfile) VALUES (
+  board_seq.NEXTVAL, 8, '잡초 제거 팁', '잡초는 아침 일찍 뽑는 게 제일 효과적입니다!', 'weed.jpg', 'weed_2025.jpg'
+);
+
+INSERT INTO hboard (boardidx, userid, title, content) VALUES (
+  board_seq.NEXTVAL, 9, '오늘의 수확', '방울토마토랑 고추를 수확했어요. 색도 곱고 맛도 좋아요!'
+);
+
+INSERT INTO hboard (boardidx, userid, title, content) VALUES (
+  board_seq.NEXTVAL, 10, '병충해 방제 질문', '잎에 점이 생겼는데 무슨 병인지 아시는 분 계신가요?'
+);
+
+/* galleryboard insert */
+INSERT INTO hboard (boardidx, userid, title, content, ofile, sfile, category) VALUES (
+  board_seq.NEXTVAL, 6, '토마토가 안 자라요', '물을 주고 있는데도 토마토가 잘 자라지 않아요.', 'lettuce.jpg', 'lettuce_2025.jpg', 2
+);
+
+INSERT INTO hboard (boardidx, userid, title, content, category) VALUES (
+  board_seq.NEXTVAL, 7, '수확 사진 공유합니다', '오늘 수확한 오이와 가지 사진입니다!', 2
+);
+
+INSERT INTO hboard (boardidx, userid, title, content, ofile, sfile, category) VALUES (
+  board_seq.NEXTVAL, 8, '새싹 채소 키우기 도전', '작은 화분에 새싹 채소 심어봤어요.', 'weed.jpg', 'weed_2025.jpg', 2
+);
+
+INSERT INTO hboard (boardidx, userid, title, content, category) VALUES (
+  board_seq.NEXTVAL, 9, '텃밭 분양 정보', '서울 지역 텃밭 분양 공고가 떴습니다.', 2
+);
+
+INSERT INTO hboard (boardidx, userid, title, content, category) VALUES (
+  board_seq.NEXTVAL, 10, '병충해 방제 질문', '잎에 점이 생겼는데 무슨 병인지 아시는 분 계신가요?', 2
+);
+
 
 /* plantdict 테이블 insert */
 -- 1. 상추 (봄, 여름용 채소)
@@ -176,31 +237,6 @@ INSERT INTO plantdict (
   10.0, 28.0, 10, '요리에 필수적인 향채로 사계절 재배 가능'
 );
 
-
-
-
-/* diary 테이블 insert */
-INSERT INTO diary (diary_idx, member_idx, ofile, sfile, description, temperature, humidity, sunlight) VALUES (
-  diary_seq.NEXTVAL, 6, 'lettuce_day1.jpg', 'lettuce_day1_2025.jpg', '상추를 처음 심은 날. 기대된다!', 22.5, 65.0, 300.0
-);
-
-INSERT INTO diary (diary_idx, member_idx, ofile, sfile, description, temperature, humidity, sunlight) VALUES (
-  diary_seq.NEXTVAL, 7, 'watering.jpg', 'watering_2025.jpg', '아침 일찍 물을 듬뿍 줬다.', 21.0, 70.5, 280.0
-);
-
-INSERT INTO diary (diary_idx, member_idx, ofile, sfile, description, temperature, humidity, sunlight) VALUES (
-  diary_seq.NEXTVAL, 8, 'tomato_growth.jpg', 'tomato_growth_2025.jpg', '토마토가 조금씩 열리기 시작했다.', 25.2, 60.0, 350.0
-);
-
-INSERT INTO diary (diary_idx, member_idx, ofile, sfile, description, temperature, humidity, sunlight) VALUES (
-  diary_seq.NEXTVAL, 9, 'rainy_day.jpg', 'rainy_day_2025.jpg', '오늘은 하루종일 비가 내려서 물주기는 쉬었다.', 20.0, 80.0, 100.0
-);
-
-INSERT INTO diary (diary_idx, member_idx, ofile, sfile, description, temperature, humidity, sunlight) VALUES (
-  diary_seq.NEXTVAL, 10, 'harvest_day.jpg', 'harvest_day_2025.jpg', '첫 수확! 토마토와 고추가 탐스럽다.', 26.7, 55.5, 400.0
-);
-
-
 /* mbti 테이블 insert */
 INSERT INTO mbti VALUES (
   mbti_seq.NEXTVAL, 'intj', 'intj.jpg', '성격별 Description');
@@ -242,6 +278,7 @@ DROP TABLE hboard CASCADE CONSTRAINTS;
 DROP TABLE diary CASCADE CONSTRAINTS;
 DROP TABLE plantdict CASCADE CONSTRAINTS;
 DROP TABLE hmember CASCADE CONSTRAINTS;
+DROP TABLE mbti CASCADE CONSTRAINTS;
 
 /* 시퀀스 삭제 */
 DROP SEQUENCE plant_seq;
@@ -249,6 +286,7 @@ DROP SEQUENCE diary_seq;
 DROP SEQUENCE board_seq;
 DROP SEQUENCE comment_seq;
 DROP SEQUENCE member_seq;
+DROP SEQUENCE mbti_seq;
 
 /*----------------------------commit----------------------------------------*/
 commit;

@@ -145,7 +145,7 @@ function fetchPopularBoards(category) {
     fetch('/api/top10boards?category='+category)
         .then(response => response.json())
         .then(data => {
-        	boardContainer.innerHTML = ''; // 기존 시상대 초기화
+        	boardContainer.innerHTML = ''; // 초기화
         	
             if (data.error) {
             	boardContainer.innerHTML = `<p style="color:red;">\${data.error}</p>`;
