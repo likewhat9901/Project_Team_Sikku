@@ -9,6 +9,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import com.edu.springboot.jpaboard.dto.MyCommentDto;
+
 
 @Service
 public class CommentService {
@@ -21,6 +23,8 @@ public class CommentService {
 	@Autowired
 	private MemberRepository mr;
 	
+    @Autowired
+    private CommentRepository commentRepository;
 	
 	// 게시물 기준으로 댓글 조회
 	public List<CommentEntity> findByBoardIdx(Long boardIdx) {
@@ -62,6 +66,11 @@ public class CommentService {
     // 댓글 삭제
     public void deletePost(Long commentIdx) {
         cr.deleteById(commentIdx);
+    }
+    
+
+    public List<MyCommentDto> getMyComments(String userId) {
+        return commentRepository.findMyComments(userId);
     }
 	
 }

@@ -44,6 +44,8 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
+  width: 350px;
+  height: 600px;
 }
 
 .imggang{
@@ -179,23 +181,27 @@ body {
 .activity-table tbody tr:hover td { background: #f9fafb; }
 
 /* ===== 반응형 ===== */
-@media (max-width: 1024px) {
-  .mypage-container {
-    grid-template-columns: 1fr;
-  }
-  .profile-card {
-    max-width: 560px;
-    margin: 0 auto;
-  }
+
+/* 표 셀 너비를 고정해서 넘침 방지 */
+.activity-table { table-layout: fixed; }
+
+/* 댓글(첫 번째 컬럼) 넓게, 날짜는 오른쪽 정렬 */
+.activity-table th:nth-child(1),
+.activity-table td:nth-child(1) { width: 70%; }
+.activity-table th:nth-child(2),
+.activity-table td:nth-child(2) { width: 30%; text-align: right; }
+
+/* 댓글 내용 1줄까지만 보이고 말줄임 */
+.comment-cell a {
+  display: -webkit-box;
+  -webkit-line-clamp: 1;          
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: normal;
+  word-break: break-word;     
 }
 
-@media (max-width: 480px) {
-  .mypage-title h1 { font-size: 24px; }
-  #profilePreview { width: 140px; height: 140px; }
-  .edit-btn { min-width: 140px; height: 40px; font-size: 13px; }
-  .activity-box > h3 { font-size: 16px; }
-  .activity-table th, .activity-table td { padding: 12px 12px; }
-}
 
 /* ===== (옵션) 활동 박스를 카드형 2열로 쓰고 싶다면 주석 해제 ===== */
 /*

@@ -8,7 +8,9 @@ import java.security.Principal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -25,10 +27,23 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.edu.springboot.jpaboard.BoardService;
+import com.edu.springboot.jpaboard.CommentService;
+import com.edu.springboot.jpaboard.dto.LikedPostDto;
+import com.edu.springboot.jpaboard.dto.MyCommentDto;
+import com.edu.springboot.jpaboard.dto.MyPostDto;
+
 import jakarta.servlet.http.HttpSession;
 
 @Controller
 public class AuthController {
+   
+
+   @Autowired
+   private CommentService commentService;
+      
+   @Autowired
+   private BoardService boardService;
 
     @Autowired
     private DataSource dataSource;
@@ -45,6 +60,8 @@ public class AuthController {
     public String myPage(Principal principal, Model model, HttpSession session) {
         try {
             String userid = principal.getName();
+
+            // 회원 기본 정보
             try (Connection conn = dataSource.getConnection();
                  PreparedStatement ps = conn.prepareStatement(
                      "SELECT username, email, profileImgPath FROM members WHERE userid = ?")) {
@@ -56,20 +73,71 @@ public class AuthController {
                         String path = rs.getString("profileImgPath");
                         model.addAttribute("profileImgPath", path);
                         if (path != null && !path.isEmpty()) {
-                            session.setAttribute("profileImgPath", path); // ★ 세션에도 넣어 전역 사용
+                            session.setAttribute("profileImgPath", path);
                         } else {
                             session.removeAttribute("profileImgPath");
                         }
                     }
                 }
             }
+
+            // 좋아요한 게시물 목록
+            List<LikedPostDto> liked = boardService.getLikedPostsOf(userid);
+            DateTimeFormatter fmt = DateTimeFormatter.ofPattern("yyyy.MM.dd HH:mm");
+            List<Map<String, Object>> likedRows = liked.stream().map(p -> {
+                Map<String, Object> m = new HashMap<>();
+                m.put("title", p.title());
+                m.put("boardIdx", p.boardIdx());
+                String dateStr = "";
+                if (p.likedDate() != null) dateStr = p.likedDate().format(fmt);
+                else if (p.postdate() != null) dateStr = p.postdate().format(fmt);
+                m.put("date", dateStr);
+                return m;
+            }).toList();
+            model.addAttribute("likedPosts", likedRows);
+            
+         // 내가 작성한 게시글
+            List<MyPostDto> myPosts = boardService.getMyPostsOf(userid);
+            DateTimeFormatter fmt1 = DateTimeFormatter.ofPattern("yyyy.MM.dd HH:mm"); // 이미 있으니 재사용
+            List<Map<String, Object>> myPostRows = myPosts.stream().map(p -> {
+                Map<String, Object> m = new HashMap<>();
+                m.put("title", p.title());
+                m.put("boardIdx", p.boardIdx());
+                m.put("date", p.postdate() != null ? p.postdate().format(fmt1) : "");
+                return m;
+            }).toList();
+            model.addAttribute("myPosts", myPostRows);
+
+
+            // 내가 작성한 댓글 목록
+            List<MyCommentDto> myComments = commentService.getMyComments(userid);
+            List<Map<String, Object>> commentRows = myComments.stream().map(c -> {
+                Map<String, Object> m = new HashMap<>();
+                m.put("commentIdx", c.commentIdx());
+                m.put("boardIdx", c.boardIdx());
+                m.put("boardTitle", c.boardTitle());
+                m.put("content", c.content());
+                String cdate = (c.postdate() != null) ? c.postdate().format(fmt) : "";
+                m.put("date", cdate);
+                return m;
+            }).toList();
+
+           
+            model.addAttribute("comments", commentRows);
+
+            model.addAttribute("timestamp", System.currentTimeMillis());
+            return "member/mypage";
+
         } catch (Exception e) {
             e.printStackTrace();
+            // 에러 시에도 페이지는 열리게 처리(필요시 에러 메시지 모델에 추가 가능)
+            model.addAttribute("errorMsg", "마이페이지 로딩 중 오류가 발생했습니다.");
+            return "member/mypage";
         }
-
-        model.addAttribute("timestamp", System.currentTimeMillis());
-        return "member/mypage";
     }
+
+
+
 
     // ⬇️ 업로드: JSON으로 새 경로 반환 + 세션 갱신
     @PostMapping("/mypage/uploadProfile")

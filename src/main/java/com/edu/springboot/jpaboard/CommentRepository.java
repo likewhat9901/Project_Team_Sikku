@@ -3,11 +3,14 @@ package com.edu.springboot.jpaboard;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.data.repository.query.Param;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 
 import com.edu.springboot.jpaboard.BoardEntity;
+import com.edu.springboot.jpaboard.dto.MyCommentDto;
 
 public interface CommentRepository extends JpaRepository<CommentEntity, Long> {
     // 기본적인 CRUD + findAll(Sort sort) 등 제공
@@ -23,5 +26,20 @@ public interface CommentRepository extends JpaRepository<CommentEntity, Long> {
     List<CommentEntity> findByBoard_BoardIdx(Long boardIdx);
     // commentIdx로 댓글 하나를 찾는 메서드
     Optional<CommentEntity> findById(Long commentIdx);
+    
+    @Query("""
+            SELECT new com.edu.springboot.jpaboard.dto.MyCommentDto(
+                c.commentIdx,
+                b.boardIdx,
+                b.title,
+                c.content,
+                c.postdate
+            )
+            FROM CommentEntity c
+            JOIN c.board b
+            WHERE c.member.userId = :userId
+            ORDER BY c.postdate DESC
+        """)
+        List<MyCommentDto> findMyComments(@Param("userId") String userId);
 
 }

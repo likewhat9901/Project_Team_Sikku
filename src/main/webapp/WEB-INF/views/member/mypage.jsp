@@ -1,6 +1,8 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -38,7 +40,7 @@
 
     <form action="/mypage/profileAction" method="post">
       <input type="hidden" name="action" value="reset">
-      <button class="edit-btn" type="submit">기본 이미지로</button>
+      <button class="edit-btn" type="submit">기본 프로필 사진</button>
     </form>
 
     <form action="mypageEdit.do" method="get">
@@ -49,44 +51,62 @@
   <div class="activity-section">
     <h2>나의 활동</h2>
 
-    <div class="activity-box">
-      <h3>👍 좋아요 누른 글</h3>
-      <table class="activity-table">
-        <tr><th>제목</th><th>날짜</th></tr>
-        <c:forEach var="post" items="${likedPosts}">
-          <tr>
-            <td>${post.title}</td>
-            <td>${post.date}</td>
-          </tr>
-        </c:forEach>
-      </table>
-    </div>
+ <div class="activity-box">
+  <h3>👍 좋아요 누른 글</h3>
+  <table class="activity-table">
+    <tr><th>제목</th><th>날짜</th></tr>
+    <c:forEach var="post" items="${likedPosts}">
+      <tr>
+        <td>
+          <a href="/boards/free/freeBoardView.do?boardIdx=${post.boardIdx}">
+            ${post.title}
+          </a>
+        </td>
+        <td>${post.date}</td>
+      </tr>
+    </c:forEach>
+  </table>
+</div>
 
-    <div class="activity-box">
-      <h3>💬 작성한 댓글</h3>
-      <table class="activity-table">
-        <tr><th>내용</th><th>날짜</th></tr>
-        <c:forEach var="comment" items="${comments}">
-          <tr>
-            <td>${comment.content}</td>
-            <td>${comment.date}</td>
-          </tr>
-        </c:forEach>
-      </table>
-    </div>
 
-    <div class="activity-box">
-      <h3>✍️ 작성한 게시글</h3>
-      <table class="activity-table">
-        <tr><th>제목</th><th>날짜</th></tr>
-        <c:forEach var="post" items="${myPosts}">
-          <tr>
-            <td>${post.title}</td>
-            <td>${post.date}</td>
-          </tr>
-        </c:forEach>
-      </table>
-    </div>
+<div class="activity-box">
+  <h3>💬 작성한 댓글</h3>
+  <table class="activity-table">
+    <tr><th>내용</th><th>날짜</th></tr>
+    <c:forEach var="post" items="${comments}">
+      <tr>
+        <td class="comment-cell">
+          <a href="/boards/free/freeBoardView.do?boardIdx=${post.boardIdx}">
+            ${post.boardTitle} - ${post.content}
+          </a>
+        </td>
+        <td>${post.date}</td>
+      </tr>
+    </c:forEach>
+    <c:if test="${empty comments}">
+      <tr><td colspan="2">작성한 댓글이 없습니다.</td></tr>
+    </c:if>
+  </table>
+</div>
+
+
+<div class="activity-box">
+  <h3>✍️ 작성한 게시글</h3>
+  <table class="activity-table">
+    <tr><th>제목</th><th>날짜</th></tr>
+    <c:forEach var="post" items="${myPosts}">
+      <tr>
+        <td>
+          <a href="/boards/free/freeBoardView.do?boardIdx=${post.boardIdx}">
+            ${post.title}
+          </a>
+        </td>
+        <td>${post.date}</td>
+      </tr>
+    </c:forEach>
+  </table>
+</div>
+
   </div>
 </div>
 

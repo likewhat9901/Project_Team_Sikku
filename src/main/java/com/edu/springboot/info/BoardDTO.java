@@ -1,16 +1,15 @@
-package com.edu.springboot.dict;
+package com.edu.springboot.info;
 
 import java.sql.Date;
 
 import lombok.Data;
 
 @Data
-public class DictDTO {
-	private Long plantidx;
+public class BoardDTO {
+	private int plantidx;
 	private String name;
-	private String imgpath;
-	private String summary;
-	private String note;
+	private String ofile;
+	private String sfile;
 	private String growseason;
 	private String bloomingseason;
 	private String humidity;
@@ -19,4 +18,5 @@ public class DictDTO {
 	private int temperaturemax;
 	private Date postdate;
 	private String userId;
+	private String description;
 }

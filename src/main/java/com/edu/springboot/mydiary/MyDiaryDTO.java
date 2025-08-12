@@ -20,4 +20,5 @@ public class MyDiaryDTO {
 	private float sunlight; 	
 	private float height;
 	private int fruit;
+	private Long plantidx;
 }
