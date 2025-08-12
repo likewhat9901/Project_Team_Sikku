@@ -8,7 +8,6 @@ import java.security.Principal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.util.HashMap;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.List;
@@ -38,13 +37,13 @@ import jakarta.servlet.http.HttpSession;
 
 @Controller
 public class AuthController {
-	
+   
 
-	@Autowired
-	private CommentService commentService;
-		
-	@Autowired
-	private BoardService boardService;
+   @Autowired
+   private CommentService commentService;
+      
+   @Autowired
+   private BoardService boardService;
 
     @Autowired
     private DataSource dataSource;
