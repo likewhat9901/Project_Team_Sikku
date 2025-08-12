@@ -96,7 +96,7 @@
 }
 
 .user-section {
-	width: 300px; height: 100%;
+	width: 350px; height: 100%;
     display: flex;
 	justify-content: end;
     align-items: center;
@@ -104,16 +104,17 @@
 }
 
 .user-section span {
-	width: 120px; height: 40px;
+	width: auto; height: 40px;
     color: black;
     text-decoration: none;
     cursor: pointer;
     transition: opacity 0.2s;
     background-color: white;
-    padding: 3px 10px;
+    padding: 5px 10px;
     border-radius: 10px;
     text-align: center;
     border: 1px solid #4E8A5D;
+    line-height: 1.5rem;
 }
 
 .login-link:hover, .register-link:hover {
