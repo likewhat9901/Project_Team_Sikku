@@ -6,7 +6,7 @@ import lombok.Data;
 
 @Data
 public class DictDTO {
-	private int plantidx;
+	private Long plantidx;
 	private String name;
 	private String imgpath;
 	private String summary;

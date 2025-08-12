@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -28,6 +29,9 @@ public class MyDiaryController {
 
 	@Autowired
 	IMyDiaryMapper dao;
+
+	@Autowired
+	private com.edu.springboot.dict.IDictService dictDao;
 
 	@RequestMapping("/mydiary/list.do")
 	public String mydiaryList(Model model, HttpServletRequest req, 
@@ -85,13 +89,16 @@ public class MyDiaryController {
 
 	// 입력1 : 작성페이지 매핑
 	@GetMapping("/mydiary/write.do")
-	public String mydiaryWrite() {
+	public String mydiaryWrite(Model model) {
+		// plantdict -> JSP 라디오 렌더링
+		model.addAttribute("plants", dictDao.selectAll()); 
 		return "mydiary/write";
 	}
 
 	// 입력2 : 사용자가 작성한 값으로 입력 처리. with 첨부파일
 	@PostMapping("/mydiary/write.do")
-	public String mydiaryWrite(HttpServletRequest req, MyDiaryDTO myDiaryDTO) {
+	public String mydiaryWrite(HttpServletRequest req, MyDiaryDTO myDiaryDTO,
+			@RequestParam(value="plantidx", required=false) Long plantidx) {
 		try {
 			//로그인한 사용자의 userid 추출
 			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -126,7 +133,9 @@ public class MyDiaryController {
 			myDiaryDTO.setSunlight(Float.parseFloat(req.getParameter("sunlight")));
 			myDiaryDTO.setHeight(Float.parseFloat(req.getParameter("height")));
 			myDiaryDTO.setFruit(Integer.parseInt(req.getParameter("fruit")));
-
+			//추가 : 라디오 plantIdx (미선택 가능)
+			myDiaryDTO.setPlantidx(plantidx);
+				        
 			// 테이블에 insert 처리
 			int result = dao.write(myDiaryDTO);
 			if (result == 1)
@@ -161,12 +170,14 @@ public class MyDiaryController {
 		// 열람에서 사용한 메서드를 그대로 사용
 		myDiaryDTO = dao.view(myDiaryDTO);
 		model.addAttribute("myDiaryDTO", myDiaryDTO);
+		model.addAttribute("plants", dictDao.selectAll());
 		return "mydiary/edit";
 	}
 
 	// 수정2 : 사용자가 입력한 내용을 전송하여 update 처리
 	@PostMapping("/mydiary/edit.do")
-	public String mydiaryEditPost(MyDiaryDTO myDiaryDTO) {
+	public String mydiaryEditPost(HttpServletRequest req, MyDiaryDTO myDiaryDTO,
+			@RequestParam(value="plantidx", required=false) Long plantidx) {
 		try {
 			MultipartFile file = myDiaryDTO.getOfile();
 
@@ -187,6 +198,8 @@ public class MyDiaryController {
 				myDiaryDTO.setOfileName(origin.getOfileName());
 				myDiaryDTO.setSfile(origin.getSfile());
 			}
+			
+			myDiaryDTO.setPlantidx(plantidx);
 			// 수정 후 결과는 int형으로 반환
 			int result = dao.edit(myDiaryDTO);
 			System.out.println("글수정결과:" + result);

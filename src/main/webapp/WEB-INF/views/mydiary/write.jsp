@@ -1,12 +1,14 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <!DOCTYPE html>
 <html>
 <head>
-	<meta charset="UTF-8">
-	<title>Insert title here</title>
-	<link rel="stylesheet" href="/css/common/layout.css" />
-	<link rel="stylesheet" href="/css/myDiarystyle.css" />
+<meta charset="UTF-8">
+<title>식꾸</title>
+<link rel="stylesheet" href="/css/common/layout.css" />
+<link rel="stylesheet" href="/css/myDiarystyle.css" />
 </head>
 <script>
 function validateForm(fm) {
@@ -196,137 +198,161 @@ function onlyInteger(event) {
 }
 </script>
 <body>
-<%@ include file="/WEB-INF/views/common/header.jsp" %>
+	<%@ include file="/WEB-INF/views/common/header.jsp"%>
 
-	<!-- 한이 작업 -->
-	<h2>다이어리 작성</h2>
-	 <!-- Write 페이지 HTML -->
-<div class="mydiary-container">
-    <!-- 상단 메뉴 -->
-    <div class="mydiary-top-wrapper">
-        <div class="mydiary-top">
-            <nav class="mydiary-nav">
-                <a href="/mydiary/calendar.do" class="mydiary-calendar-btn">캘린더</a>
-            </nav>
-            <h2 class="mydiary-title">나만의 식물 꾸미기</h2>
-            <button type="button" class="mydiary-write-btn" onclick="location.href='./list.do';">목록보기</button>
-        </div>
-    </div>
+	<!-- Write 페이지 HTML -->
+	<div class="mydiary-container">
+		<!-- 상단 메뉴 -->
+		<div class="mydiary-top-wrapper">
+			<div class="mydiary-top">
+				<nav class="mydiary-nav">
+					<a href="/mydiary/calendar.do" class="mydiary-calendar-btn">캘린더</a>
+				</nav>
+				<h2 class="mydiary-title">나만의 식물 꾸미기</h2>
+				<button type="button" class="mydiary-write-btn"
+					onclick="location.href='./list.do';">목록보기</button>
+			</div>
+		</div>
 
-    <!-- Write 폼 -->
-    <div class="mydiary-write-form">
-        <form name="writeFrm" method="post" enctype="multipart/form-data"
-              action="${contextPath}/mydiary/write.do"
-              onsubmit="return validateForm(this);">
-            
-            <div class="mydiary-write-card">
-                <!-- 카드 헤더 -->
-                <div class="mydiary-write-header">
-                    <h2>새로운 식물 관찰 기록</h2>
-                </div>
+		<!-- Write 폼 -->
+		<div class="mydiary-write-form">
+			<form name="writeFrm" method="post" enctype="multipart/form-data"
+				action="${contextPath}/mydiary/write.do"
+				onsubmit="return validateForm(this);">
 
-                <!-- 폼 내용 -->
-                <div class="mydiary-write-content">
-                    <!-- 온도 -->
-                    <div class="mydiary-write-row">
-                        <div class="mydiary-write-label">
-                            온도 (°C)<span class="mydiary-write-required">*</span>
-                        </div>
-                        <div class="mydiary-write-input-area">
-                            <input type="text" name="temperature" class="mydiary-write-input"
-                                   placeholder="예: 25.5" onkeydown="return onlyNumber(event)" />
-                            <div class="mydiary-write-help">(-99.99 ~ 999.99)</div>
-                        </div>
-                    </div>
+				<div class="mydiary-write-card">
+					<!-- 카드 헤더 -->
+					<div class="mydiary-write-header">
+						<h2>관찰 기록</h2>
+					</div>
 
-                    <!-- 습도 -->
-                    <div class="mydiary-write-row">
-                        <div class="mydiary-write-label">
-                            습도 (%)<span class="mydiary-write-required">*</span>
-                        </div>
-                        <div class="mydiary-write-input-area">
-                            <input type="text" name="humidity" class="mydiary-write-input"
-                                   placeholder="예: 65.0" onkeydown="return onlyNumber(event)" />
-                            <div class="mydiary-write-help">(0 ~ 100)</div>
-                        </div>
-                    </div>
+					<!-- 폼 내용 -->
+					<div class="mydiary-write-content">
+						<!-- 식물명 (라디오: 선택 옵션, 기본값 미선택) -->
+						<div class="mydiary-write-row">
+							<div class="mydiary-write-label">식물명</div>
+							<div class="mydiary-write-input-area">
+								<!-- 식물명 (라디오 전용) -->
+								<div class="mydiary-radio-group" role="radiogroup"
+									aria-label="식물명">
+									<c:forEach var="p" items="${plants}">
+										<label class="mydiary-radio"> <input type="radio"
+											name="plantidx" value="${p.plantidx}"> <span>${fn:escapeXml(p.name)}</span>
+										</label>
+									</c:forEach>
+									<button type="button" class="mydiary-radio-clear"
+										onclick="document.querySelectorAll('input[name=plantidx]').forEach(r=>r.checked=false)">
+										선택 해제</button>
+								</div>
 
-                    <!-- 일조량 -->
-                    <div class="mydiary-write-row">
-                        <div class="mydiary-write-label">
-                            일조량 (시간)<span class="mydiary-write-required">*</span>
-                        </div>
-                        <div class="mydiary-write-input-area">
-                            <input type="text" name="sunlight" class="mydiary-write-input"
-                                   placeholder="예: 8.5" onkeydown="return onlyNumber(event)" />
-                            <div class="mydiary-write-help">(0 ~ 24)</div>
-                        </div>
-                    </div>
+								<div class="mydiary-write-help">선택 시 해당 식물 기준 예측에 사용됩니다.
+									(미선택 가능)</div>
+							</div>
+						</div>
+						<!-- 온도 -->
+						<div class="mydiary-write-row">
+							<div class="mydiary-write-label">
+								온도 (°C)<span class="mydiary-write-required">*</span>
+							</div>
+							<div class="mydiary-write-input-area">
+								<input type="text" name="temperature"
+									class="mydiary-write-input" placeholder="예: 25.5"
+									onkeydown="return onlyNumber(event)" />
+								<div class="mydiary-write-help">(-99.99 ~ 999.99)</div>
+							</div>
+						</div>
 
-                    <!-- 키 -->
-                    <div class="mydiary-write-row">
-                        <div class="mydiary-write-label">
-                            키 (cm)<span class="mydiary-write-required">*</span>
-                        </div>
-                        <div class="mydiary-write-input-area">
-                            <input type="text" name="height" class="mydiary-write-input"
-                                   placeholder="예: 15.5" onkeydown="return onlyNumber(event)" />
-                            <div class="mydiary-write-help">(0 ~ 999.99)</div>
-                        </div>
-                    </div>
+						<!-- 습도 -->
+						<div class="mydiary-write-row">
+							<div class="mydiary-write-label">
+								습도 (%)<span class="mydiary-write-required">*</span>
+							</div>
+							<div class="mydiary-write-input-area">
+								<input type="text" name="humidity" class="mydiary-write-input"
+									placeholder="예: 65.0" onkeydown="return onlyNumber(event)" />
+								<div class="mydiary-write-help">(0 ~ 100)</div>
+							</div>
+						</div>
 
-                    <!-- 열매 개수 -->
-                    <div class="mydiary-write-row">
-                        <div class="mydiary-write-label">
-                            열매 개수<span class="mydiary-write-required">*</span>
-                        </div>
-                        <div class="mydiary-write-input-area">
-                            <input type="text" name="fruit" class="mydiary-write-input"
-                                   placeholder="예: 5" onkeydown="return onlyInteger(event)" />
-                            <div class="mydiary-write-help">(0 이상의 정수)</div>
-                        </div>
-                    </div>
+						<!-- 일조량 -->
+						<div class="mydiary-write-row">
+							<div class="mydiary-write-label">
+								일조량 (시간)<span class="mydiary-write-required">*</span>
+							</div>
+							<div class="mydiary-write-input-area">
+								<input type="text" name="sunlight" class="mydiary-write-input"
+									placeholder="예: 8.5" onkeydown="return onlyNumber(event)" />
+								<div class="mydiary-write-help">(0 ~ 24)</div>
+							</div>
+						</div>
 
-                    <!-- 설명 -->
-                    <div class="mydiary-write-row">
-                        <div class="mydiary-write-label">
-                            설명<span class="mydiary-write-required">*</span>
-                        </div>
-                        <div class="mydiary-write-input-area">
-                            <textarea name="description" class="mydiary-write-textarea"
-                                      placeholder="식물의 상태나 특징을 자세히 기록해주세요."></textarea>
-                            <div class="mydiary-write-help">최대 500바이트 (한글 약 166자)</div>
-                        </div>
-                    </div>
+						<!-- 키 -->
+						<div class="mydiary-write-row">
+							<div class="mydiary-write-label">
+								키 (cm)<span class="mydiary-write-required">*</span>
+							</div>
+							<div class="mydiary-write-input-area">
+								<input type="text" name="height" class="mydiary-write-input"
+									placeholder="예: 15.5" onkeydown="return onlyNumber(event)" />
+								<div class="mydiary-write-help">(0 ~ 999.99)</div>
+							</div>
+						</div>
 
-                    <!-- 파일 업로드 -->
-                    <div class="mydiary-write-row">
-                        <div class="mydiary-write-label">식물 사진</div>
-                        <div class="mydiary-write-input-area">
-                            <input type="file" name="ofile" accept="image/*" class="mydiary-write-file" />
-                            <div class="mydiary-write-help">이미지 파일만 업로드 가능 (jpg, png, gif 등), 최대 10MB</div>
-                        </div>
-                    </div>
+						<!-- 열매 개수 -->
+						<div class="mydiary-write-row">
+							<div class="mydiary-write-label">
+								열매 개수<span class="mydiary-write-required">*</span>
+							</div>
+							<div class="mydiary-write-input-area">
+								<input type="text" name="fruit" class="mydiary-write-input"
+									placeholder="예: 5" onkeydown="return onlyInteger(event)" />
+								<div class="mydiary-write-help">(0 이상의 정수)</div>
+							</div>
+						</div>
 
-                    <!-- 버튼 영역 -->
-                    <div class="mydiary-write-buttons">
-                        <button type="submit" class="mydiary-write-btn submit">작성 완료</button>
-                        <button type="reset" class="mydiary-write-btn reset">초기화</button>
-                        <button type="button" class="mydiary-write-btn list"
-                                onclick="location.href='${contextPath}/mydiary/list.do';">목록으로</button>
-                    </div>
-                </div>
-            </div>
-        </form>
+						<!-- 설명 -->
+						<div class="mydiary-write-row">
+							<div class="mydiary-write-label">
+								설명<span class="mydiary-write-required">*</span>
+							</div>
+							<div class="mydiary-write-input-area">
+								<textarea name="description" class="mydiary-write-textarea"
+									placeholder="식물의 상태나 특징을 자세히 기록해주세요."></textarea>
+								<div class="mydiary-write-help">최대 500바이트 (한글 약 166자)</div>
+							</div>
+						</div>
 
-        <!-- 안내 메시지 -->
-        <div class="mydiary-write-notice">
-            <span class="mydiary-write-required">*</span> 표시된 항목은 필수 입력 항목입니다.
-        </div>
-    </div>
-</div>
+						<!-- 파일 업로드 -->
+						<div class="mydiary-write-row">
+							<div class="mydiary-write-label">식물 사진</div>
+							<div class="mydiary-write-input-area">
+								<input type="file" name="ofile" accept="image/*"
+									class="mydiary-write-file" />
+								<div class="mydiary-write-help">이미지 파일만 업로드 가능 (jpg, png,
+									gif 등), 최대 10MB</div>
+							</div>
+						</div>
 
-<%@ include file="/WEB-INF/views/common/footer.jsp" %>
+						<!-- 버튼 영역 -->
+						<div class="mydiary-write-buttons">
+							<button type="submit" class="mydiary-write-btn submit">작성
+								완료</button>
+							<button type="reset" class="mydiary-write-btn reset">초기화</button>
+							<button type="button" class="mydiary-write-btn list"
+								onclick="location.href='${contextPath}/mydiary/list.do';">목록으로</button>
+						</div>
+					</div>
+				</div>
+			</form>
+
+			<!-- 안내 메시지 -->
+			<div class="mydiary-write-notice">
+				<span class="mydiary-write-required">*</span> 표시된 항목은 필수 입력 항목입니다.
+			</div>
+		</div>
+	</div>
+
+	<%@ include file="/WEB-INF/views/common/footer.jsp"%>
 </body>
 
 </html>
