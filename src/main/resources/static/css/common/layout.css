@@ -1,8 +1,8 @@
 /* 전체 레이아웃 */
 @font-face {
   font-family: 'MyFont'; /* 사용할 이름 */
-  src: url('/fonts/PinkfongBabySharkFont_Regular.ttf') format('truetype'),
-  	   url('/fonts/PinkfongBabySharkFont_Regular.otf') format('opentype');
+  src: url('/fonts/PinkfongBabySharkFont_Light.ttf') format('truetype'),
+  	   url('/fonts/PinkfongBabySharkFont_Light.otf') format('opentype');
   font-weight: normal;
   font-style: normal;
 }

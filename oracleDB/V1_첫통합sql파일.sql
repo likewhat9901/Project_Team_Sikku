@@ -60,18 +60,21 @@ CREATE TABLE diary (
 
 
 CREATE TABLE plantdict (
-  plantidx         NUMBER         PRIMARY KEY,
-  name              VARCHAR2(100)  NOT NULL,
-  imgpath             VARCHAR2(255),
-  summary           VARCHAR2(500),
-  note              VARCHAR2(1000),
-  growseason       VARCHAR2(50),
-  bloomingseason   VARCHAR2(50),
+  plantidx          NUMBER          PRIMARY KEY,
+  name              VARCHAR2(100)   NOT NULL,
+  engname           VARCHAR2(100)   NOT NULL,
+  category          VARCHAR2(100)   NOT NULL,
+  imgpath           VARCHAR2(255)   NOT NULL,
+  growseason        VARCHAR2(50),
+  bloomingseason    VARCHAR2(50),
+  sunlight          VARCHAR2(100),
   humidity          VARCHAR2(50),
-  sunlight          VARCHAR2(50),
-  temperaturemin   NUMBER(5,2),
-  temperaturemax   NUMBER(5,2),
-  postdate          DATE DEFAULT SYSDATE
+  temperature       VARCHAR2(50),
+  water             VARCHAR2(100),
+  disease           VARCHAR2(100),
+  summary           VARCHAR2(1000),
+  note              VARCHAR2(500),
+  postdate          DATE DEFAULT    SYSDATE
 );
 
 
