@@ -45,7 +45,7 @@
 		        <span class="login-link" onclick="location.href='/myLogin.do'">로그인</span>
 		        <span class="register-link" onclick="location.href='/signup.do'">회원가입</span>
 		        <div class="user-icon">
-			        <img class="user-icon" alt="user icon" src="/images/header/icons/icon_farmer_man.png" />
+			        <img alt="user icon" src="/images/header/icons/icon_farmer_man.png" />
 				</div>
 		     </sec:authorize>
 				
