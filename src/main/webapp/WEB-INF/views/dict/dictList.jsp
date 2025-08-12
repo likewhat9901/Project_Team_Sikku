@@ -18,10 +18,9 @@
 <c:forEach items="${ plants }" var="row" varStatus="loop">
 	    <a href="./view.do?plantidx=${row.plantidx }" class="plant_card">
 	        <div class="plant_image">
-	            <img src="/images/dict/${row.ofile }" alt="식물사진">
+	            <img src="/images/dict/${row.imgpath }" alt="식물사진">
 	        </div>
 	        <div class="plant_name">${row.name }</div>
-	        <div class="plant_scientific">${row.sfile}</div>
 	        <div class="plant_category">관상용</div>
 	    </a>
 </c:forEach>

@@ -10,17 +10,16 @@ alter system set local_listener='(ADDRESS=(PROTOCOL=TCP)(HOST=localhost)(PORT=15
 
 /*-------------------------테이블 create-----------------------------------*/
 /*member*/
-CREATE TABLE hmember (
-  memberidx     NUMBER         PRIMARY KEY,
-  userid         VARCHAR2(20)   NOT NULL UNIQUE,
-  password       VARCHAR2(50)   NOT NULL,
-  email          VARCHAR2(30)   UNIQUE,
-  address        VARCHAR2(100),
-  username       VARCHAR2(20)   NOT NULL UNIQUE,
-  phonenumber    VARCHAR2(20)   NOT NULL,
-  role           NUMBER(2)      NOT NULL CHECK (role IN (0, 1)),
-  grade          NUMBER(1)      DEFAULT 1 CHECK (grade IN (1, 2, 3)), 
-  createdat     DATE DEFAULT SYSDATE
+CREATE TABLE members(
+    userid             VARCHAR2(30)    PRIMARY KEY, 
+    userpw             VARCHAR2(200)   NOT NULL,
+    authority           VARCHAR2(20)    DEFAULT 'ROLE_USER',
+    enabled             NUMBER(1)       DEFAULT 1,
+    username  VARCHAR2(100)   UNIQUE,
+    phonenumber        VARCHAR2(20)    UNIQUE,
+    email               VARCHAR2(100)   UNIQUE,
+    address             VARCHAR2(200),
+    profileimgpath      VARCHAR2(100)
 );
 
 /* board */
@@ -70,11 +69,6 @@ CREATE TABLE mbti (
 
 
 /*------------------------------시퀀스 create--------------------------------*/
-CREATE SEQUENCE member_seq
-  START WITH 1
-  INCREMENT BY 1
-  NOCACHE
-  NOCYCLE;
 
 
 CREATE SEQUENCE board_seq
@@ -258,7 +252,7 @@ DROP TABLE comments CASCADE CONSTRAINTS;
 DROP TABLE hboard CASCADE CONSTRAINTS;
 DROP TABLE diary CASCADE CONSTRAINTS;
 DROP TABLE plantdict CASCADE CONSTRAINTS;
-DROP TABLE hmember CASCADE CONSTRAINTS;
+DROP TABLE members CASCADE CONSTRAINTS;
 DROP TABLE mbti CASCADE CONSTRAINTS;
 
 /* 시퀀스 삭제 */
@@ -266,7 +260,6 @@ DROP SEQUENCE plant_seq;
 DROP SEQUENCE diary_seq;
 DROP SEQUENCE board_seq;
 DROP SEQUENCE comment_seq;
-DROP SEQUENCE member_seq;
 DROP SEQUENCE mbti_seq;
 
 /*----------------------------commit----------------------------------------*/
