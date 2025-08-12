@@ -45,7 +45,7 @@
 		        <span class="login-link" onclick="location.href='/myLogin.do'">로그인</span>
 		        <span class="register-link" onclick="location.href='/signup.do'">회원가입</span>
 		        <div class="user-icon">
-			        <img class="user-icon" alt="user icon" src="/images/header/icons/icon_farmer_man.png" />
+			        <img alt="user icon" src="/images/header/icons/icon_farmer_man.png" />
 				</div>
 		     </sec:authorize>
 				
@@ -54,7 +54,7 @@
 		        <span class="mypage-link" onclick="location.href='/mypage.do'">마이페이지</span>
 		        <span class="logout-link" onclick="location.href='/myLogout.do'">로그아웃</span>
 		        <div class="user-icon" onclick="location.href='/mypage.do'">
-			        <img class="user-icon" alt="user icon"
+			        <img alt="user icon"
                          src="${sessionScope.profileImgPath != null ? sessionScope.profileImgPath : '/images/프로필.png'}" />
 				</div>
 		     </sec:authorize>
