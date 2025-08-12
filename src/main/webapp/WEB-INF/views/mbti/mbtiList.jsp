@@ -15,14 +15,14 @@
     
 <!-- MBTI Section -->
 <div class="mbti-section">
-	<h2 class="title">MBTI별 추천 식물</h2>
+	<h1 class="title">MBTI별 추천 식물</h1>
 		<div class="mbti-container">
 			
 <c:forEach items="${ MBTIs }" var="row" varStatus="loop">
 		<div class="card">
-			<a href="./view.do?idx=${row.mbtiIdx }">
+			<a href="./view.do?mbti=${row.name }">
 				<div class="image">
-			    	<img src="/images/mbti/${row.imgfile }" alt="MBTI사진" />
+			    	<img src="/images/mbti/${row.imgFile }" alt="MBTI사진" />
 			    </div>
 			</a>
 		</div>

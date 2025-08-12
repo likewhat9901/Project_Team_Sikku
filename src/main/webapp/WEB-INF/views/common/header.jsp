@@ -53,7 +53,7 @@
 		     <sec:authorize access="isAuthenticated()">
 		        <span class="mypage-link" onclick="location.href='/mypage.do'">마이페이지</span>
 		        <span class="logout-link" onclick="location.href='/myLogout.do'">로그아웃</span>
-		        <div class="user-icon">
+		        <div class="user-icon" onclick="location.href='/mypage.do'">
 			        <img class="user-icon" alt="user icon"
                          src="${sessionScope.profileImgPath != null ? sessionScope.profileImgPath : '/images/프로필.png'}" />
 				</div>

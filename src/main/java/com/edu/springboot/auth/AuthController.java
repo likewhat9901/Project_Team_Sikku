@@ -36,13 +36,13 @@ import jakarta.servlet.http.HttpSession;
 
 @Controller
 public class AuthController {
-	
+   
 
-	@Autowired
-	private CommentService commentService;
-		
-	@Autowired
-	private BoardService boardService;
+   @Autowired
+   private CommentService commentService;
+      
+   @Autowired
+   private BoardService boardService;
 
     @Autowired
     private DataSource dataSource;

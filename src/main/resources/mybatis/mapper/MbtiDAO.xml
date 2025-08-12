@@ -9,13 +9,18 @@
 
 	<select id="MbtiSelectAll"
 		resultType="com.edu.springboot.mbti.MbtiDTO">
-		SELECT * from MBTI
+		SELECT * from MBTI 
 	</select>
 	
-	<select id="MbtiSelectOne"
-		parameterType="int"
+	<select id="MbtiSelectOneByName"
+		parameterType="String"
 		resultType="com.edu.springboot.mbti.MbtiDTO">
-		SELECT * from MBTI where mbtiidx = #{idx}
+		SELECT * from MBTI where name = #{mbtiName}
+	</select>
+	
+	<select id="MbtiSelectDistinct"
+		resultType="com.edu.springboot.mbti.MbtiDTO">
+		SELECT DISTINCT name, imgFile from MBTI
 	</select>
 	
 </mapper>
