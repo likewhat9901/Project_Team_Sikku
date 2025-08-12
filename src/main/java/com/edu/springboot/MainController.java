@@ -3,6 +3,8 @@ package com.edu.springboot;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,9 +26,13 @@ public class MainController {
 	
 	@GetMapping("/main/member.do")
 	public String member(Model model) {
+		//로그인한 
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+	    String userId = auth.getName();
 		
-		List<DictDTO> plants = dao.selectAll();
-		
+	    //List<DictDTO> plants = dao.selectAll();
+		List<DictDTO> plants = dao.selectPlantsByUser(userId);
+
 //		System.out.println(plants);
 		model.addAttribute("plants", plants);
 		
