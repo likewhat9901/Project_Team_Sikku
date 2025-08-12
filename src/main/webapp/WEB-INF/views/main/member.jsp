@@ -146,7 +146,7 @@ window.addEventListener('DOMContentLoaded', function () {
 
   console.log('JSON keys =', Object.keys(json));
 
-  setHeader(`예측 그래프 · ${name}`);
+  setHeader(`예측 그래프 : ${name}`);
   box.innerHTML = '';
   const canvas = document.createElement('canvas');
   canvas.style.height = '300px';
