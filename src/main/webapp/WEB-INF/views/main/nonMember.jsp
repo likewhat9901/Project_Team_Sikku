@@ -170,12 +170,13 @@ function fetchPopularBoards(category) {
             `;
             
             top10.forEach((item, index) => {
-                // 날짜가 없으면 빈칸 처리
+            	const postDate = item.postdate ? item.postdate.split("T")[0] : '';
+            	
                 tableHTML += `
                     <tr>
-                        <td style="text-align:center;">\${index + 1}</td>
-                        <td>\${item.title || '제목 없음'}</td>
-                        <td style="text-align:center;">\${item.postdate}</td>
+                        <td style="width:10%; text-align:center;">\${index + 1}</td>
+                        <td><a href="/boards/free/freeBoardView.do?boardIdx=\${item.boardIdx}">\${item.title || '제목 없음'}</a></td>
+                        <td style="width:20%; text-align:center;">\${postDate}</td>
                     </tr>
                 `;
             });

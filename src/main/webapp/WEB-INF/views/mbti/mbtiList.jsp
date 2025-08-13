@@ -17,7 +17,7 @@
 <div class="mbti-section">
 	<h1 class="title">MBTI별 추천 식물</h1>
 		<div class="mbti-container">
-			
+		
 <c:forEach items="${ MBTIs }" var="row" varStatus="loop">
 		<div class="card">
 			<a href="./view.do?mbti=${row.name }">
@@ -27,6 +27,7 @@
 			</a>
 		</div>
 </c:forEach>
+
 	</div>
 </div>
     

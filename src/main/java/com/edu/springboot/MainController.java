@@ -39,5 +39,12 @@ public class MainController {
 		
 		return "main/nonMember";
 	}
+	
+	@GetMapping("/dict/callback")
+	public String ajax_local_callback() {
+		
+		
+		return "dict/ajax_local_callback";
+	}
     
 }
