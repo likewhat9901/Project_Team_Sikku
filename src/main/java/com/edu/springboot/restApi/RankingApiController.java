@@ -51,7 +51,7 @@ public class RankingApiController {
 	        //============================
 	        
 	        // 외부 프로그램(여기서는 Python)을 실행하기 위한 도구 (python.exe 경로 설정 필수)
-            ProcessBuilder pb = new ProcessBuilder("C:\\01DevelopKits\\miniconda3\\python.exe", 
+            ProcessBuilder pb = new ProcessBuilder("C:\\01DevelopKits\\Python313\\python.exe", 
             		"src/main/python/ranking.py", category);	// category는 py파일에 넘길 인자
             pb.environment().put("NAVER_AD_API_CLIENT_ID", apiId);
             pb.environment().put("NAVER_AD_API_CLIENT_SECRET", apiSecret);
