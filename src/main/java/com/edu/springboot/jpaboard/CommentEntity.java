@@ -46,4 +46,11 @@ public class CommentEntity {
 
     @Column(name = "postdate", insertable = false, updatable = false)
     private LocalDateTime postdate;
+    
+    // 
+    @Transient // DB에 저장되지 않는 필드임을 명시
+    private String formattedPostdate;
+    
+    
+    
 }

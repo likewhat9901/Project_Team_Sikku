@@ -5,6 +5,8 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -17,6 +19,7 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -53,11 +56,19 @@ public class BoardEntity {
     @Column(nullable = false)
     private String content;
 
-    @Column(length = 255)
-    private String ofile;
+    // 갤러리 게시판 글쓰기 "사진첨부" 기능을 위해 변경.
+    @Transient  // DB 컬럼이 아님
+    private List<MultipartFile> ofile;
+    
+//    @Column(length = 255)
+//    private String ofile;
 
     @Column(length = 255)
     private String sfile;
+    
+    @OneToMany(mappedBy = "board", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<BoardImageEntity> images = new ArrayList<>();
+
 
     @Column(columnDefinition = "DATE DEFAULT SYSDATE")
     private LocalDateTime postdate;

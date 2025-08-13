@@ -20,7 +20,7 @@
 	<button class="board-btn blue"
 		onclick="location.href='/boards/free/freeBoardList.do'">자유게시판</button>
 	<button class="board-btn green"
-		onclick="location.href='/galleryBoardList.do'">갤러리게시판</button>
+		onclick="location.href='/boards/gallery/galleryBoardList.do'">갤러리게시판</button>
 	</div>
 	
 	<div class="search-write-container">
