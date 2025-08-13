@@ -16,8 +16,7 @@
     <h1 class="detail-title">식물도감 상세정보</h1>
     <div class="plant-card">
         <div class="plant-image">
-            🌿 식물 이미지
-            <img alt="" src="images/dict/${plant.note}">
+            <img alt="" src="/images/dict/${plant.imgpath}" />
         </div>
         <div class="plant-info">
         	<div class="plant-profile">

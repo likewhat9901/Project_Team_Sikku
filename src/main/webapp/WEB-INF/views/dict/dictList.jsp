@@ -21,7 +21,8 @@
 	            <img src="/images/dict/${row.imgpath }" alt="식물사진">
 	        </div>
 	        <div class="plant_name">${row.name }</div>
-	        <div class="plant_category">관상용</div>
+	        <div class="plant_category">${row.category }</div>
+	        <p class="plant_engname">${row.engname }</p>
 	    </a>
 </c:forEach>
 	</div>
