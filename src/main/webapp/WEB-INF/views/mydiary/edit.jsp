@@ -53,7 +53,7 @@
                  name="plantidx"
                  value="${p.plantidx}"
                  <c:if test="${myDiaryDTO.plantidx == p.plantidx}">checked</c:if>>
-          <span>${fn:escapeXml(p.name)}</span>
+          <span>${p.name}</span>
         </label>
       </c:forEach>
       <!-- 선택 해제(미선택으로 바꾸기) -->

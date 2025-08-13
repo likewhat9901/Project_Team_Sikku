@@ -31,6 +31,7 @@ public class MainController {
 	    String userId = auth.getName();
 		
 	    //List<DictDTO> plants = dao.selectAll();
+	    // 사용자가 등록한 식물만 보이게 수정
 		List<DictDTO> plants = dao.selectPlantsByUser(userId);
 
 //		System.out.println(plants);

@@ -17,6 +17,44 @@
 <!-- Dashboard Section -->
 <div class="dashboard">
 	<h2 class="dashboard-title">내 식물 상태창</h2>
+	<!-- 다이어리에 글을 작성하지 않았을 때 -->
+<c:choose>
+	<c:when test="${empty plants}">
+		<div class="plant-container placeholder" data-placeholder="true">
+        <div class="plant-card">
+          <div class="plant-info">
+            <div class="plant-image">
+              <!-- 기본 이미지 -->
+              <img src="/images/placeholder/plantrb_whitebg.png" alt="기본 식물 이미지">
+            </div>
+            <div class="plant-info-box">
+              <p class="plant-name">식물명 : 나의 식꾸</p>
+              <p class="plant-description">요약 정보는 다이어리를 작성하면 자동으로 채워져요.</p>
+            </div>
+          </div>
+          <!--        
+          왼쪽 버튼   
+          <div class="navigation-btn prev-btn" aria-hidden="true">&#8249;</div>
+           -->
+          <div class="plant-status">
+            <div class="status-header">식물 상태창</div>
+            <div class="status-content">
+              <a class="btn-write" href="/mydiary/write.do"
+                 style="display:inline-block;padding:10px 14px;border:1px solid #2b7;color:#2b7;border-radius:8px;text-decoration:none;">
+               + 다이어리를 작성해주세요
+              </a>
+            </div>
+          </div>
+          <!-- 
+          오른쪽 버튼
+          <div class="navigation-btn next-btn" aria-hidden="true">&#8250;</div>          
+           -->
+        </div>
+      </div>
+    </c:when>
+    
+    <c:otherwise>
+    <!-- 다이어리에 글을 썼을 때 보이는 기존 카드 형식. -->
 <c:forEach items="${ plants }" var="row" varStatus="loop">
 	<div class="plant-container">
 		<div class="plant-card">
@@ -40,6 +78,8 @@
 		</div>
 	</div>
 </c:forEach>
+</c:otherwise>
+  </c:choose>
 </div>
 
 <%@ include file="/WEB-INF/views/common/footer.jsp" %>
@@ -93,6 +133,13 @@ window.addEventListener('DOMContentLoaded', function () {
   const FAIL_MSG = '데이터 불러오기에 실패했습니다.';
   const LIB_FAIL_MSG = '그래프 라이브러리 로드에 실패했습니다.';
 
+  if (container.dataset.placeholder === 'true' || container.classList.contains('placeholder')) {
+	    // 상태 헤더만 안내로 교체 (옵션)
+	    const header = container.querySelector('.plant-status .status-header');
+	    if (header) header.textContent = '다이어리 작성 후 예측 그래프가 표시됩니다';
+	    return;
+	  }
+  
   // 첫 번째 카드만 사용
   const container = document.querySelector('.plant-container');
   if (!container) return;
