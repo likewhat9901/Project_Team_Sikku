@@ -21,6 +21,9 @@ import lombok.RequiredArgsConstructor;
 @Service
 public class BoardService {
    
+	@Autowired
+    private BoardRepository boardRepository;
+	
    //DAO역할의 인터페이스
    @Autowired
    private BoardRepository br;
@@ -144,5 +147,12 @@ public class BoardService {
         return br.findTop10ByCategoryOrderByLikesDesc(category);
     }
 
-   
+ // 마이페이지: 내가 좋아요 누른 글 목록 조회  
+    public List<LikedPostDto> getLikedPostsOf(String userId) {
+        return lr.findLikedPostsByUser(userId);
+    }
+    
+    public List<MyPostDto> getMyPostsOf(String userId) {
+        return boardRepository.findMyPosts(userId);
+    }
 }
