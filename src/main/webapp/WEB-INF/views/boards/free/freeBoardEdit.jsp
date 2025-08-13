@@ -22,9 +22,6 @@
 					name="title" value="${board.title}" required />
 			</div>
 
-			<input type="hidden" name="userId" value="${board.userId}" />
-			<input type="hidden" name="postdate" value="${board.postdate}" />
-
 			<div class="form-group">
 				<label for="content">내용</label>
 				<textarea id="content" name="content" rows="10" required>${board.content}</textarea>

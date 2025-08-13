@@ -26,6 +26,8 @@ public interface LikeRepository extends JpaRepository<LikeEntity, Long> {
 	*/
     Optional<LikeEntity> findByBoard_BoardIdxAndUserId(Long boardIdx, String userId);
     
+    boolean existsByBoard_BoardIdxAndUserId(Long boardIdx, String userId);
+    
     // 해당 게시물(1개)의 좋아요갯수
     Long countByBoard_BoardIdx(Long boardIdx);
     
