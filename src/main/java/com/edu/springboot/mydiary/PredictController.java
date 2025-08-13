@@ -4,8 +4,10 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
@@ -13,6 +15,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.databind.JsonNode;
@@ -35,13 +38,25 @@ public class PredictController {
 
     //api/predict/outdoor의 요청을 받고 응답 헤더를 json,utf-8로 설정. 하지 않으면 한글 깨짐
     @GetMapping(value="/outdoor", produces = "application/json; charset=UTF-8")
-    public ResponseEntity<JsonNode> getOutdoorForecast() {
+    public ResponseEntity<JsonNode> getOutdoorForecast(
+    		@RequestParam(value= "names") String names) {
         try {
             List<String> cmd = new ArrayList<>();
             cmd.add(pythonBin);  cmd.add("-u"); 
             cmd.add(scriptPath); cmd.add("--csvDir"); cmd.add(csvDir);
             
-            
+            // names 파라미터가 있으면 --only로 전달 
+            if (names != null && !names.isBlank()) {
+                // 간단 정제: 공백 트림, 비어있는 토큰 제거
+                String safe = Arrays.stream(names.split(","))
+                        .map(String::trim)
+                        .filter(s -> !s.isEmpty())
+                        .collect(Collectors.joining(","));
+                if (!safe.isBlank()) {
+                    cmd.add("--only");
+                    cmd.add(safe);
+                }
+            }
             ProcessBuilder pb = new ProcessBuilder(cmd);
             pb.redirectErrorStream(false);
             // 파이썬 표준출력/에러 UTF-8 강제

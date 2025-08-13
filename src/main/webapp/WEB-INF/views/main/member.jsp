@@ -5,7 +5,7 @@
 <html>
 <head>
 	<meta charset="UTF-8">
-	<title>SpringBoot</title>
+	<title>식꾸</title>
 	<link rel="stylesheet" href="/css/common/layout.css" />
 	<link rel="stylesheet" href="/css/member.css">
 </head>
@@ -36,10 +36,6 @@
               <p class="plant-description">요약 정보는 다이어리를 작성하면 자동으로 채워져요.</p>
             </div>
           </div>
-          <!--        
-          왼쪽 버튼   
-          <div class="navigation-btn prev-btn" aria-hidden="true">&#8249;</div>
-           -->
           <div class="plant-status">
             <div class="status-header">식물 상태창</div>
             <div class="status-content">
@@ -49,10 +45,6 @@
               </a>
             </div>
           </div>
-          <!-- 
-          오른쪽 버튼
-          <div class="navigation-btn next-btn" aria-hidden="true">&#8250;</div>          
-           -->
         </div>
       </div>
     </c:when>
@@ -183,10 +175,18 @@ window.addEventListener('DOMContentLoaded', function () {
 	return; 
   }
 
+  //카드들에서 이름 수집 → 중복 제거
+  const names = [...new Set(
+    containers.map(c => (c.dataset.plantName || '').trim()).filter(Boolean)
+  )];
+
+  // 한글 안전하게 인코딩해서 붙이기
+  const namesParam = names.map(encodeURIComponent).join(',');
+  
   // 2) 예측 데이터 한 번만 가져오기
   let json;
   try {
-    const res = await fetch('/api/predict/outdoor', 
+    const res = await fetch('/api/predict/outdoor?names='+namesParam, 
     		{ headers: { 'Accept': 'application/json' } });
     if (!res.ok) { 
 		console.warn(FAIL_MSG); 
