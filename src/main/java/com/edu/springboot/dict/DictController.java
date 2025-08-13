@@ -44,6 +44,23 @@ public class DictController {
 		
 		model.addAttribute("plant", plant);
 		
+		// 전체 plantidx 순서 가져오기
+	    List<Integer> order = dao.selectAllPlantidx(); // plantidx만 순서대로 가져오는 DAO 메서드
+
+	    int n = order.size();
+	    int idx = order.indexOf(plantidx);
+
+	    // 이전, 다음 계산 (순환)
+	    int prevIdx = (idx - 1 + n) % n;
+	    int nextIdx = (idx + 1) % n;
+
+	    int prevPlant = order.get(prevIdx);
+	    int nextPlant = order.get(nextIdx);
+
+	    // JSP에서 사용할 수 있도록 추가
+	    model.addAttribute("prevDict", prevPlant);
+	    model.addAttribute("nextDict", nextPlant);
+		
 		return "dict/dictView";
 	}
 	

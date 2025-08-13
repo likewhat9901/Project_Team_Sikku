@@ -84,6 +84,11 @@
             </div>
         </div>
     </div>
+    
+    <div class="dict-nav-bottom">
+		<a class="prev-btn" href="/dict/view.do?plantidx=${prevDict}">← 이전</a>
+	  	<a class="next-btn" href="/dict/view.do?plantidx=${nextDict}">다음 →</a>
+	</div>
 </div>
 
 

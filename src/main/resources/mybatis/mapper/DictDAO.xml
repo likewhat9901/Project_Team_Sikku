@@ -16,6 +16,11 @@
 		resultType="com.edu.springboot.dict.DictDTO">
 		SELECT * from plantdict
 	</select>
+	
+	<select id="selectAllPlantidx"
+		resultType="Integer">
+		SELECT plantidx from plantdict
+	</select>
 
 	<select id="selectPlantsByUser"
 		resultType="com.edu.springboot.dict.DictDTO">
