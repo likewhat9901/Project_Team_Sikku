@@ -44,32 +44,36 @@ public class WebSecurityConfig {
         http.csrf(csrf -> csrf.disable())
             .cors(cors -> cors.disable())
             .authorizeHttpRequests(req -> req
-                .dispatcherTypeMatchers(DispatcherType.FORWARD).permitAll()
-                
-                //정적/공개 리소스
-                .requestMatchers("/css/**","/js/**","/images/**").permitAll()
-                .requestMatchers("/uploads/**").permitAll()
-                
-                //비회원 메인
-                .requestMatchers("/main/nonMember.do").permitAll()
-                
-                //날씨 정보는 비회원도 공개
-                .requestMatchers("/api/weather").permitAll()
-                .requestMatchers("/api/ranking").permitAll()
-                .requestMatchers("/api/top10boards").permitAll()
-                
-                //이미 공기 중인 엔드 포인트
-                .requestMatchers("/", "/signup.do", "/signupAction.do",
-                                 "/guest/**", "/about/**", "/mbti/**",
-                                 "/myLogin.do", "/myLoginAction.do", "/myLogout.do",
-                                 "/fonts/**"
-                		).permitAll()
-                //보호 구간
-                .requestMatchers("/admin/**").hasRole("ADMIN")
-                .requestMatchers("/member/**").hasAnyRole("USER","ADMIN")
-                .requestMatchers("/mypage/**").authenticated()
-                .anyRequest().authenticated()
-            )
+            	    .dispatcherTypeMatchers(DispatcherType.FORWARD).permitAll()
+
+            	    // 정적/공개 리소스
+            	    .requestMatchers("/css/**","/js/**","/images/**").permitAll()
+            	    .requestMatchers("/uploads/**").permitAll()
+
+            	    // 식물도감 페이지 비회원도 공개
+            	    .requestMatchers("/dict/**").permitAll()
+
+            	    // 비회원 메인
+            	    .requestMatchers("/main/nonMember.do").permitAll()
+
+            	    // 날씨, 랭킹
+            	    .requestMatchers("/api/weather").permitAll()
+            	    .requestMatchers("/api/ranking").permitAll()
+            	    .requestMatchers("/api/top10boards").permitAll()
+
+            	    // 공개 엔드포인트
+            	    .requestMatchers("/", "/signup.do", "/signupAction.do",
+            	                     "/guest/**", "/about/**", "/mbti/**",
+            	                     "/myLogin.do", "/myLoginAction.do", "/myLogout.do",
+            	                     "/fonts/**").permitAll()
+
+            	    // 보호 구간
+            	    .requestMatchers("/admin/**").hasRole("ADMIN")
+            	    .requestMatchers("/member/**").hasAnyRole("USER","ADMIN")
+            	    .requestMatchers("/mypage/**").authenticated()
+            	    .anyRequest().authenticated()
+            	)
+
             .formLogin(form -> form
                 .loginPage("/myLogin.do")
                 .loginProcessingUrl("/myLoginAction.do")

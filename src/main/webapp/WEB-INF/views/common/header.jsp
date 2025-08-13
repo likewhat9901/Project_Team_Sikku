@@ -6,11 +6,21 @@
 <!-- Header Section -->
 <div class="header">
     <div class="header-content">
-        <a href="/main/member.do">
-	         <div class="logo">
-	             <img alt="" src="/images/header/logo.png" />
-	         </div>
-    	</a>
+	        <sec:authorize access="isAuthenticated()">
+	    <a href="/main/member.do">
+	        <div class="logo">
+	            <img alt="" src="/images/header/logo.png" />
+	        </div>
+	    </a>
+	</sec:authorize>
+	
+	<sec:authorize access="!isAuthenticated()">
+	    <a href="/main/nonMember.do">
+	        <div class="logo">
+	            <img alt="" src="/images/header/logo.png" />
+	        </div>
+	    </a>
+	</sec:authorize>
         <div class="nav-icons">
             <div class="nav-item" onclick="location.href='/main/nonMember.do'">
                 <div class="icon-box"><img alt="" src="/images/header/icons/icon_farmer_man.png"/></div>
