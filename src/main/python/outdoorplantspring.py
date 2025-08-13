@@ -28,46 +28,50 @@ def outdoor_json(csv_dir):
         df.columns = (df.columns
                         .str.replace('\ufeff', '', regex=False)
                         .str.strip().str.lower())
-                          
+        
+        # 공통 데이터                  
         X = df[['date']].values
         y_height = df['height'].values
-        y_fruitnum = df['fruitnum'].values
 
         # SVR 모델 학습 - 길이
         svr_height = SVR(kernel='rbf', C=100, epsilon=0.1)
         svr_height.fit(X, y_height)
 
-        # SVR 모델 학습 - 열매 개수
-        svr_fruit = SVR(kernel='rbf', C=100, epsilon=0.1)
-        svr_fruit.fit(X, y_fruitnum)
-
-        # 예측용 데이터 생성
-        X_plot = np.linspace(X.min(), X.max() + 2, 200).reshape(-1, 1)
-        y_height_plot = svr_height.predict(X_plot)
-        y_fruit_plot = svr_fruit.predict(X_plot)
-
         # 다음 주차 예측
         next_week = X.max() + 1
         pred_height = svr_height.predict([[next_week]])[0]
-        pred_fruit = svr_fruit.predict([[next_week]])[0]
 
-        # print("길이 예측값:", pred_height, "열매수 예측값:", pred_fruit)
+		# fruitnum이 있을 때만 처리
+        has_fruit = 'fruitnum' in df.columns
+        if has_fruit:
+            y_fruitnum = df['fruitnum'].values
+            svr_fruit = SVR(kernel='rbf', C=100, epsilon=0.1)
+            svr_fruit.fit(X, y_fruitnum)
+            pred_fruit = float(svr_fruit.predict([[next_week]])[0])
+        else:
+            pred_fruit = None
+            
         # 원본 데이터를 JSON 직렬화 가능한 형태로 변환
         data_with_prediction = []
         for _, row in df.iterrows():
-            data_with_prediction.append({
+            item = {
                 'date': int(row['date']),  # numpy int를 파이썬 int로 변환
-                'height': float(row['height']),  # numpy float를 파이썬 float로 변환
-                'fruitnum': float(row['fruitnum'])  # numpy float를 파이썬 float로 변환
-            })
-
+                'height': float(row['height']),  # numpy float를 파이썬 float로 변환				
+			}
+            if has_fruit:
+                item['fruitnum'] = float(row['fruitnum'])
+            data_with_prediction.append(item)
+            
         # 예측값 추가 (이미 파이썬 기본 타입으로 변환됨)
-        data_with_prediction.append({
+        pred_item = {
             'date': int(next_week),
-            'height': float(round(pred_height, 2)),
-            'fruitnum': float(round(pred_fruit, 2))
-        })
+            'height': float(round(pred_height, 2))
+        }
+        if has_fruit:
+            pred_item['fruitnum'] = float(round(pred_fruit, 2))
+        data_with_prediction.append(pred_item)
 
+			
         results[plant_name] = data_with_prediction
         
     return results

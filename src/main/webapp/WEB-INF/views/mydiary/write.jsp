@@ -232,12 +232,12 @@ function onlyInteger(event) {
 						<div class="mydiary-write-row">
 							<div class="mydiary-write-label">식물명</div>
 							<div class="mydiary-write-input-area">
-								<!-- 식물명 (라디오 전용) -->
 								<div class="mydiary-radio-group" role="radiogroup"
 									aria-label="식물명">
 									<c:forEach var="p" items="${plants}">
 										<label class="mydiary-radio"> <input type="radio"
-											name="plantidx" value="${p.plantidx}"> <span>${fn:escapeXml(p.name)}</span>
+											name="plantidx" value="${p.plantidx}"> 
+											<span>${p.name}</span>
 										</label>
 									</c:forEach>
 									<button type="button" class="mydiary-radio-clear"
