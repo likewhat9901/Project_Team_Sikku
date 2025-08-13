@@ -28,6 +28,10 @@
 			   <div class="icon-box"><img alt="" src="/images/header/icons/icon_diary.png"/></div>
 			   <span>다이어리</span>
 		    </div>
+		    <div class="nav-item" onclick="location.href='/main/nonMember.do'">
+                <div class="icon-box"><img alt="" src="/images/header/icons/icon_calender.png"/></div>
+                <span>캘린더</span>
+            </div>
 			<div class="nav-item" onclick="location.href='/dict/list.do'">
 			   <div class="icon-box"><img alt="" src="/images/header/icons/icon_farmplants.png"/></div>
 			   <span>식물도감</span>

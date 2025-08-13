@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.edu.springboot.jpaboard.BoardEntity;
 import com.edu.springboot.jpaboard.BoardService;
+import com.edu.springboot.jpaboard.dto.IBoardRow;
 
 
 
@@ -26,11 +27,13 @@ public class PopularBoardApiController {
 	// Map<String, Object>	{"key": value} 형태의 JSON
     public Map<String, Object> getTop10Boards(@RequestParam(name="category", defaultValue="1") Integer category){
 		try {
-			List<BoardEntity> top10Boards = boardService.getTop10BoardsByCategory((Integer)category);
+			List<IBoardRow> top10Boards = boardService.getTop10BoardsByCategory((Integer)category);
 			
 			Map<String, Object> response = new HashMap<>();
 			response.put("category", category);  // 원하는 필드를 추가
 	        response.put("top10Boards", top10Boards);  // top 10 게시글 추가
+	        
+	        System.out.println("top10Boards: "+ top10Boards);
 	        
 	        return response;
 			
