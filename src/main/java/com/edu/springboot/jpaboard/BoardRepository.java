@@ -14,9 +14,14 @@ import com.edu.springboot.jpaboard.dto.MyPostDto;
 public interface BoardRepository extends JpaRepository<BoardEntity, Long> {
     // 기본적인 CRUD + findAll(Sort sort) 등 제공
 	
+	// 카테고리를 기준으로 데이터 가져오기
+	Page<BoardEntity> findByCategory(Pageable pageable, Integer category);
+	
 	// 제목 LIKE 검색을 위한 메서드 (예: %검색어%)
-    Page<BoardEntity> findByTitleLike(String title, Pageable pageable);
+	Page<BoardEntity> findByCategoryAndTitleLike(Integer category, String title, Pageable pageable);
     
+	
+	
     List<BoardEntity> findTop10ByCategoryOrderByLikesDesc(Integer category);
     
     

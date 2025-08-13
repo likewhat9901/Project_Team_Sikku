@@ -1,5 +1,3 @@
-
-
 /**
  댓글 수정을 위한 JS
  */
@@ -65,9 +63,9 @@
 
  // 댓글 작성 폼 검증
  function validateCommentForm() {
-     const textarea = document.querySelector('form[action="/boards/free/freeBoardCommentWriteProc.do"] textarea[name="content"]');
-
-	      if (textarea.value.trim() == '' ) {
+     const textarea = document.querySelector('form[action="galleryBoardCommentWriteProc.do"] textarea[name="content"]');
+     
+     if (!textarea.value.trim()) {
          alert('댓글 내용을 입력해주세요.');
          textarea.focus();
          return false;
@@ -103,7 +101,7 @@
               const boardIdx = this.getAttribute('data-board-idx');
 
 			  // Fetch API를 사용해 서버에 POST 요청
-			  fetch('/boards/free/toggleLike.do', {
+			  fetch('/boards/gallery/toggleLike2.do', {
 			      method: 'POST',
 			      headers: {
 			          'Content-Type': 'application/x-www-form-urlencoded' // 폼 데이터 형식
@@ -138,10 +136,54 @@
           });
       }
   });
- 
- 
- 
- 
- 
- 
- 
+  
+  
+  document.addEventListener('DOMContentLoaded', function() {
+      const prevBtn = document.getElementById('prevBtn');
+      const nextBtn = document.getElementById('nextBtn');
+      const carouselInner = document.querySelector('.carousel-inner');
+      const items = document.querySelectorAll('.carousel-item');
+      let currentIndex = 0;
+
+      // 초기 상태: 첫 번째 아이템을 보여주고 버튼 상태 업데이트
+      showItem(currentIndex);
+      updateButtons();
+
+      // 다음 버튼 클릭
+      nextBtn.addEventListener('click', function() {
+          currentIndex++;
+          if (currentIndex >= items.length) {
+              currentIndex = 0; // 마지막 이미지에서 처음으로 돌아감
+          }
+          showItem(currentIndex);
+          updateButtons();
+      });
+
+      // 이전 버튼 클릭
+      prevBtn.addEventListener('click', function() {
+          currentIndex--;
+          if (currentIndex < 0) {
+              currentIndex = items.length - 1; // 처음 이미지에서 마지막으로 돌아감
+          }
+          showItem(currentIndex);
+          updateButtons();
+      });
+
+      // 특정 인덱스의 아이템을 보여주는 함수
+      function showItem(index) {
+          // 모든 아이템에서 active 클래스 제거
+          items.forEach(item => item.classList.remove('active'));
+          // 선택된 아이템에 active 클래스 추가
+          items[index].classList.add('active');
+      }
+
+      // 버튼 상태를 업데이트하는 함수 (선택 사항)
+      // 예: 첫 이미지에서는 이전 버튼 비활성화, 마지막 이미지에서는 다음 버튼 비활성화
+      function updateButtons() {
+          // 예시로 무한 루프 방식이므로 버튼 비활성화는 필요 없음
+      }
+  });
+  
+  
+  
+  

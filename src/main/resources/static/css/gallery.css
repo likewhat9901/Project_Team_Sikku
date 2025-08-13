@@ -1,0 +1,725 @@
+@charset "UTF-8";
+
+/*==============게시판 목록 자유, 갤러리 버튼 2개==============*/ 
+  
+/* 버튼 컨테이너 - 가운데 정렬 */
+.board-btn-container {
+    display: flex;
+    justify-content: center;
+    gap: 20px; /* 버튼 간 간격 */
+    margin: 30px 0;
+}
+
+/* 버튼 기본 스타일 */
+.board-btn {
+    font-size: 24px;
+    font-weight: bold;
+    padding: 24px 48px; /* 버튼 크기 조절 */
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    color: white;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* 색상별 버튼 */
+.board-btn.blue {
+    background-color: #4a6cf7;
+}
+
+.board-btn.green {
+    background-color: #2d6a4f;
+}
+
+/* 마우스 오버 시 효과 */
+.board-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+/*================================================*/ 
+
+
+
+/* ==========================
+   [LIST 페이지] galleryBoardList.jsp
+   ========================== */
+
+/*==============게시판 목록 검색창 + 글쓰기 버튼 ==============*/ 
+
+/* 검색창 + 글쓰기 버튼 컨테이너 너비와 중앙 정렬 */
+.search-write-container {
+    max-width: 1000px;  /* 게시판 카드 영역과 동일 너비 */
+    margin: 20px auto;  /* 상하 여백, 좌우 중앙 정렬 */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* 검색창 너비 제한, 필요시 조정 */
+.search-write-container input[type="search"] {
+    flex: 1;
+    max-width: 300px;
+    padding: 10px 15px;
+    font-size: 16px;
+    border: 2px solid #ccc;
+    border-radius: 8px;
+    outline: none;
+}
+
+/* 글쓰기 버튼 스타일 */
+.write-btn {
+    margin-left: 10px;
+    padding: 10px 20px;
+    font-size: 16px;
+    font-weight: bold;
+    background-color: #4a6cf7;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.write-btn:hover {
+    background-color: #3a5bd4;
+}
+   
+/*===================================================================*/
+
+/*======================갤러리 리스트 영역=================*/ 
+/* 전체 피드 컨테이너: 화면 중앙 */
+.feed-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 20px;
+
+    /* 가로 세로 중앙 정렬 */
+    align-items: center;      /* 가로 가운데 */
+    justify-content: flex-start; /* 세로는 스크롤 가능 */
+    min-height: 100vh;        /* 화면 높이 최소 100% */
+    box-sizing: border-box;
+}
+
+/* 게시물 카드 */
+.feed-post {
+    width: 100%;              /* 최대 폭 조절 */
+    max-width: 600px;         /* 화면 너무 넓어도 카드 제한 */
+    background-color: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    overflow: hidden;
+    transition: transform 0.2s, box-shadow 0.2s;
+    cursor: pointer;
+}
+
+/* 호버 효과 */
+.feed-post:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 15px rgba(0,0,0,0.2);
+}
+
+/* 헤더 */
+.feed-header {
+    display: flex;
+    align-items: center;
+    padding: 10px 15px;
+}
+
+.profile-img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    margin-right: 10px;
+    object-fit: cover;
+}
+
+.username {
+    font-weight: bold;
+    font-size: 16px;
+}
+
+/* 게시물 이미지 */
+.feed-image img {
+    width: 100%;
+    max-height: 500px;
+    object-fit: cover;
+}
+
+/* 액션 버튼 */
+.feed-actions {
+    display: flex;
+    align-items: center;
+    padding: 10px 15px;
+    font-size: 16px;
+}
+
+.feed-actions span {
+    margin: 0 10px 0 5px;
+}
+
+/* 게시물 내용 */
+.feed-content {
+    padding: 0 15px 15px 15px;
+    font-size: 16px;
+    line-height: 1.5;
+}
+
+.feed-content .username {
+    margin-right: 5px;
+    font-weight: bold;
+}
+
+
+/* ==========================
+   [WRITE 페이지] galleryBoardWrite.jsp
+   ========================== */
+
+/* gallery.css */
+
+/* 전체 컨테이너 */
+.write-container {
+    max-width: 800px;
+    margin: 40px auto;
+    padding: 30px;
+    background: #f8fff8; /* 은은한 연초록 배경 */
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 100, 0, 0.1);
+    font-family: 'Noto Sans KR', sans-serif;
+}
+
+/* 제목 */
+.write-container h2 {
+    text-align: center;
+    color: #2e7d32; /* 진한 초록 */
+    margin-bottom: 25px;
+}
+
+/* 폼 스타일 */
+.write-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+/* 인풋과 텍스트에어리어 공통 */
+.write-form input[type="text"],
+.write-form textarea {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #a5d6a7;
+    border-radius: 8px;
+    font-size: 15px;
+    transition: border-color 0.3s, box-shadow 0.3s;
+    outline: none;
+}
+
+.write-form input[type="text"]:focus,
+.write-form textarea:focus {
+    border-color: #66bb6a;
+    box-shadow: 0 0 6px rgba(102, 187, 106, 0.4);
+}
+
+/* 텍스트에어리어 */
+.write-form textarea {
+    resize: vertical;
+    min-height: 150px;
+}
+
+/* 이미지 업로드 영역 */
+.image-upload label {
+    display: inline-block;
+    background: linear-gradient(45deg, #66bb6a, #43a047);
+    color: #fff;
+    padding: 8px 14px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    margin-bottom: 8px;
+    transition: background 0.3s;
+}
+
+.image-upload label:hover {
+    background: linear-gradient(45deg, #57a05c, #388e3c);
+}
+
+/* 파일 인풋 숨기기 */
+.image-upload input[type="file"] {
+    display: none;
+}
+
+/* 미리보기 영역 */
+.image-preview {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    min-height: 100px;
+    background: #e8f5e9;
+    border: 1px dashed #a5d6a7;
+    padding: 10px;
+    border-radius: 8px;
+}
+
+.image-preview img {
+    max-width: 100px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+}
+
+/* 버튼 영역 */
+.write-actions {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.write-actions button {
+    padding: 10px 20px;
+    font-size: 15px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+/* 작성 완료 버튼 */
+.write-actions button[type="submit"] {
+    background: linear-gradient(45deg, #66bb6a, #43a047);
+    color: white;
+}
+
+.write-actions button[type="submit"]:hover {
+    background: linear-gradient(45deg, #57a05c, #388e3c);
+}
+
+/* 취소 버튼 */
+.cancel-btn {
+    background: #c8e6c9;
+    color: #2e7d32;
+}
+
+.cancel-btn:hover {
+    background: #a5d6a7;
+}
+
+/* ==========================
+   [WRITE 페이지] galleryBoardView.jsp
+   ========================== */
+   
+ /* ==============이미지 여러개 보기 영역============== */
+   
+ /* 캐러셀 컨테이너 */
+.Gallery-image-container {
+    position: relative; /* 버튼 위치 지정을 위해 필수 */
+    width: 600px; /* 원하는 너비 설정 */
+    height: 400px;  /* 고정 높이 추가 */
+    margin: auto;
+    overflow: hidden; /* 캐러셀 밖으로 나가는 이미지는 숨김 */
+}
+
+/* 이미지들이 실제로 담겨있는 컨테이너 */
+.carousel-inner {
+    display: flex; /* 이미지를 가로로 나열 */
+    transition: transform 0.5s ease-in-out; /* 슬라이드 효과 */
+    height: 100%; /* 부모 높이에 맞춤 */
+}
+
+/* 각 이미지 아이템 */
+.carousel-item {
+    min-width: 100%;  /* 항상 부모 너비(600px)를 채우도록 설정 */
+    height: 100%;       /* 부모 높이에 맞춤 */
+    display: none; /* 기본적으로 모든 이미지를 숨김 */
+}
+
+/* 현재 활성화된 이미지 아이템 */
+.carousel-item.active {
+    display: block; /* active 클래스가 있는 이미지 아이템만 보이도록 설정 */
+}
+
+/* 화살표 버튼 스타일 */
+.carousel-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    z-index: 10;
+}
+
+.prev-btn {
+    left: 10px;
+}
+
+.next-btn {
+    right: 10px;
+}
+
+/* 메인 레이아웃 (인스타 스타일) */
+.board-detail {
+    display: flex;
+    max-width: 1200px;
+    margin: 0 auto;
+    background-color: var(--card-background);
+    border-radius: 12px;
+    box-shadow: 0 4px 8px var(--shadow-color);
+    overflow: hidden;
+    margin-bottom: 2rem;
+}
+
+.Gallery-image-container {
+    flex: 1.3; /* 이미지 영역을 더 크게 */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #f1f1f1;
+}
+
+.feed-image {
+    width: 100%;
+    height: 100%;
+    max-height: 80vh;
+    overflow: hidden;
+}
+
+.feed-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain; /* 이미지 비율 유지 */
+}
+
+.Gallery-content-container {
+    flex: 1; /* 정보 영역 */
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+}
+
+.board-title h2 {
+    margin: 0;
+    font-size: 1.8rem;
+    color: var(--dark-green);
+}
+
+.board-writer h4 {
+    margin: 0.5rem 0;
+    color: var(--subtle-text);
+}
+
+.Gallery-content-container > span {
+    font-size: 0.9rem;
+    color: var(--subtle-text);
+    margin-bottom: 1rem;
+}
+
+.board-content {
+    flex-grow: 1;
+    margin: 1rem 0;
+    line-height: 1.6;
+    overflow-y: auto;
+}
+
+hr {
+    border: none;
+    border-top: 1px solid var(--border-color);
+    margin: 1rem 0;
+}
+
+.board-view-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 0;
+    border-top: 1px solid var(--border-color);
+}
+
+/* 좋아요 버튼 */
+#board-like-btn {
+    background: none;
+    border: 1px solid var(--border-color);
+    border-radius: 20px;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: all 0.3s ease;
+    color: var(--text-color);
+}
+
+#board-like-btn:hover {
+    background-color: var(--light-green);
+    border-color: var(--dark-green);
+    color: var(--dark-green);
+}
+
+#heart-icon {
+    font-size: 1.2rem;
+}
+
+/* 수정/삭제 버튼 */
+.board-actions {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.board-actions button {
+    background-color: var(--dark-green);
+    color: #fff;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.board-actions button:hover {
+    background-color: var(--primary-green);
+}
+
+/* 댓글 영역 */
+.comment-write-form, .comment-container {
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 2rem;
+    background-color: var(--card-background);
+    border-radius: 12px;
+    box-shadow: 0 4px 8px var(--shadow-color);
+}
+
+.comment-write-form h3, .comment-container h3 {
+    margin-top: 0;
+    color: var(--dark-green);
+}
+
+.comment-input-area {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.comment-write-textarea {
+    flex: 1;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 0.5rem;
+    resize: none;
+}
+
+.btn-add {
+    background-color: var(--primary-green);
+    color: #fff;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.btn-add:hover {
+    background-color: var(--dark-green);
+}
+
+.comment-card {
+    border-bottom: 1px solid var(--border-color);
+    padding: 1rem 0;
+    margin-top: 1rem;
+}
+
+.comment-card:last-child {
+    border-bottom: none;
+}
+
+.comment-header {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.9rem;
+    color: var(--subtle-text);
+}
+
+.comment-content {
+    margin: 0.5rem 0;
+}
+
+.comment-actions-btn button, .form-actions button {
+    background: none;
+    border: 1px solid var(--primary-green);
+    color: var(--primary-green);
+    padding: 0.3rem 0.6rem;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-left: 0.5rem;
+}
+
+.comment-actions-btn button:hover, .form-actions button:hover {
+    background-color: var(--primary-green);
+    color: #fff;
+}
+
+.comment-edit-form {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.comment-edit-textarea {
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 0.5rem;
+}
+
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.5rem;
+}
+
+@media (max-width: 768px) {
+    .board-detail {
+        flex-direction: column;
+    }
+    .Gallery-content-container {
+        padding: 1rem;
+    }
+    .Gallery-image-container {
+        height: auto;
+        max-height: 60vh;
+    }
+}
+
+
+/* ==========================
+   [EDIT 페이지] galleryBoardEdit.jsp
+   ========================== */
+
+/* 전체 컨테이너 */
+.board-edit {
+    max-width: 800px;
+    margin: 40px auto;
+    padding: 30px;
+    background: #f8fff8; /* 은은한 연초록 배경 */
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 100, 0, 0.1);
+    font-family: 'Noto Sans KR', sans-serif;
+}
+
+/* 제목 */
+.board-edit h1 {
+    text-align: center;
+    color: #795548; /* 브라운 톤 */
+    margin-bottom: 25px;
+}
+
+/* 폼 그룹 */
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 15px;
+}
+
+/* 인풋 & 텍스트에어리어 */
+.form-group input[type="text"],
+.form-group textarea {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #d7ccc8;
+    border-radius: 8px;
+    font-size: 15px;
+    transition: border-color 0.3s, box-shadow 0.3s;
+    outline: none;
+}
+
+.form-group input[type="text"]:focus,
+.form-group textarea:focus {
+    border-color: #a1887f;
+    box-shadow: 0 0 6px rgba(161, 136, 127, 0.4);
+}
+
+/* 텍스트에어리어 */
+.form-group textarea {
+    resize: vertical;
+    min-height: 150px;
+}
+
+/* 이미지 업로드 영역 */
+.image-upload label {
+    display: inline-block;
+    background: linear-gradient(45deg, #a1887f, #6d4c41);
+    color: #fff;
+    padding: 8px 14px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    margin-bottom: 8px;
+    transition: background 0.3s;
+}
+
+.image-upload label:hover {
+    background: linear-gradient(45deg, #8d6e63, #5d4037);
+}
+
+/* 파일 인풋 숨기기 */
+.image-upload input[type="file"] {
+    display: none;
+}
+
+/* 미리보기 영역 */
+.image-preview {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    min-height: 100px;
+    background: #fbe9e7;
+    border: 1px dashed #d7ccc8;
+    padding: 10px;
+    border-radius: 8px;
+}
+
+.image-preview img {
+    max-width: 100px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+}
+
+/* 버튼 영역 */
+.form-actions {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.form-actions button {
+    padding: 10px 20px;
+    font-size: 15px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+/* 수정 완료 버튼 */
+.form-actions button[type="submit"] {
+    background: linear-gradient(45deg, #a1887f, #6d4c41);
+    color: white;
+}
+
+.form-actions button[type="submit"]:hover {
+    background: linear-gradient(45deg, #8d6e63, #5d4037);
+}
+
+/* 취소 버튼 */
+.form-actions button[type="button"] {
+    background: #d7ccc8;
+    color: #4e342e;
+}
+
+.form-actions button[type="button"]:hover {
+    background: #bcaaa4;
+}

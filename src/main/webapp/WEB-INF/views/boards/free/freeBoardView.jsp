@@ -128,7 +128,7 @@
 				</form>
 
 				<div class="comment-footer">
-					<span class="likes-count">좋아요 ${c.likes}</span>
+					<span class="likes-count"> </span>
 
 					<c:if test="${c.member.userId == loginUserId}">
 						<div id="actions-${c.commentIdx}" class="comment-actions-btn">
@@ -137,9 +137,9 @@
 								class="btn btn-edit" onclick="toggleEditForm('${c.commentIdx}')">수정</button>
 
 							<!-- 삭제 버튼 -->
-							<a
-								href="/boards/free/freeBoardCommentDelete.do?commentIdx=${c.commentIdx}&boardIdx=${board.boardIdx}"
-								class="btn btn-delete" onclick="return confirmDelete()">삭제</a>
+							<button type="button" class="btn btn-delete"
+								onclick="return confirmDeleteWithLink('/boards/free/freeBoardCommentDelete.do?commentIdx=${c.commentIdx}&boardIdx=${board.boardIdx}')">
+								삭제</button>
 						</div>
 					</c:if>
 				</div>
