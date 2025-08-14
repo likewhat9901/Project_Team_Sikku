@@ -9,6 +9,7 @@
 <title>Chat with AI</title>
 <!-- Bootstrap / 기타 CSS -->
 <link rel=stylesheet href="/css/chatbot.css">
+<link rel="stylesheet" href="/css/common/layout.css" />
 <link rel="stylesheet"
 	href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
 <style>

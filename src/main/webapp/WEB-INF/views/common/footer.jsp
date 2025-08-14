@@ -5,7 +5,7 @@
 </div>
 <div class="floating-nav">
   <button onclick="location.href='/chat/chatstart.do'">AI채팅</button>
-  <button onclick="location.href='/chat/chatstart.do'">도움말</button>
+  <button onclick="location.href='/chat/chatstart.do'">구독하기</button>
   <button onclick="location.href='/chat/chatstart.do'">문의</button>
 </div>
 <footer class="oopy-my-footer">

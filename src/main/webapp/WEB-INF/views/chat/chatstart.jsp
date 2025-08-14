@@ -7,6 +7,7 @@
 <head>
 <title>식꾸</title>
 <link rel=stylesheet href="/css/chatbot.css">
+<link rel="stylesheet" href="/css/common/layout.css" />
 </head>
 <body>
 	<%@ include file="/WEB-INF/views/common/header.jsp"%>
