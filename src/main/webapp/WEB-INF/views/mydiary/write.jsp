@@ -8,7 +8,7 @@
 <meta charset="UTF-8">
 <title>식꾸</title>
 <link rel="stylesheet" href="/css/common/layout.css" />
-<link rel="stylesheet" href="/css/myDiarystyle.css" />
+<link rel="stylesheet" href="/css/myDiaryWrite.css" />
 </head>
 <script>
 function validateForm(fm) {
@@ -209,7 +209,7 @@ function onlyInteger(event) {
 					<a href="/mydiary/calendar.do" class="mydiary-calendar-btn">캘린더</a>
 				</nav>
 				<h2 class="mydiary-title">나만의 식물 꾸미기</h2>
-				<button type="button" class="mydiary-write-btn"
+				<button type="button" class="mydiary-list-btn"
 					onclick="location.href='./list.do';">목록보기</button>
 			</div>
 		</div>
@@ -223,6 +223,7 @@ function onlyInteger(event) {
 				<div class="mydiary-write-card">
 					<!-- 카드 헤더 -->
 					<div class="mydiary-write-header">
+						<div class="mydiary-card-number">🌱</div>
 						<h2>관찰 기록</h2>
 					</div>
 
@@ -230,7 +231,13 @@ function onlyInteger(event) {
 					<div class="mydiary-write-content">
 						<!-- 식물명 (라디오: 선택 옵션, 기본값 미선택) -->
 						<div class="mydiary-write-row">
-							<div class="mydiary-write-label">식물명</div>
+							<div class="mydiary-write-label">식물명 
+								<span>선택 시 해당 식물 기준 예측에 사용됩니다.(미선택 가능)</span>
+								<button type="button" class="mydiary-radio-clear"
+								onclick="document.querySelectorAll('input[name=plantidx]').forEach(r=>r.checked=false)">
+								선택 해제</button>
+							</div>
+							
 							<div class="mydiary-write-input-area">
 								<div class="mydiary-radio-group" role="radiogroup"
 									aria-label="식물명">
@@ -240,13 +247,8 @@ function onlyInteger(event) {
 											<span>${p.name}</span>
 										</label>
 									</c:forEach>
-									<button type="button" class="mydiary-radio-clear"
-										onclick="document.querySelectorAll('input[name=plantidx]').forEach(r=>r.checked=false)">
-										선택 해제</button>
 								</div>
 
-								<div class="mydiary-write-help">선택 시 해당 식물 기준 예측에 사용됩니다.
-									(미선택 가능)</div>
 							</div>
 						</div>
 						<!-- 온도 -->
