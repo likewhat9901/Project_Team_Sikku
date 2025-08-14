@@ -130,14 +130,13 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    border: 1px solid #4E8A5D;
-    padding: 3px;
+    border: 2px solid white;
     overflow: hidden;
 }
 
 .user-icon img {
     width:100%; height:100%;
-    object-fit: scale-down;
+    object-fit: cover;
 }
 
 

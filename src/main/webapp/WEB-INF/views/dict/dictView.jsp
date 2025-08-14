@@ -14,6 +14,8 @@
     
 <div class="detail-section">
     <h1 class="detail-title">식물도감 상세정보</h1>
+    <a class="list-btn" href="/dict/list.do">목록</a>
+    
     <div class="plant-card">
         <div class="plant-image">
             <img alt="" src="/images/dict/${plant.imgpath}" />

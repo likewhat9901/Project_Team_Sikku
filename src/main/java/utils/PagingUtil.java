@@ -42,12 +42,12 @@ public class PagingUtil {
 		while(blockCount<=blockPage && intTemp<=totalPage)
 		{
 			if(intTemp==pageNum) {
-				pagingStr += "&nbsp;"+intTemp+"&nbsp;";
+				pagingStr += "<a href='#' onclick=\"event.preventDefault();\">"+intTemp+"</a>";
 			}
 			else {
-				pagingStr += "&nbsp;<a href='"+page
+				pagingStr += "<a href='"+page
 					+"pageNum="+intTemp+"'>"+
-					intTemp+"</a>&nbsp;";
+					intTemp+"</a>";
 			}
 			intTemp++;
 			blockCount++;
