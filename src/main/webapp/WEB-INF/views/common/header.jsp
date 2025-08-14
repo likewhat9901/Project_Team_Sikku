@@ -21,6 +21,7 @@
 	        </div>
 	    </a>
 	</sec:authorize>
+	
         <div class="nav-icons">
             <div class="nav-item" onclick="location.href='/main/nonMember.do'">
                 <div class="icon-box"><img alt="" src="/images/header/icons/icon_farmer_man.png"/></div>
