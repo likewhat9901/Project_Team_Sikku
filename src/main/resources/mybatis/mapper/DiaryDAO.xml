@@ -31,7 +31,7 @@
 	 	insert into diary (diaryIdx, userId, ofileName, sfile, description, 
 	 	temperature, humidity, sunlight, height, fruit, plantidx)
 	 	values
-	 	(seq_board_num.nextval, #{userId, jdbcType=VARCHAR}, #{ofileName}, #{sfile}, 
+	 	(DIARY_SEQ.nextval, #{userId, jdbcType=VARCHAR}, #{ofileName}, #{sfile}, 
 	 	#{description}, #{temperature}, #{humidity}, #{sunlight}, #{height}, #{fruit},
 	 	#{plantidx, javaType=java.lang.Long, jdbcType=NUMERIC})
 	</insert>
