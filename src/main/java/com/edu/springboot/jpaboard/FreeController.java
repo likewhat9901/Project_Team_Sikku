@@ -42,8 +42,16 @@ public class FreeController {
 	CommentService cs;
 	
 	@Autowired
+	BoardReportService rs;
+	
+	@Autowired
+	BoardReportRepository rr;
+	
+	@Autowired
 	LikeRepository lr;
 	
+	@Autowired
+	BoardRepository br;
 	
 	//게시물 리스트
 	@GetMapping("/boards/free/freeBoardList.do")
@@ -228,7 +236,9 @@ public class FreeController {
 	
 	@GetMapping("/boards/free/getLikeStatus.do")
 	@ResponseBody
-	public Map<String, Object> getLikeStatus(@RequestParam("boardIdx") Long boardIdx, Principal principal) {
+	public Map<String, Object> getLikeStatus(
+			@RequestParam("boardIdx") Long boardIdx, Principal principal) {
+		
 	    Map<String, Object> response = new HashMap<>();
 	    try {
 	        String userId = principal != null ? principal.getName() : null;
@@ -346,6 +356,22 @@ public class FreeController {
 	    cs.deletePost(commentIdx);
 	    return "redirect:freeBoardView.do?boardIdx=" + boardIdx;
 	}
+	
+	//신고하기 모달창에서 작성 후 DB에 반영시키기
+	@PostMapping("/boards/free/reportBoard.do")
+	public String reportBoard(BoardReportEntity re, Principal principal) {
+		
+		String userId = principal.getName();	
+		re.setUserId(userId);
+		rr.save(re);
+		
+	    // 서비스에서 신고 저장 + board 테이블 업데이트 한번에 처리
+	    rs.saveReportAndUpdateBoard(re);
+		
+		return "redirect:freeBoardView.do?boardIdx=" + re.getBoardIdx();
+	}
+	
+	
 		
 	
 	
