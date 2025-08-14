@@ -1,12 +1,13 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="jakarta.tags.core"%>
 <!DOCTYPE html>
 <html>
 <head>
 	<meta charset="UTF-8">
 	<title>Insert title here</title>
 	<link rel="stylesheet" href="/css/common/layout.css" />
-	<link rel="stylesheet" href="/css/myDiarystyle.css" />
+	<link rel="stylesheet" href="/css/myDiaryView.css" />
 </head>
 <script>
 function deletePost(idx){
@@ -34,8 +35,8 @@ function deletePost(idx){
 				<nav class="mydiary-nav">
 					<a href="/mydiary/calendar.do" class="mydiary-calendar-btn">캘린더</a>
 				</nav>
-				<h2 class="mydiary-title">나만의 식물 꾸미기</h2>
-				<button type="button" class="mydiary-write-btn"
+				<h2 class="mydiary-title">나만의 식물 꾸미기 (보기)</h2>
+				<button type="button" class="mydiary-list-btn"
 					onclick="location.href='./list.do';">목록보기</button>
 			</div>
 		</div>
@@ -46,56 +47,50 @@ function deletePost(idx){
 				<!-- 카드 헤더 (날씨 영역) -->
 				<div class="mydiary-card-header">
 					<div class="mydiary-card-number">🌱</div>
-					<div class="mydiary-weather-icons">
-						<span>☀️</span> <span>☁️</span> <span>🌈</span> <span>🌡️</span>
-					</div>
 					<div class="mydiary-date">${ myDiaryDTO.postdate }</div>
 				</div>
 
-				<!-- 이미지 박스 -->
-				<div class="mydiary-view-image-box">
-					<c:if test="${not empty myDiaryDTO.sfile}">
-						<img src="/uploads/${myDiaryDTO.sfile}" class="mydiary-main-image"
-							alt="식물 이미지" />
-					</c:if>
-					<c:if test="${empty myDiaryDTO.sfile}">
-						<div class="mydiary-no-image-large">이미지 없음</div>
-					</c:if>
-				</div>
 
 				<!-- 카드 내용 (줄글 영역) -->
 				<div class="mydiary-card-content">
+					<!-- 이미지 박스 -->
+					<div class="mydiary-view-image-box">
+						<c:if test="${not empty myDiaryDTO.sfile}">
+							<img src="/uploads/${myDiaryDTO.sfile}" class="mydiary-main-image"
+								alt="식물 이미지" />
+						</c:if>
+						<c:if test="${empty myDiaryDTO.sfile}">
+							<div class="mydiary-no-image-large">이미지 없음</div>
+						</c:if>
+					</div>
 					<div class="mydiary-view-lines">
 
 						<!-- 데이터 라인 -->
 						<div class="mydiary-view-data-line">
 							<div class="mydiary-view-data-item temp">
-								<div class="mydiary-view-data-label">온도</div>
-								<div class="mydiary-view-data-value">${ myDiaryDTO.temperature }°C</div>
+								<span class="mydiary-view-data-label">온도</span>
+								<span class="mydiary-view-data-value">${ myDiaryDTO.temperature }°C</span>
 							</div>
 							<div class="mydiary-view-data-item humidity">
-								<div class="mydiary-view-data-label">습도</div>
-								<div class="mydiary-view-data-value">${ myDiaryDTO.humidity }%</div>
+								<span class="mydiary-view-data-label">습도</span>
+								<span class="mydiary-view-data-value">${ myDiaryDTO.humidity }%</span>
 							</div>
 							<div class="mydiary-view-data-item sunlight">
-								<div class="mydiary-view-data-label">일조량</div>
-								<div class="mydiary-view-data-value">${ myDiaryDTO.sunlight }lux</div>
+								<span class="mydiary-view-data-label">일조량</span>
+								<span class="mydiary-view-data-value">${ myDiaryDTO.sunlight }lux</span>
 							</div>
 							<div class="mydiary-view-data-item height">
-								<div class="mydiary-view-data-label">키</div>
-								<div class="mydiary-view-data-value">${ myDiaryDTO.height }cm</div>
+								<span class="mydiary-view-data-label">키</span>
+								<span class="mydiary-view-data-value">${ myDiaryDTO.height }cm</span>
 							</div>
 							<div class="mydiary-view-data-item fruit">
-								<div class="mydiary-view-data-label">열매</div>
-								<div class="mydiary-view-data-value">${ myDiaryDTO.fruit }개</div>
+								<span class="mydiary-view-data-label">열매</span>
+								<span class="mydiary-view-data-value">${ myDiaryDTO.fruit }개</span>
 							</div>
 						</div>
 
-						<div class="mydiary-view-line title">📝 관찰 내용</div>
-						<div class="mydiary-view-line description">${ myDiaryDTO.description }</div>
-
-						<div class="mydiary-empty-line"></div>
-						<div class="mydiary-empty-line"></div>
+						<div class="mydiary-view-line-title">📝 관찰 내용</div>
+						<div class="mydiary-view-line-description">${ myDiaryDTO.description }</div>
 
 						<!-- 버튼 영역 -->
 						<div class="mydiary-view-buttons">
@@ -105,7 +100,7 @@ function deletePost(idx){
 							<button type="button" class="mydiary-view-btn delete"
 								onclick="deletePost(${ param.diaryIdx });">삭제하기</button>
 							<button type="button" class="mydiary-view-btn list"
-								onclick="location.href='./list.do';">목록 바로가기</button>
+								onclick="location.href='./list.do';">목록으로</button>
 						</div>
 					</div>
 				</div>

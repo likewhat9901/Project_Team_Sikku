@@ -59,7 +59,7 @@
 										<div class="mydiary-line">
 											<span class="mydiary-data-item temp">🌡 ${ row.temperature }°C</span>
 											<span class="mydiary-data-item humidity">💧 ${ row.humidity }%</span>
-											<span class="mydiary-data-item sunlight">☀  ${ row.sunlight }lux</span>
+											<span class="mydiary-data-item sunlight">🌞 ${ row.sunlight }lux</span>
 										</div>
 										<div class="mydiary-line-title"><strong>오늘의 식물 관찰 기록</strong></div>
 										<div class="mydiary-line">${ row.description }</div>

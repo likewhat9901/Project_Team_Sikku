@@ -8,7 +8,7 @@
 	<meta charset="UTF-8">
 	<title>Insert title here</title>
 	<link rel="stylesheet" href="/css/common/layout.css" />
-	<link rel="stylesheet" href="/css/myDiarystyle.css" />
+	<link rel="stylesheet" href="/css/myDiaryEdit.css" />
 </head>
 <body>
 <%@ include file="/WEB-INF/views/common/header.jsp" %>
@@ -137,6 +137,8 @@
 							</div>
 						</div>
 
+						<div class="mydiary-write-notice">💡 모든 정보를 정확히 입력한 후 수정 완료
+							버튼을 클릭해주세요.</div>
 						<div class="mydiary-write-buttons">
 							<button type="submit" class="mydiary-write-btn submit">수정
 								완료</button>
@@ -144,8 +146,6 @@
 							<button type="button" class="mydiary-write-btn list"
 								onclick="location.href='./list.do';">목록 바로가기</button>
 
-							<div class="mydiary-write-notice">💡 모든 정보를 정확히 입력한 후 수정 완료
-								버튼을 클릭해주세요.</div>
 						</div>
 					</form>
 				</div>
