@@ -39,7 +39,7 @@
 			   <div class="icon-box"><img alt="" src="/images/header/icons/icon_diary.png"/></div>
 			   <span>다이어리</span>
 		    </div>
-		    <div class="nav-item" onclick="location.href='/main/nonMember.do'">
+		    <div class="nav-item" onclick="location.href='/mydiary/calendar.do'">
                 <div class="icon-box"><img alt="" src="/images/header/icons/icon_calender.png"/></div>
                 <span>캘린더</span>
             </div>
