@@ -23,7 +23,7 @@
 			</div>
 
 			<div class="form-group">
-				<label for="content">내용</label>
+				<label for="content">내용</label>${likesCount}
 				<textarea id="content" name="content" rows="10" required>${board.content}</textarea>
 			</div>
 

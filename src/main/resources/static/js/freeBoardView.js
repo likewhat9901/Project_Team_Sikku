@@ -1,5 +1,3 @@
-
-
 /**
  댓글 수정을 위한 JS
  */
@@ -65,9 +63,9 @@
 
  // 댓글 작성 폼 검증
  function validateCommentForm() {
-     const textarea = document.querySelector('form[action="/boards/free/freeBoardCommentWriteProc.do"] textarea[name="content"]');
-
-	      if (textarea.value.trim() == '' ) {
+     const textarea = document.querySelector('form[action="galleryBoardCommentWriteProc.do"] textarea[name="content"]');
+     
+     if (!textarea.value.trim()) {
          alert('댓글 내용을 입력해주세요.');
          textarea.focus();
          return false;
@@ -103,7 +101,7 @@
               const boardIdx = this.getAttribute('data-board-idx');
 
 			  // Fetch API를 사용해 서버에 POST 요청
-			  fetch('/boards/free/toggleLike.do', {
+			  fetch('/boards/gallery/toggleLike2.do', {
 			      method: 'POST',
 			      headers: {
 			          'Content-Type': 'application/x-www-form-urlencoded' // 폼 데이터 형식
@@ -138,10 +136,87 @@
           });
       }
   });
- 
- 
- 
- 
- 
- 
- 
+
+  /**
+   * 신고 버튼을 누르면 나오는 모달창
+   */
+  
+  /*
+  <button type="button" id="board-report-btn" data-board-idx="${board.boardIdx}">
+      <span id="report-icon">
+          <c:choose>
+              <c:when test="${isLiked}"> 🚨 신고</c:when>
+              <c:otherwise> 신고완료 </c:otherwise>
+          </c:choose>
+      </span>
+  </button>
+  */
+
+  // 모달 관련 요소들
+     const reportBtn = document.getElementById('board-report-btn');
+     const reportModal = document.getElementById('reportModal');
+     const cancelBtn = document.getElementById('cancelBtn');
+     const reportForm = document.getElementById('reportForm');
+     const submitBtn = document.getElementById('submitBtn');
+     const reportContent = document.getElementById('reportContent');
+     const boardIdxInput = document.getElementById('boardIdx');
+
+     // 모달 열기
+     function openModal() {
+         const boardIdx = reportBtn.getAttribute('data-board-idx');
+         boardIdxInput.value = boardIdx;
+         reportModal.style.display = 'block';
+     }
+
+     // 모달 닫기
+     function closeModal() {
+         reportModal.style.display = 'none';
+         reportForm.reset(); // 폼 초기화
+     }
+
+     // 신고 제출
+     function submitReport(event) {
+         event.preventDefault();
+         
+         const content = reportContent.value.trim();
+         const boardIdx = boardIdxInput.value;
+
+         // 빈 내용 체크
+         if (!content) {
+             alert('신고 사유를 입력해주세요.');
+             return;
+         }
+
+         // 확인 메시지
+         if (confirm('정말로 이 게시글을 신고하시겠습니까?')) {
+             alert('신고가 접수되었습니다.');
+             closeModal();
+             
+             // 신고 버튼 상태 변경
+             document.getElementById('report-icon').textContent = '신고완료';
+             reportBtn.disabled = true;
+         }
+     }
+
+     // 이벤트 리스너 등록
+     reportBtn.addEventListener('click', openModal);
+     cancelBtn.addEventListener('click', closeModal);
+     reportForm.addEventListener('submit', submitReport);
+
+     // 모달 외부 클릭 시 닫기
+     reportModal.addEventListener('click', function(event) {
+         if (event.target === reportModal) {
+             closeModal();
+         }
+     });
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  

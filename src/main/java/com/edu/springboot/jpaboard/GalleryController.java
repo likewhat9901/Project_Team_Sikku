@@ -186,7 +186,7 @@ public class GalleryController {
 		
 		//좋아요 갯수 조회
 		long likesCount = lr.countByBoard_BoardIdx(boardIdx);
-		System.out.println("상세보기 좋아요 디버깅:likesCountMap=" + likesCount);
+		System.out.println("상세보기 좋아요 디버깅:likesCount=" + likesCount);
 		model.addAttribute("likesCount", likesCount);
 		
 		// 현재 사용자가 이 게시물에 좋아요를 눌렀는지 확인

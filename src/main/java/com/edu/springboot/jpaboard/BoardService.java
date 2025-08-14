@@ -125,6 +125,11 @@ public class BoardService {
        return result; 
    }
    
+// 내가 좋아요 눌렀는지 여부
+   public Optional<LikeEntity> isLikedByUser(Long boardIdx, String userId) {
+       return lr.findByBoard_BoardIdxAndUserId(boardIdx, userId);
+   }
+   
    // 글쓰기
    public void insertPost(BoardEntity be) {
       br.save(be);

@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>자유게시판 상세보기</title>
+<title></title>
 
 <link rel="stylesheet" href="/css/free.css">
 
@@ -16,10 +16,6 @@
 </head>
 <body>
 	<%@ include file="/WEB-INF/views/common/header.jsp"%>
-	<!-- 헤더 -->
-	<header class="main-header">
-		<h1>자유게시판 상세보기</h1>
-	</header>
 
 	<!-- 본문 -->
 	<main class="board-detail">
@@ -34,11 +30,54 @@
 			<h4>${board.userId}</h4>
 		</div>
 		<br> <span>🕒 ${beFormattedDate} 👁‍🗨 ${board.visitcount}</span>
+		
+		<button type="button" id="board-report-btn" data-board-idx="${board.boardIdx}">
+	        <span id="report-icon">
+	            <c:choose>
+	                <c:when test="${isLiked}"> 🚨 신고</c:when>
+	                <c:otherwise> 신고완료 </c:otherwise>
+	            </c:choose>
+	        </span>
+	    </button>
+	    
+	    <!-- 신고 모달창 -->
+	    <div id="reportModal" class="modal-overlay">
+	        <div class="modal">
+	            <!-- 모달 헤더 -->
+	            <div class="modal-header">
+	                <h3 class="modal-title">게시글 신고</h3>
+	            </div>
+	
+	            <!-- 모달 바디 -->
+	            <div class="modal-body">
+	                <!-- 여기에 action을 추가! -->
+	                <form id="reportForm" action="/boards/free/reportBoard.do" method="POST">
+	                    <label for="reportContent" class="form-label">신고 사유를 입력해주세요</label>
+	                    <textarea 
+	                        id="reportContent" 
+	                        name="content" 
+	                        class="form-control" 
+	                        placeholder="신고 사유를 입력해주세요"
+	                        required></textarea>
+	                    
+	                    <!-- 숨겨진 필드 - 게시글 번호 전달용 -->
+	                    <input type="hidden" id="boardIdx" name="boardIdx" value="${board.boardIdx}">
+	                </form>
+	            </div>
+	
+	            <!-- 모달 푸터 -->
+	            <div class="modal-footer">
+	                <button type="button" class="btn btn-cancel" id="cancelBtn">취소</button>
+	                <button type="submit" class="btn btn-submit" id="submitBtn" form="reportForm">신고하기</button>
+	            </div>
+	        </div>
+	    </div>
+	    
 
 		<hr>
 
-		<div class="board-content">
-			<div>${board.content}</div>
+		<div class="view-freeboard-content">
+			${board.content}
 		</div>
 
 		<div class="board-view-footer">
@@ -52,6 +91,7 @@
 			        </span>
 			        좋아요 <span id="likes-count">${likesCount}</span>
 			    </button>
+			    
 			</div>
 
 			<c:if test="${board.userId == loginUserId}">
