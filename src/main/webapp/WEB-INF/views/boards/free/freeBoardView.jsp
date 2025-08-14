@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>자유게시판 상세보기</title>
+<title></title>
 
 <link rel="stylesheet" href="/css/free.css">
 
@@ -16,10 +16,6 @@
 </head>
 <body>
 	<%@ include file="/WEB-INF/views/common/header.jsp"%>
-	<!-- 헤더 -->
-	<header class="main-header">
-		<h1>자유게시판 상세보기</h1>
-	</header>
 
 	<!-- 본문 -->
 	<main class="board-detail">
@@ -37,8 +33,8 @@
 
 		<hr>
 
-		<div class="board-content">
-			<div>${board.content}</div>
+		<div class="view-freeboard-content">
+			${board.content}
 		</div>
 
 		<div class="board-view-footer">
@@ -53,7 +49,7 @@
 			        좋아요 <span id="likes-count">${likesCount}</span>
 			    </button>
 			</div>
-
+${isLiked}
 			<c:if test="${board.userId == loginUserId}">
 				<div class="board-actions">
 					<!-- 수정 폼 -->

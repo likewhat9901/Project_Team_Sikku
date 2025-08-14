@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>자유게시판 상세보기</title>
+<title></title>
 
 <link rel="stylesheet" href="/css/gallery.css">
 
@@ -18,7 +18,7 @@
 	<%@ include file="/WEB-INF/views/common/header.jsp"%>
 	<!-- 헤더 -->
 	<header class="main-header">
-		<h1>갤러리게시판 상세보기</h1>
+		<h1> </h1>
 	</header>
 
 	<!-- 본문 -->

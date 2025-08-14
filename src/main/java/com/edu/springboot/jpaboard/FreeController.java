@@ -222,6 +222,31 @@ public class FreeController {
            return ResponseEntity.status(500).body(response);
        }
    }
+	
+	@GetMapping("/boards/free/getLikeStatus.do")
+	@ResponseBody
+	public Map<String, Object> getLikeStatus(@RequestParam("boardIdx") Long boardIdx, Principal principal) {
+	    Map<String, Object> response = new HashMap<>();
+	    try {
+	        String userId = principal != null ? principal.getName() : null;
+
+	        Map<String, Object> result = bs.toggleLike(boardIdx, userId); 
+	        int likesCount = (int) result.get("likesCount"); 
+	        boolean isLiked = false;
+	        if (userId != null) {
+	            isLiked = bs.isLikedByUser(boardIdx, userId).isPresent();
+	        }// Service에서 좋아요 개수 가져오기
+
+	        response.put("success", true);
+	        response.put("likesCount", likesCount);
+	        response.put("isLiked", isLiked);
+	    } catch (Exception e) {
+	        response.put("success", false);
+	        response.put("message", "좋아요 상태를 불러오는 중 오류가 발생했습니다.");
+	    }
+	    return response;
+	}
+
    
    
    //글쓰기
@@ -249,18 +274,26 @@ public class FreeController {
       Optional<BoardEntity> result = bs.selectPost(boardIdx);
       if(result.isPresent()) {
          model.addAttribute("board", result.get());
+         
+       //좋아요 갯수 조회
+ 		long likesCount = lr.countByBoard_BoardIdx(boardIdx);
+ 		System.out.println("상세보기 좋아요 디버깅:likesCount=" + likesCount);
+ 		model.addAttribute("likesCount", likesCount);
       }
       else {
          model.addAttribute("board", null);
       }
+      
+      
       return "/boards/free/freeBoardEdit";
    }
    
    //POST방식으로 수정하기 DB처리
    @PostMapping("/boards/free/freeBoardEditProc.do")
-   public String editProc(BoardEntity be) {
+   public String editProc(BoardEntity be, Model model) {
       System.out.println("수정 요청: " + be.getBoardIdx());  // 디버깅 로그
       bs.updatePost(be);
+      
       return "redirect:freeBoardView.do?boardIdx="+ be.getBoardIdx();
    }
    

@@ -99,8 +99,27 @@
       const heartIcon = document.getElementById('heart-icon');
 
       if (likeButton) {
+          const boardIdx = likeButton.getAttribute('data-board-idx');
+		  
+		  // 좋아요 상태 갱신 함수
+          function updateLikeStatus() {
+              fetch(`/boards/free/getLikeStatus.do?boardIdx=${boardIdx}`)
+                  .then(response => response.json())
+                  .then(data => {
+                      if (data.success) {
+                          likesCountSpan.textContent = data.likesCount;
+                          heartIcon.textContent = data.isLiked ? '🧡' : '🤍';
+                          console.log('페이지 로드 시 좋아요 상태 반영 완료');
+                      } else {
+                          console.error('서버 에러:', data.message);
+                      }
+                  })
+                  .catch(error => {
+                      console.error('좋아요 상태 불러오기 실패:', error);
+                  });
+          }
+		  
           likeButton.addEventListener('click', function() {
-              const boardIdx = this.getAttribute('data-board-idx');
 
 			  // Fetch API를 사용해 서버에 POST 요청
 			  fetch('/boards/free/toggleLike.do', {
@@ -136,6 +155,8 @@
                   alert('좋아요 요청에 실패했습니다.');
               });
           });
+		  
+		  updateLikeStatus();
       }
   });
  
