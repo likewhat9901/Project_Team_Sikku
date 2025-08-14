@@ -4,9 +4,9 @@
 
 </div>
 <div class="floating-nav">
-  <button onclick="location.href='/chat/chatbot.do'">AI채팅</button>
-  <button onclick="location.href='/chat/chatbot.do'">도움말</button>
-  <button onclick="location.href='/chat/chatbot.do'">문의</button>
+  <button onclick="location.href='/chat/chatstart.do'">AI채팅</button>
+  <button onclick="location.href='/chat/chatstart.do'">도움말</button>
+  <button onclick="location.href='/chat/chatstart.do'">문의</button>
 </div>
 <footer class="oopy-my-footer">
     <div class="oopy-my-footer-mobile-toggle" id="footer-toggle">

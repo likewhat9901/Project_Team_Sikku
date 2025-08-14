@@ -80,7 +80,7 @@
 
 <%@ include file="/WEB-INF/views/common/footer.jsp" %>
 </body>
-
+<!-- 날씨창 -->
 <script type="text/javascript">
 window.addEventListener('DOMContentLoaded', function () {
     fetch('/api/weather')
@@ -123,7 +123,7 @@ window.addEventListener('DOMContentLoaded', function () {
 });
 </script>
 
-<!-- ===== 예측 그래프 렌더링(식물 db 완성되면 매핑처리해서 그래프 띄워야함) ===== -->
+<!-- ===== 예측 그래프 렌더링 ===== -->
 <script type="text/javascript">
 (async function renderChartsForAllCards() {
   const FAIL_MSG = '데이터 불러오기에 실패했습니다.';
@@ -390,5 +390,37 @@ window.addEventListener('DOMContentLoaded', function () {
 })();
 </script>
 
+<!-- 좌우 버튼 누르면 내식물 상태 간략 요약 -->
+<script>
+(function attachInfoCardNav(){
+  // 이벤트 위임으로 모든 prev/next 버튼 처리
+  document.addEventListener('click', (e) => {
+    const btn = e.target.closest('.prev-btn, .next-btn');
+    if (!btn) return;
+    const container = btn.closest('.plant-container');
+    if (!container) return;
+
+    const card   = container.querySelector('.plant-card');
+    const header = card?.querySelector('.plant-status .status-header');
+    const box    = card?.querySelector('.plant-status .status-content');
+    if (!header || !box) return;
+
+    // 이미 그려진 차트가 있으면 파괴(메모리/캔버스 정리)
+    if (container._chart && typeof container._chart.destroy === 'function') {
+      try { container._chart.destroy(); } catch(_) {}
+      container._chart = null;
+    }
+
+    // 헤더/내용을 "정보카드"로 교체 (빈 카드)
+    header.textContent = '내 식물 정보';
+    box.innerHTML = 
+    	`<div class="plant-myinfo-placeholder">
+    		내 식물 카드 (준비중)</div>`;
+
+    // 필요 시 상태 플래그 추가(나중에 뒤로가기/상세 채우기 등에 활용)
+    container.dataset.mode = 'info';
+  });
+})();
+</script>
 
 </html>
