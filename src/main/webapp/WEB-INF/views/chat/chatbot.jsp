@@ -95,10 +95,7 @@ var stompClient = null;
 	
   $(function() {
 	// 새창 열리면 자동 연결
-	$('#chatModal').on('shown.bs.modal', function() {
-	  if (!stompClient)
-		connect();
-	});
+	connect();
 	
 	$('#connectBtn').click(connect);
 	$('#sendBtn').click(sendMessage);

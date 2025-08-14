@@ -41,7 +41,7 @@
   let chatWin = null;
 
   function openChatWindow() {
-    const W = 768, H = 980;
+    const W = 480, H = 780;
     const left = window.screenX + Math.max(0, (window.outerWidth  - W) / 2);
     const top  = window.screenY + Math.max(0, (window.outerHeight - H) / 2);
     const url = '/chat/chatbot.do';
@@ -59,7 +59,7 @@
     // 새창으로 열기
     chatWin = window.open(
       url,
-      'AIChatWin_'
+      'AIChatWin',
       `width=${W},height=${H},left=${left},top=${top},` +
       `menubar=no,toolbar=no,location=no,status=no,scrollbars=yes,resizable=yes`
     );
@@ -67,6 +67,11 @@
       alert('팝업이 차단되었습니다. 브라우저 팝업 허용을 확인해주세요.');
       return;
     }
+
+    try {
+        chatWin.resizeTo(W, H);
+        chatWin.moveTo(left, top);
+      } catch(e) {}
 
     chatWin.focus();
   }
