@@ -65,4 +65,27 @@
 	    AND userId=#{userId}
 	  ORDER BY postdate DESC
 	</select>
+	
+  <select id="selectLatestByUserAndPlant" parameterType="map" 
+  resultType="com.edu.springboot.mydiary.MyDiaryDTO">
+    SELECT diaryIdx, userId, postdate, height, fruit, plantidx
+  	FROM (
+	    SELECT diaryIdx, userId, postdate, height, fruit, plantidx
+	    FROM diary
+	    WHERE userId = #{userId}
+	      AND plantidx = #{plantidx}
+	    ORDER BY postdate DESC
+	  )
+	  WHERE ROWNUM = 1
+  </select>
+
+  <select id="selectByUserAndPlantSince" parameterType="map" 
+  resultType="com.edu.springboot.mydiary.MyDiaryDTO">
+    SELECT diaryIdx, userId, postdate, height, fruit, plantidx
+    FROM diary
+    WHERE userId = #{userId}
+      AND plantidx = #{plantidx}
+      AND postdate >= #{since}
+    ORDER BY postdate ASC
+  </select>
 </mapper>

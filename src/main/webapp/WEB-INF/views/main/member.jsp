@@ -52,7 +52,7 @@
     <c:otherwise>
     <!-- 다이어리에 글을 썼을 때 보이는 기존 카드 형식. -->
 <c:forEach items="${ plants }" var="row" varStatus="loop">
-	<div class="plant-container" data-plant-name="${row.name}" >
+	<div class="plant-container" data-plant-name="${row.name}" data-plant-idx="${row.plantidx}">
 		<div class="plant-card">
 			<div class="plant-info">
 			    <div class="plant-image">
@@ -129,11 +129,11 @@ window.addEventListener('DOMContentLoaded', function () {
   const FAIL_MSG = '데이터 불러오기에 실패했습니다.';
   const LIB_FAIL_MSG = '그래프 라이브러리 로드에 실패했습니다.';
 
-  // 0) 카드 수집 (placeholder 제외)
+  // 카드 수집 (placeholder 제외)
   const containers = Array.from(document.querySelectorAll('.plant-container'))
     .filter(c => !(c.dataset.placeholder === 'true' || c.classList.contains('placeholder')));
 
-  //0-1) 로딩 스피너 스타일 1회 주입
+  // 로딩중 주입
   (function injectLoaderStyle() {
     if (document.getElementById('chart-loader-style')) return;
     const st = document.createElement('style');
@@ -142,12 +142,13 @@ window.addEventListener('DOMContentLoaded', function () {
     document.head.appendChild(st);
   })();
 
-  // 0-2) 모든 카드에 우선 "로딩" 메시지 표시
+  // 모든 카드에 우선 "로딩" 메시지 표시
   const loaderHTML =
     '<div style="display:flex;align-items:center;gap:8px;padding:12px;color:#666;">' +
       '<span style="width:14px;height:14px;border:2px solid #bbb;border-top-color:transparent;border-radius:50%;display:inline-block;animation:spin 1s linear infinite"></span>' +
       '<span>잠시만 기다려 주세요...</span>' +
     '</div>';
+    
   containers.forEach(container => {
     const card   = container.querySelector('.plant-card');
     const header = card?.querySelector('.plant-status .status-header');
@@ -168,6 +169,7 @@ window.addEventListener('DOMContentLoaded', function () {
       document.head.appendChild(s);
     });
   }
+  
   try { 
 	await ensureChart(); 
   } catch { 
@@ -179,7 +181,7 @@ window.addEventListener('DOMContentLoaded', function () {
   const names = [...new Set(
     containers.map(c => (c.dataset.plantName || '').trim()).filter(Boolean)
   )];
-
+  const plantIdxs = Array.from(new Set(containers.map(function(c){ return (c.dataset.plantIdx || '').trim(); }).filter(Boolean)));
   // 한글 안전하게 인코딩해서 붙이기
   const namesParam = names.map(encodeURIComponent).join(',');
   
@@ -199,7 +201,7 @@ window.addEventListener('DOMContentLoaded', function () {
 
   // 3) 키를 빠르게 찾기 위한 헬퍼 (이름/idx 둘 다 지원)
   //    - JSON 키가 문자열 이름이라면 name으로 매칭
-  function pickSeries(plantName) {
+  function pickPName(plantName) {
     if (!json) return null;
     if (!plantName) return null;
 
@@ -210,17 +212,96 @@ window.addEventListener('DOMContentLoaded', function () {
     return null;
   }
 
+  function destroyChart(container) {
+    if (container._chart && typeof container._chart.destroy === 'function') {
+      try { container._chart.destroy(); } catch(_) {}
+      container._chart = null;
+    }
+  }
+  
+  // 내카드 수정 필요
+  let metricsMap = {};
+  try {
+    if (plantIdxs.length) {
+      const res2 = await fetch('/api/mydiary/metrics?plantidx=' + plantIdxs.join(','), { headers: { 'Accept': 'application/json' } });
+      if (!res2.ok) {
+        console.warn('요약 데이터 응답 실패');
+      } else {
+        metricsMap = await res2.json(); // 키: plantidx (문자열 키일 수 있음)
+      }
+    }
+  } catch (e) {
+    console.warn('요약 데이터 불러오기 실패', e);
+  }
+  function pickMetrics(container) {
+	    const idx = (container.dataset.plantIdx || '').trim();
+	    if (!idx) return null;
+	    // Jackson 역직렬화 시 키가 문자열일 가능성 → 문자열 키 우선
+	    return metricsMap[idx] || metricsMap[Number(idx)] || null;
+	  }
+  function num(v, d){ if (v==null || isNaN(Number(v))) return '-'; return Number(v).toFixed(d==null?1:d); }
+  function signNum(v, unit, d){
+    if (v==null || isNaN(Number(v))) return '-';
+    const n = Number(v), s = (n>0?'+':'');
+    return s + n.toFixed(d==null?1:d) + (unit ? ' ' + unit : '');
+  }
+  function fmtDate(v){
+	    if (!v) return '-';
+	    try{
+	      const d = new Date(v);
+	      if (isNaN(d.getTime())) return String(v).split('T')[0] || String(v);
+	      const y=d.getFullYear(), m=String(d.getMonth()+1).padStart(2,'0'), day=String(d.getDate()).padStart(2,'0');
+	      return y + '-' + m + '-' + day;
+	    }catch(_){ return '-'; }
+	  }
+  //내 식물 정보 카드 토글
+  function renderInfoCard(container) {
+    destroyChart(container);
+    const header = container.querySelector('.plant-status .status-header');
+    const box    = container.querySelector('.plant-status .status-content');
+    if (!header || !box) return;
+    header.textContent = '내 식물 정보';
+
+    const m = pickMetrics(container);
+    if (!m) {
+        box.innerHTML =
+          '<div style="padding:10px;color:#666;">내 다이어리 기록이 없습니다.</div>';
+        container.dataset.mode = 'info';
+        return;
+      }
+
+      const latestDate = fmtDate(m.latestDate);
+      var html = '';
+      html += '<div style="display:flex;flex-direction:column;gap:8px;padding:10px;">';
+      html +=   '<div style="font-weight:600;">최신 기록일: ' + fmtDate(m.latestDate) + '</div>';
+      html +=   '<div style="display:grid;grid-template-columns:120px 1fr;row-gap:6px;column-gap:12px;align-items:center;">';
+      html +=     '<div>키(Height)</div>';
+      html +=     '<div><b>' + num(m.latestHeight,1) + ' cm</b> ';
+      html +=           '<span style="color:#666;">(7일: ' + signNum(m.deltaHeight7d,'cm',1) + ', 30일: ' + signNum(m.deltaHeight30d,'cm',1) + ')</span>';
+      html +=     '</div>';
+      html +=     '<div>열매 수(Fruit)</div>';
+      html +=     '<div><b>' + num(m.latestFruit,0) + ' 개</b> ';
+      html +=           '<span style="color:#666;">(7일: ' + signNum(m.deltaFruit7d,'개',0) + (m.weeklyAvgFruitInc==null ? '' : ', 주간평균: ' + num(m.weeklyAvgFruitInc,2) + ' 개/주') + ')</span>';
+      html +=     '</div>';
+      html +=   '</div>';
+      html += '</div>';
+
+      box.innerHTML = html;
+    container.dataset.mode = 'info';
+  }
+  
   //4) 각 카드에 대해 해당 시리즈 렌더
-  containers.forEach(container => {
-    const card   = container.querySelector('.plant-card');
+  function renderChart(container) {
+	destroyChart(container);
+    const card = container.querySelector('.plant-card');
     const header = card.querySelector('.plant-status .status-header');
-    const box    = card.querySelector('.plant-status .status-content');
+    const box = card.querySelector('.plant-status .status-content');
     if (!header || !box){
 		console.error("header, box error");
     	return;
 	}
     const plantName = (container.dataset.plantName || '').trim();
-    const found = pickSeries(plantName);
+    const found = pickPName(plantName);
 	
     // 1. 키 없음
     if (!found) {
@@ -385,41 +466,27 @@ window.addEventListener('DOMContentLoaded', function () {
       plugins: [annotateLastPoint]
     });
     container._chart = chart;
-  });
+    container.dataset.mode = 'chart';
+  };
+  
+  //초기: 모두 차트 렌더
+  containers.forEach(renderChart);
 
-})();
-</script>
-
-<!-- 좌우 버튼 누르면 내식물 상태 간략 요약 -->
-<script>
-(function attachInfoCardNav(){
-  // 이벤트 위임으로 모든 prev/next 버튼 처리
-  document.addEventListener('click', (e) => {
+  
+  // prev/next 클릭 시 토글 (차트, 정보카드)
+  document.addEventListener('click', function(e) {
     const btn = e.target.closest('.prev-btn, .next-btn');
     if (!btn) return;
     const container = btn.closest('.plant-container');
     if (!container) return;
 
-    const card   = container.querySelector('.plant-card');
-    const header = card?.querySelector('.plant-status .status-header');
-    const box    = card?.querySelector('.plant-status .status-content');
-    if (!header || !box) return;
-
-    // 이미 그려진 차트가 있으면 파괴(메모리/캔버스 정리)
-    if (container._chart && typeof container._chart.destroy === 'function') {
-      try { container._chart.destroy(); } catch(_) {}
-      container._chart = null;
+    if (container.dataset.mode === 'chart') {
+      renderInfoCard(container);
+    } else {
+      renderChart(container);
     }
-
-    // 헤더/내용을 "정보카드"로 교체 (빈 카드)
-    header.textContent = '내 식물 정보';
-    box.innerHTML = 
-    	`<div class="plant-myinfo-placeholder">
-    		내 식물 카드 (준비중)</div>`;
-
-    // 필요 시 상태 플래그 추가(나중에 뒤로가기/상세 채우기 등에 활용)
-    container.dataset.mode = 'info';
   });
+  
 })();
 </script>
 

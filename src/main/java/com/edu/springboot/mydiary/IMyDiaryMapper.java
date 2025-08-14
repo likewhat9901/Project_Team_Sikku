@@ -1,6 +1,7 @@
 package com.edu.springboot.mydiary;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -24,4 +25,12 @@ public interface IMyDiaryMapper {
 	//이미지 캘린더에 썸네일로 넣기
 	List<DiaryPostResponse> selectByMonth(@Param("year") String year, 
 			@Param("month") String month, @Param("userId") String userId);
+	//카드 계산
+	MyDiaryDTO selectLatestByUserAndPlant(@Param("userId") String userId,
+            @Param("plantidx") Long plantidx);
+
+	List<MyDiaryDTO> selectByUserAndPlantSince(@Param("userId") String userId,
+                 @Param("plantidx") Long plantidx,
+                 @Param("since") Date since);
+	
 }
