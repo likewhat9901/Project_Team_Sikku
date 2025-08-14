@@ -114,12 +114,13 @@ public class FreeController {
 										Principal principal,
 							HttpServletRequest req, HttpServletResponse resp) {
 		
+		System.out.println("boardIdx: "+ boardIdx);
+		
 		// 게시물 정보
 		Optional<BoardEntity> board = bs.selectPost(boardIdx);
 		BoardEntity be = board.get();
 		be.setContent(be.getContent().replaceAll("\r\n", "<br>"));
 		model.addAttribute("board", be);
-		
 		
 		
 		//댓글 보기
@@ -139,6 +140,7 @@ public class FreeController {
 		//현재 로그인한 userId 가져오기
 		String loginUserId = principal.getName();
 		model.addAttribute("loginUserId", loginUserId);
+		System.out.println("loginUserId: "+ loginUserId);
 		
 		
 		//날짜 포맷팅 (게시물)
@@ -154,6 +156,7 @@ public class FreeController {
 		Optional<LikeEntity> userLike = lr.findByBoard_BoardIdxAndUserId(boardIdx, loginUserId);
 		boolean isLiked = userLike.isPresent();
 		model.addAttribute("isLiked", isLiked);
+		System.out.println("isLiked: "+ isLiked);
 		
 		//조회수 한번만 오르도록 쿠키 사용하기
 		//HttpServletRequest, HttpServletResponse 추가
@@ -292,8 +295,7 @@ public class FreeController {
    @PostMapping("/boards/free/freeBoardEditProc.do")
    public String editProc(BoardEntity be, Model model) {
       System.out.println("수정 요청: " + be.getBoardIdx());  // 디버깅 로그
-      bs.updatePost(be);
-      
+      bs.updatePost(be);  //여기서 likes가 없음.
       return "redirect:freeBoardView.do?boardIdx="+ be.getBoardIdx();
    }
    

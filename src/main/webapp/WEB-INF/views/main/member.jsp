@@ -5,7 +5,7 @@
 <html>
 <head>
 	<meta charset="UTF-8">
-	<title>SpringBoot</title>
+	<title>식꾸</title>
 	<link rel="stylesheet" href="/css/common/layout.css" />
 	<link rel="stylesheet" href="/css/member.css">
 </head>
@@ -36,10 +36,6 @@
               <p class="plant-description">요약 정보는 다이어리를 작성하면 자동으로 채워져요.</p>
             </div>
           </div>
-          <!--        
-          왼쪽 버튼   
-          <div class="navigation-btn prev-btn" aria-hidden="true">&#8249;</div>
-           -->
           <div class="plant-status">
             <div class="status-header">식물 상태창</div>
             <div class="status-content">
@@ -49,10 +45,6 @@
               </a>
             </div>
           </div>
-          <!-- 
-          오른쪽 버튼
-          <div class="navigation-btn next-btn" aria-hidden="true">&#8250;</div>          
-           -->
         </div>
       </div>
     </c:when>
@@ -88,7 +80,7 @@
 
 <%@ include file="/WEB-INF/views/common/footer.jsp" %>
 </body>
-
+<!-- 날씨창 -->
 <script type="text/javascript">
 window.addEventListener('DOMContentLoaded', function () {
     fetch('/api/weather')
@@ -131,7 +123,7 @@ window.addEventListener('DOMContentLoaded', function () {
 });
 </script>
 
-<!-- ===== 예측 그래프 렌더링(식물 db 완성되면 매핑처리해서 그래프 띄워야함) ===== -->
+<!-- ===== 예측 그래프 렌더링 ===== -->
 <script type="text/javascript">
 (async function renderChartsForAllCards() {
   const FAIL_MSG = '데이터 불러오기에 실패했습니다.';
@@ -183,10 +175,18 @@ window.addEventListener('DOMContentLoaded', function () {
 	return; 
   }
 
+  //카드들에서 이름 수집 → 중복 제거
+  const names = [...new Set(
+    containers.map(c => (c.dataset.plantName || '').trim()).filter(Boolean)
+  )];
+
+  // 한글 안전하게 인코딩해서 붙이기
+  const namesParam = names.map(encodeURIComponent).join(',');
+  
   // 2) 예측 데이터 한 번만 가져오기
   let json;
   try {
-    const res = await fetch('/api/predict/outdoor', 
+    const res = await fetch('/api/predict/outdoor?names='+namesParam, 
     		{ headers: { 'Accept': 'application/json' } });
     if (!res.ok) { 
 		console.warn(FAIL_MSG); 
@@ -390,5 +390,37 @@ window.addEventListener('DOMContentLoaded', function () {
 })();
 </script>
 
+<!-- 좌우 버튼 누르면 내식물 상태 간략 요약 -->
+<script>
+(function attachInfoCardNav(){
+  // 이벤트 위임으로 모든 prev/next 버튼 처리
+  document.addEventListener('click', (e) => {
+    const btn = e.target.closest('.prev-btn, .next-btn');
+    if (!btn) return;
+    const container = btn.closest('.plant-container');
+    if (!container) return;
+
+    const card   = container.querySelector('.plant-card');
+    const header = card?.querySelector('.plant-status .status-header');
+    const box    = card?.querySelector('.plant-status .status-content');
+    if (!header || !box) return;
+
+    // 이미 그려진 차트가 있으면 파괴(메모리/캔버스 정리)
+    if (container._chart && typeof container._chart.destroy === 'function') {
+      try { container._chart.destroy(); } catch(_) {}
+      container._chart = null;
+    }
+
+    // 헤더/내용을 "정보카드"로 교체 (빈 카드)
+    header.textContent = '내 식물 정보';
+    box.innerHTML = 
+    	`<div class="plant-myinfo-placeholder">
+    		내 식물 카드 (준비중)</div>`;
+
+    // 필요 시 상태 플래그 추가(나중에 뒤로가기/상세 채우기 등에 활용)
+    container.dataset.mode = 'info';
+  });
+})();
+</script>
 
 </html>

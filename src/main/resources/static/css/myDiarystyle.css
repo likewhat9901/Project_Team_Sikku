@@ -1,18 +1,21 @@
 @charset "UTF-8";
 /* 전체 페이지 스타일 */
 .mydiary-container {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: linear-gradient(135deg, #e8f5e8 0%, #f0f8f0 100%);
-    margin: 0;
-    padding: 20px;
+    padding: 50px;
     min-height: 100vh;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* 가운데 정렬 */
+    align-items: center;
 }
 
 /* 상단 메뉴 래퍼 */
 .mydiary-top-wrapper {
     max-width: 1200px;
-    margin: 0 auto;
     padding-bottom: 20px;
+    display: flex;
+    justify-content: center; /* 가운데 정렬 */
 }
 
 /* 상단 메뉴 컨테이너 */
@@ -40,8 +43,7 @@
     color: white;
     padding: 12px 24px;
     border-radius: 25px;
-    font-weight: 600;
-    font-size: 14px;
+    font-size: 16px;
     transition: all 0.3s ease;
     box-shadow: 0 3px 10px rgba(76, 175, 80, 0.3);
     border: none;
@@ -73,21 +75,6 @@
     text-align: center;
 }
 
-/* 글쓰기 버튼 스타일 */
-.mydiary-write-btn {
-    background: linear-gradient(135deg, #ff7043, #ff5722);
-    color: white;
-    border: none;
-    padding: 12px 24px;
-    border-radius: 25px;
-    font-weight: 600;
-    font-size: 14px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    box-shadow: 0 3px 10px rgba(255, 87, 34, 0.3);
-    position: relative;
-    overflow: hidden;
-}
 
 .mydiary-write-btn::before {
     content: "✏️";
@@ -435,7 +422,6 @@
     border: 2px solid #e8f5e8;
     border-radius: 8px;
     font-size: 14px;
-    font-family: inherit;
     resize: vertical;
     transition: all 0.3s ease;
     background: white;
@@ -484,12 +470,12 @@
     border: none;
     padding: 12px 24px;
     border-radius: 25px;
-    font-weight: 600;
-    font-size: 14px;
+    font-size: 16px;
     cursor: pointer;
     transition: all 0.3s ease;
     box-shadow: 0 3px 10px rgba(76, 175, 80, 0.3);
     margin: 0 8px;
+    font-family: 'MyFont';
 }
 
 .mydiary-write-btn:hover {
@@ -806,8 +792,7 @@
   /* border-radius: 8px 8px; */
 }
 .mydiary-top-wrapper{
-	display: flex;
-    justify-content: center; /* 가운데 정렬 */
+	
 }
 .mydiary-top {
     display: flex;

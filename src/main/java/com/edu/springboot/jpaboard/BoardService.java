@@ -11,6 +11,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import com.edu.springboot.jpaboard.dto.IBoardRow;
 import com.edu.springboot.jpaboard.dto.LikedPostDto;
 import com.edu.springboot.jpaboard.dto.MyPostDto;
 
@@ -21,8 +22,6 @@ import lombok.RequiredArgsConstructor;
 @Service
 public class BoardService {
    
-	@Autowired
-    private BoardRepository boardRepository;
 	
    //DAO역할의 인터페이스
    @Autowired
@@ -139,7 +138,14 @@ public class BoardService {
    
     //수정
     public void updatePost(BoardEntity be) {
-        br.save(be);
+    	// 1. 기존 글 불러오기 (DB에서)
+        BoardEntity original = br.findById(be.getBoardIdx()).orElseThrow();
+
+        // 2. 필요한 필드만 수정
+        original.setTitle(be.getTitle());
+        original.setContent(be.getContent());
+    	
+        br.save(original);
     }
 
     // 삭제
@@ -148,8 +154,8 @@ public class BoardService {
     }
 
     // 카테고리별 좋아요 TOP10
-    public List<BoardEntity> getTop10BoardsByCategory(Integer category) {
-        return br.findTop10ByCategoryOrderByLikesDesc(category);
+    public List<IBoardRow> getTop10BoardsByCategory(Integer category) {
+        return br.findTop10ByCategory(category);
     }
 
  // 마이페이지: 내가 좋아요 누른 글 목록 조회  
@@ -158,6 +164,6 @@ public class BoardService {
     }
     
     public List<MyPostDto> getMyPostsOf(String userId) {
-        return boardRepository.findMyPosts(userId);
+        return br.findMyPosts(userId);
     }
 }

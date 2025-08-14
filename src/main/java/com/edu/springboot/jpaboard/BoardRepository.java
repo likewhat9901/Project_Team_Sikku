@@ -8,7 +8,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
-import com.edu.springboot.jpaboard.BoardEntity;
+import com.edu.springboot.jpaboard.dto.IBoardRow;
 import com.edu.springboot.jpaboard.dto.MyPostDto;
 
 public interface BoardRepository extends JpaRepository<BoardEntity, Long> {
@@ -22,7 +22,7 @@ public interface BoardRepository extends JpaRepository<BoardEntity, Long> {
     
 	
 	
-    List<BoardEntity> findTop10ByCategoryOrderByLikesDesc(Integer category);
+    List<BoardEntity> findTop10ByCategoryOrderByLikesCountDesc(Integer category);
     
     
     
@@ -46,5 +46,18 @@ public interface BoardRepository extends JpaRepository<BoardEntity, Long> {
         """)
         List<MyPostDto> findMyPosts(@Param("userId") String userId);
 
+    
+    @Query("""
+    	    select b.boardIdx as boardIdx,
+    	           b.title as title,
+    	           b.postdate as postdate,
+    	           count(l) as likeCount
+    	    from BoardEntity b
+    	    left join b.likes l
+    	    where b.category = :category
+    	    group by b.boardIdx, b.title, b.postdate
+    	    order by count(l) desc
+    	""")
+    	List<IBoardRow> findTop10ByCategory(@Param("category") Integer category);
     
 }

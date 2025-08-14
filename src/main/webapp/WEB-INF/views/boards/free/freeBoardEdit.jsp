@@ -22,12 +22,6 @@
 					name="title" value="${board.title}" required />
 			</div>
 
-			<input type="hidden" name="userId" value="${board.userId}" />
-			<input type="hidden" name="postdate" value="${board.postdate}" />
-			<input type="hidden" name="category" value="${board.category}" />
-			<input type="hidden" name="visitcount" value="${board.visitcount}" />
-			<input type="hidden" name="likesCount" value="${likesCount}" />
-
 			<div class="form-group">
 				<label for="content">내용</label>${likesCount}
 				<textarea id="content" name="content" rows="10" required>${board.content}</textarea>

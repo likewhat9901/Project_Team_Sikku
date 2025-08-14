@@ -6,11 +6,21 @@
 <!-- Header Section -->
 <div class="header">
     <div class="header-content">
-        <a href="/main/member.do">
-	         <div class="logo">
-	             <img alt="" src="/images/header/logo.png" />
-	         </div>
-    	</a>
+	        <sec:authorize access="isAuthenticated()">
+	    <a href="/main/member.do">
+	        <div class="logo">
+	            <img alt="" src="/images/header/logo.png" />
+	        </div>
+	    </a>
+	</sec:authorize>
+	
+	<sec:authorize access="!isAuthenticated()">
+	    <a href="/main/nonMember.do">
+	        <div class="logo">
+	            <img alt="" src="/images/header/logo.png" />
+	        </div>
+	    </a>
+	</sec:authorize>
         <div class="nav-icons">
             <div class="nav-item" onclick="location.href='/main/nonMember.do'">
                 <div class="icon-box"><img alt="" src="/images/header/icons/icon_farmer_man.png"/></div>
@@ -28,6 +38,10 @@
 			   <div class="icon-box"><img alt="" src="/images/header/icons/icon_diary.png"/></div>
 			   <span>다이어리</span>
 		    </div>
+		    <div class="nav-item" onclick="location.href='/main/nonMember.do'">
+                <div class="icon-box"><img alt="" src="/images/header/icons/icon_calender.png"/></div>
+                <span>캘린더</span>
+            </div>
 			<div class="nav-item" onclick="location.href='/dict/list.do'">
 			   <div class="icon-box"><img alt="" src="/images/header/icons/icon_farmplants.png"/></div>
 			   <span>식물도감</span>

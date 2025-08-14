@@ -30,4 +30,9 @@ public class ChatbotController {
     public String chatbot(){
     	return "chat/chatbot";
     }
+
+    @GetMapping("/chat/chatstart.do")
+    public String chatPage(){
+    	return "chat/chatstart";
+    }
 }
