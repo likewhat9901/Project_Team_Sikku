@@ -48,9 +48,17 @@ public class QnaBoardController {
     //================== View 페이지 ==========================
   	// View 페이지 이동
     @GetMapping("/qnaBoardView.do")
-    public String view(Model model) {
-    	
+    public String view(@RequestParam("idx") Long idx, Model model) {
+        // QnaService에서 게시글 하나 가져오는 메서드가 있다고 가정
+        QnaBoardEntity qna = qnaService.getQnaOneById(idx);
         
+        // 예외상황 대비
+        if (qna == null) {
+        	model.addAttribute("errorMsg", "존재하지 않는 게시글입니다.");
+            return "redirect:/qnaBoardList.do";
+        }
+
+        model.addAttribute("qna", qna);
         return "boards/qna/qnaBoardView"; // JSP 경로
     }
     

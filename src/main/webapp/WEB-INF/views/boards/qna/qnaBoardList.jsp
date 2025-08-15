@@ -18,7 +18,7 @@
 		<h1>Q&A</h1>
 		
 		<button class="write-btn"
-			onclick="location.href='/boards/qna/qnaBoardWrite.do'">글쓰기</button>
+			onclick="location.href='/qnaBoardView.do'">글쓰기</button>
 		
 		<!-- 게시글 검색 -->
 		<div class="search-box">
@@ -49,7 +49,11 @@
 		    <tr class="notice-row">
 				<td>📌</td>
 				<td>${ nrow.category }</td>
-				<td style="text-align:left">${ nrow.title }</td>
+				<td style="text-align:left">
+		            <a href="/qnaBoardView.do?idx=${nrow.idx}">
+		                ${ nrow.title }
+		            </a>
+		        </td>
 		        <td>${ nrow.writer }</td>
 		        <td>${ nrow.formattedPostdate}</td>
 		        <td>${ nrow.answerstatus }</td>
@@ -62,9 +66,11 @@
 				<td>${ var.count }</td>
 				<td>${ qrow.category }</td>
 				<td style="text-align:left">
-					<c:if test="${ qrow.secretflag == 'Y' }">🔒 </c:if>
-					${ qrow.title }
-				</td>
+		            <a href="/qnaBoardView.do?idx=${qrow.idx}">
+		                <c:if test="${ qrow.secretflag == 'Y' }">🔒 </c:if>
+		                ${ qrow.title }
+		            </a>
+		        </td>
 				<td>${ qrow.writer }</td>
 				<td>${ qrow.formattedPostdate}</td>
 				<td>${ qrow.answerstatus }</td>

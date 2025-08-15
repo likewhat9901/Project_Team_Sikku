@@ -5,7 +5,8 @@ import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface QnaBoardRepository extends JpaRepository<QnaBoardEntity, Long> {
-
+	
+	/*================ QnaBoardList =======================*/
     // 글 목록 가져오기 (noticeflag = 'Y' or 'N')
     List<QnaBoardEntity> findByNoticeflagOrderByPostdateDesc(String noticeflag);
 
@@ -14,5 +15,12 @@ public interface QnaBoardRepository extends JpaRepository<QnaBoardEntity, Long> 
     List<QnaBoardEntity> findByTitleContaining(String keyword);
     List<QnaBoardEntity> findByContentContaining(String keyword);
     List<QnaBoardEntity> findByTitleContainingOrContentContaining(String titleKeyword, String contentKeyword);
+    
+    /*================ QnaBoardView =======================*/
+    // findById(Long idx)는 JpaRepository 기본 메서드 사용.
+    
+    
+    
+    /*================ QnaBoardWrite =======================*/
     
 }
