@@ -63,6 +63,8 @@ public class GalleryController {
 	BoardImageRepository ir;
 	@Autowired
 	BoardReportRepository rr;
+	@Autowired
+	CommentRepository cr;
 
 	// 게시물 리스트
 	@GetMapping("/boards/gallery/galleryBoardList.do")
@@ -109,10 +111,13 @@ public class GalleryController {
 		}
 		model.addAttribute("likesCountMap", likesCountMap);
 		
-		Map<Long, Long> commentCountMap = new HashMap<>();
+		//댓글 갯수 가져오기
+		Map<Long, Integer> commentCountMap = new HashMap<>();
 		for (BoardEntity board : rows) {
-//			long commentCount = 
+			int commentCount = cr.countByBoard_BoardIdx(board.getBoardIdx());
+			commentCountMap.put(board.getBoardIdx(), commentCount);
 		}
+		model.addAttribute("commentCountMap", commentCountMap);
 
 		// 이미지 정보 추가
 		Map<Long, String> imageMap = new HashMap<>();

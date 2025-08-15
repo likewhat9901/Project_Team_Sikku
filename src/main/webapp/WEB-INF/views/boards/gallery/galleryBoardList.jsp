@@ -54,7 +54,7 @@
 				<!-- 액션 버튼 -->
 				<div class="feed-actions">
 					❤️ &nbsp ${likesCountMap[row.boardIdx]} &nbsp&nbsp 
-					💬 <span>${commentCountMap[row.boardIdx]}</span>
+					💬 &nbsp ${commentCountMap[row.boardIdx]}
 				</div>
 
 				<!-- 게시물 내용 -->
