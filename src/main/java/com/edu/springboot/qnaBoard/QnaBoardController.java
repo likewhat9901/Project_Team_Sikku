@@ -35,8 +35,11 @@ public class QnaBoardController {
     	model.addAttribute("noticeRows", qnaService.getNoticeList());
     	
     	//검색된 게시글로 업데이트
-        List<QnaBoardEntity> results = qnaService.qnaSearch(type, keyword);
-        model.addAttribute("qnaRows", results);
+        if (keyword == null || keyword.trim().isEmpty()) {
+            model.addAttribute("qnaRows", qnaService.getQnaList()); // ← 공지 제외된 일반글
+        } else {
+            model.addAttribute("qnaRows", qnaService.qnaSearch(type, keyword));
+        }
         
         return "boards/qna/qnaBoardList";
     }
