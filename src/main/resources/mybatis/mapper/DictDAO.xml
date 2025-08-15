@@ -33,6 +33,27 @@
 		)
 		ORDER BY d.plantidx
 	</select>
+	
+	<!-- 관리자: 식물도감 등록 -->
+   <insert id="insertPlantDict" parameterType="com.edu.springboot.dict.DictDTO">
+    INSERT INTO plantdict (plantidx, name, engname, category, imgpath)
+    VALUES (PLANTDICT_SEQ.NEXTVAL, #{name}, #{engname}, #{category}, #{imgpath})
+</insert>
+
+
+    <!-- 관리자: 식물도감 전체 조회 (최신순) -->
+    <select id="selectAllPlants" resultType="com.edu.springboot.dict.DictDTO">
+	    SELECT plantidx, name, engname, category, 
+	           CONCAT('/images/dict/', imgpath) AS imgpath
+	    FROM plantdict
+	    ORDER BY plantidx DESC
+	</select>
+
+
+    <!-- 관리자: 식물도감 삭제 -->
+    <delete id="deletePlantDict" parameterType="int">
+	    DELETE FROM plantdict WHERE plantidx = #{plantidx}
+	</delete>
 <!-- 
  -->
 </mapper>

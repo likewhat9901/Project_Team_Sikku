@@ -14,6 +14,7 @@
     <ul>
       <li class="admin-tab-btn active" data-tab="member">회원관리</li>
       <li class="admin-tab-btn" data-tab="report">신고된 게시물</li>
+      <li class="admin-tab-btn" data-tab="dict">식물도감</li>
     </ul>
   </div>
 
@@ -79,7 +80,7 @@
 
     <!-- 신고 게시물 탭 -->
     <div class="admin-tab-content" id="report-tab" style="display:none;">
-    <h1 class="admin-title">관리자 페이지</h1>
+      <h1 class="admin-title">관리자 페이지</h1>
       <h2 class="admin-subtitle">🚨 신고된 게시글 목록</h2>
       <c:if test="${empty reportedPosts}">
         <p>신고된 게시글이 없습니다.</p>
@@ -114,6 +115,72 @@
         </table>
       </c:if>
     </div>
+
+    <!-- 식물도감 탭 -->
+    <div class="admin-tab-content" id="dict-tab" style="display:none;">
+      <h1 class="admin-title">관리자 페이지</h1>
+      <h2 class="admin-subtitle">🌱 식물도감</h2>
+
+      <!-- 등록 버튼 -->
+      <button type="button" id="show-dict-form" class="admin-btn">등록하기</button>
+
+      <!-- 식물도감 리스트 -->
+      <div id="dict-list" style="margin-top:20px;">
+        <table class="admin-table">
+          <tr>
+            <th>번호</th>
+            <th>식물명</th>
+            <th>영문명</th>
+            <th>카테고리</th>
+            <th>이미지</th>
+            <th>삭제</th>
+          </tr>
+          <c:forEach var="p" items="${plantList}">
+            <tr>
+              <td>${p.plantidx}</td>
+              <td>${p.name}</td>
+              <td>${p.engname}</td>
+              <td>${p.category}</td>
+              <td><img src="/images/dict/${p.imgpath}" alt="식물사진" style="max-width:100px;"></td>
+              <td>
+                <form action="/admin/deletePlantDict.do" method="post"
+                      onsubmit="return confirm('정말 삭제할까요?');">
+                    <input type="hidden" name="plantidx" value="${p.plantidx}" />
+                    <button type="submit">삭제</button>
+                </form>
+            </td>
+            </tr>
+          </c:forEach>
+        </table>
+      </div>
+
+      <!-- 등록 폼 (처음엔 숨김) -->
+	<div id="dict-form" style="display:none; margin-top:20px;">
+	  <form action="${pageContext.request.contextPath}/admin/dict/insert.do"
+	        method="post" enctype="multipart/form-data" class="admin-form">
+	
+	    <input type="text" name="name" placeholder="식물 이름" required>
+	    <input type="text" name="engname" placeholder="영문 이름">
+	    <input type="text" name="category" placeholder="카테고리">
+	    <textarea name="summary" placeholder="요약 설명"></textarea>
+	    <textarea name="feature" placeholder="특징"></textarea>
+	
+	    <input type="text" name="growingSeason" placeholder="생육 시기 (예: 봄~가을)">
+	    <input type="text" name="bloomingSeason" placeholder="개화 시기 (예: 7~8월)">
+	    
+	    <input type="number" step="0.1" name="temperatureMin" placeholder="최저 온도 (°C)">
+	    <input type="number" step="0.1" name="temperatureMax" placeholder="최고 온도 (°C)">
+	    <input type="text" name="humidity" placeholder="습도 (예: 50~60%)">
+	    <input type="text" name="watering" placeholder="물 주기 (예: 주 1회)">
+	    <textarea name="pest" placeholder="병충해"></textarea>
+	
+	    <input type="file" name="image" accept="image/*" required>
+	
+	    <input type="submit" value="등록" class="admin-btn">
+	  </form>
+	</div>
+
+    </div>
   </div>
 </div>
 
@@ -129,6 +196,12 @@
       });
       document.getElementById(tab + "-tab").style.display = "block";
     });
+  });
+
+  // 등록하기 버튼 클릭 시 폼만 보이게
+  document.getElementById("show-dict-form").addEventListener("click", function(){
+    document.getElementById("dict-list").style.display = "none";
+    document.getElementById("dict-form").style.display = "block";
   });
 </script>
 </body>

@@ -22,4 +22,4 @@ public class WebConfig implements WebMvcConfigurer {
                 .setCacheControl(CacheControl.noCache()) // 캐시 없이 바로 반영
                 .resourceChain(false);
     }
-}
+}	

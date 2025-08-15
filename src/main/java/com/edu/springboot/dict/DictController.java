@@ -63,9 +63,5 @@ public class DictController {
 		
 		return "dict/dictView";
 	}
-	
-	
-	
-	
 
 }
