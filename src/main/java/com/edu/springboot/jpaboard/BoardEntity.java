@@ -99,7 +99,7 @@ public class BoardEntity {
         this.postdate = LocalDateTime.now();
         if (this.category == null) this.category = 1;
         if (this.visitcount == null) this.visitcount = 0;
-//        if (this.likes == null) this.likes = 0;
+        if (this.likesCount == null) this.likesCount = 0;
         if (this.report == null) this.report = 0;
     }
 }
