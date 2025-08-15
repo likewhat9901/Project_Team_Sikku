@@ -1,4 +1,4 @@
-.qnaboard-container {
+.qna-list-container {
 	width: 100%;
 	display: flex;
 	flex-direction: column;
@@ -6,7 +6,7 @@
 	align-items: center;
 	position: relative;
 }
-.qnaboard-container h1 {
+.qna-list-container h1 {
 	margin: 30px auto;
 }
 
@@ -52,20 +52,20 @@
 
 
 /*===================== 테이블 =======================*/
-.qnaboard-table {
+.qna-list-table {
   width: 80%;
   margin-bottom: 50px;
   border-collapse: collapse;
 }
-.qnaboard-table th, td {
+.qna-list-table th, td {
   padding: 14px 8px;
   text-align: center;
   border-bottom: 1px solid #ddd;
 }
-.qnaboard-table th {
+.qna-list-table th {
   background: #f7f7f7;
 }
-.qnaboard-table tr.notice-row {
+.qna-list-table tr.notice-row {
   background-color: #f9f9f9;
   font-weight: bold;
 }

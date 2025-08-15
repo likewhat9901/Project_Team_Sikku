@@ -14,7 +14,8 @@ public class QnaBoardController {
 	@Autowired
 	private QnaBoardService qnaService;
 	
-	// qna게시판 list 페이지
+	//================== List 페이지 ==========================
+	// List 페이지 이동
     @GetMapping("/qnaBoardList.do")
     public String list(Model model) {
     	
@@ -42,6 +43,26 @@ public class QnaBoardController {
         }
         
         return "boards/qna/qnaBoardList";
+    }
+    
+    //================== View 페이지 ==========================
+  	// View 페이지 이동
+    @GetMapping("/qnaBoardView.do")
+    public String view(Model model) {
+    	
+        
+        return "boards/qna/qnaBoardView"; // JSP 경로
+    }
+    
+    
+    
+    //================== Write 페이지 ==========================
+  	// Write 페이지 이동
+    @GetMapping("/qnaBoardWrite.do")
+    public String write(Model model) {
+    	
+        
+        return "boards/qna/qnaBoardWrite"; // JSP 경로
     }
 
 

@@ -6,59 +6,40 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <title>Q&A</title>
-  <link rel="stylesheet" href="/css/common/layout.css" />
-  <link rel="stylesheet" href="/css/qnaBoardView.css" />
-
+  <title>Q&A 상세보기</title>
+  <link rel="stylesheet" href="/css/qna-view.css">
 </head>
 <body>
 <%@ include file="/WEB-INF/views/common/header.jsp" %>
 
-  <h1>Q&A</h1>
-  <table class="qnaboard-table">
-	<tr>
-		<th>No</th>
-		<th>카테고리</th>
-		<th>제목</th>
-		<th>글쓴이</th>
-		<th>작성일</th>
-		<th>답변상태</th>
-	</tr>
-    
-<!-- 공지글 -->
-<c:forEach items="${noticeRows}" var="nrow" varStatus="">
-    <tr class="notice-row">
-		<td>📌</td>
-		<td>${ nrow.category }</td>
-		<td style="text-align:left">${ nrow.title }</td>
-        <td>${ nrow.writer }</td>
-        <td>${ nrow.formattedPostdate}</td>
-        <td>${ nrow.answerstatus }</td>
-    </tr>
-</c:forEach>
+<div class="qna-view-container">
+  <h1 class="qna-view-title">${ qna.title }</h1>
 
-<!-- 일반 Q&A -->
-<c:forEach items="${qnaRows}" var="qrow" varStatus="var">
-    <tr>
-    	<td>${ var.count + 1 }</td>
-		<td>${ qrow.category }</td>
-		<td style="text-align:left">
-		  <c:if test="${ qrow.secretflag == 'Y' }">🔒 </c:if>
-		  ${ qrow.title }
-		</td>
-		<td>${ qrow.writer }</td>
-		<td>${ qrow.formattedPostdate}</td>
-		<td>${ qrow.answerstatus }</td>
-    </tr>
-</c:forEach>
-  </table>
-
-  <div class="search-box">
-    <form action="/qna/search.do" method="get">
-    <input type="text" name="keyword" placeholder="Search" />
-    <button type="submit">검색</button>
-  </form>
+  <div class="qna-meta">
+    <span class="meta-writer">작성자: ${ qna.writer }</span>
+    <span class="meta-date">
+      작성일: <fmt:formatDate value="${ qna.postdate }" pattern="yyyy-MM-dd HH:mm" />
+    </span>
+    <span class="meta-views">조회수: ${ qna.views }</span>
   </div>
+
+  <div class="qna-content">
+    <pre>${ qna.content }</pre>
+  </div>
+
+  <c:if test="${ not empty qna.answercontent }">
+    <div class="qna-answer">
+      <h3>📌 답변</h3>
+      <pre>${ qna.answercontent }</pre>
+    </div>
+  </c:if>
+
+  <div class="qna-buttons">
+    <button onclick="location.href='/qna/qnaBoardList.do'">목록</button>
+    <button onclick="location.href='/qna/edit.do?idx=${ qna.idx }'">수정</button>
+    <button onclick="if(confirm('정말 삭제할까요?')) location.href='/qna/delete.do?idx=${ qna.idx }'">삭제</button>
+  </div>
+</div>
 
 <%@ include file="/WEB-INF/views/common/footer.jsp" %>
 </body>
