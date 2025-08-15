@@ -22,15 +22,26 @@ public class BoardReportService {
     }
     
     private void updateBoardReportCount(Long boardIdx) {
-        // 신고 횟수 카운트 (BoardReportRepository)
+        // 신고 횟수 카운트 (Report 테이블에서 신고갯수 세기)
         Long reportCount = rr.countByBoardIdx(boardIdx);
         
-        // board 테이블 업데이트 (BoardRepository)
-        Optional<BoardEntity> boardOpt = br.findById(boardIdx);  // br 사용!
-        if (boardOpt.isPresent()) {
-            BoardEntity board = boardOpt.get();
+        // 해당 게시물 정보를 be로 불러오기
+        Optional<BoardEntity> be = br.findById(boardIdx);
+        // Optional이 아닌 BoardEntity타입의 변수에 담기
+        if(be.isPresent()) {
+            BoardEntity board = br.findById(boardIdx).get();
             board.setReport(reportCount.intValue());
-            br.save(board);  // br 사용!
+            br.save(board);
+            System.out.println("게시판테이블에도 report 컬럼에 1증가 완료.");
         }
+        
     }
+    
+    public boolean checkReport(Long boardIdx, String userId) {
+    	
+    	boolean result = rr.existsByBoardIdxAndUserId(boardIdx, userId);
+    	
+    	return result;
+    }
+    
 }

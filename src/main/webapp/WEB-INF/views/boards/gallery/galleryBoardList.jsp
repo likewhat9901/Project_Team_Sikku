@@ -7,7 +7,7 @@
 <head>
 <meta charset="UTF-8">
 <title>freeBoardList</title>
-
+<link rel="stylesheet" href="/css/common/layout.css">
 <link rel="stylesheet" href="/css/gallery.css">
 
 <!-- JS import -->
