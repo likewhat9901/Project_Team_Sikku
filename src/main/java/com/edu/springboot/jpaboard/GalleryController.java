@@ -1,6 +1,8 @@
 package com.edu.springboot.jpaboard;
 
 import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.security.Principal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -332,25 +334,27 @@ public class GalleryController {
 	@PostMapping("/boards/gallery/galleryBoardWriteProc.do")
 	public String writeProc(BoardEntity be, @RequestParam("ofile") List<MultipartFile> ofile) {
 
-		try {
+	    try {
+	        System.out.println("갤러리 게시판 글쓰기 프로세스 실행");
 
-			System.out.println("갤러리 게시판 글쓰기 프로세스 실행");
+	        // 게시글 저장
+	        BoardEntity savedBoard = br.save(be);
 
-			// 게시글 저장
-			BoardEntity savedBoard = br.save(be);
+	        // 업로드 경로
+	        String uploadDir = ResourceUtils.getFile("classpath:static/uploads/board").toPath().toString();
+	        
+	        // 디렉토리가 없으면 생성
+	        Files.createDirectories(Paths.get(uploadDir));
 
-			// 업로드 경로
-			String uploadDir = ResourceUtils.getFile("classpath:static/uploads/board").toPath().toString();
+	        // 서비스의 이미지 저장 함수 호출
+	        is.saveBoardImage(savedBoard, ofile, uploadDir);
 
-			// 서비스의 이미지 저장 함수 호출
-			is.saveBoardImage(savedBoard, ofile, uploadDir);
+	        System.out.println("갤러리 게시물 업로드 성공");
+	    } catch (Exception e) {
+	        System.out.println("갤러리 게시물 업로드 실패");
+	    }
 
-			System.out.println("갤러리 게시물 업로드 성공");
-		} catch (Exception e) {
-			System.out.println("갤러리 게시물 업로드 실패");
-		}
-
-		return "redirect:galleryBoardList.do";
+	    return "redirect:galleryBoardList.do";
 	}
 
 	/* ====================================================================== */
@@ -382,7 +386,7 @@ public class GalleryController {
 
 		try {
 
-			System.out.println("갤러리 게시판 글쓰기 프로세스 실행");
+			System.out.println("갤러리 게시판 수정 프로세스 실행");
 
 			// 게시글 저장
 			BoardEntity savedBoard = br.save(be);

@@ -13,6 +13,7 @@
 function validateWriteForm() {
     const title = document.querySelector('[name="title"]').value.trim();
     const content = document.querySelector('[name="content"]').value.trim();
+    const fileInput = document.querySelector('[name="ofile"]');
 
     if (!title) {
         alert("제목을 입력해주세요.").focus();
@@ -24,8 +25,9 @@ function validateWriteForm() {
         return false;
     }
     
-    if (form.ofile.value == "") {
+    if (!fileInput.files || fileInput.files.length === 0) {
         alert("첨부파일은 필수 입력입니다.");
+        fileInput.focus();
         return false;
     }
 
@@ -75,9 +77,9 @@ function previewImage(event) {
 
 	<main class="board-edit">
 		<form action="galleryBoardEditProc.do" method="post"
-			enctype="multipart/form-data">
+			enctype="multipart/form-data"
+			onsubmit="return validateWriteForm()">
 			<input type="hidden" name="boardIdx" value="${board.boardIdx}" /> <input
-				type="hidden" name="userId" value="${board.userId}" /> <input
 				type="hidden" name="category" value="${board.category}" /> <input
 				type="hidden" name="likesCount" value="${board.likesCount}" /> <input
 				type="hidden" name="visitcount" value="${board.visitcount}" /> <input
