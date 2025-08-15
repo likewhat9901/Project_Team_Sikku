@@ -1,7 +1,6 @@
 package com.edu.springboot.qnaBoard;
 
 import java.security.Principal;
-import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -91,6 +90,16 @@ public class QnaBoardController {
 
         model.addAttribute("qna", qna);
         
+        /*============== 관리자 계정 확인 =================*/
+        MemberEntity member = memberRepo.findByUserId(userId).orElse(null);
+        String authority = member.getAuthority();
+        
+        if (member != null) {
+            model.addAttribute("userRole", member.getAuthority());
+        } else {
+            model.addAttribute("userRole", "ROLE_USER"); // 기본값
+        }
+        
         return "boards/qna/qnaBoardView"; // JSP 경로
     }
     
@@ -100,6 +109,17 @@ public class QnaBoardController {
         qnaService.deletePost(idx);
         return "redirect:/qnaBoardList.do"; // 삭제 후 목록으로 이동
     }
+    
+    @PostMapping("/qnaBoardAnswer.do")
+    public String submitAnswer(@RequestParam("idx") Long idx,
+                               @RequestParam("answercontent") String answerContent) {
+
+        // 답변 내용 DB에 업데이트
+        qnaService.updateAnswer(idx, answerContent);
+
+        return "redirect:/qnaBoardView.do?idx=" + idx;
+    }
+
     
     
     

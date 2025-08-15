@@ -14,9 +14,14 @@
 <%@ include file="/WEB-INF/views/common/header.jsp" %>
 
 	<div class="qna-view-container">
-		<h1 class="title">${ qna.title }</h1>
-		
 		<div class="qna-view-header">
+			<h1 class="title">${ qna.title }</h1>
+			<c:if test="${userRole == 'ROLE_ADMIN'}">
+				<button type="button" onclick="toggleAnswerForm()">관리자 답변</button>
+			</c:if>
+		</div>
+		
+		<div class="qna-post-info">
 			<span class="writer">작성자: ${ qna.writer }</span>
 			<span class="date post">
 			작성일: ${ qna.formattedPostdate }
@@ -31,12 +36,21 @@
 			<pre>${ qna.content }</pre>
 		</div>
 		
-	<c:if test="${ not empty qna.answercontent }">
-		<div class="qna-view-answer">
+		<div id="answer-box" class="qna-view-answer">
 			<h3>📌 답변</h3>
-			<pre>${ qna.answercontent }</pre>
+		
+		<c:if test="${ not empty qna.answercontent }">
+			<pre id="answer-pre">${qna.answercontent}</pre>
+		</c:if>
+		
+			<!-- 2. 버튼 누르면 이 textarea/form이 보여짐 -->
+			<form id="answer-form" action="/qnaBoardAnswer.do" method="post" style="display:none;">
+				<input type="hidden" name="idx" value="${qna.idx}" />
+				<textarea name="answercontent" rows="6" cols="80">${qna.answercontent}</textarea><br>
+				<button type="submit">답변 등록</button>
+			</form>
 		</div>
-	</c:if>
+	
 		
 		<div class="qna-view-buttons">
 			<button onclick="location.href='/qnaBoardList.do'">목록</button>
@@ -47,4 +61,17 @@
 
 <%@ include file="/WEB-INF/views/common/footer.jsp" %>
 </body>
+<script>
+function toggleAnswerForm() {
+    const pre = document.getElementById('answer-pre');
+    const form = document.getElementById('answer-form');
+
+    // pre 숨기고 textarea/form 보여주기
+    if (pre) {
+        pre.style.display = 'none';
+    }
+
+    form.style.display = 'block';
+}
+</script>
 </html>

@@ -1,5 +1,6 @@
 package com.edu.springboot.qnaBoard;
 
+import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
 
@@ -69,6 +70,21 @@ public class QnaBoardService {
     public void deletePost(Long idx) {
         qnaRepo.deleteById(idx);
     }
+    
+    // 관리자 답변
+    /* @Transactional은 하나의 작업(트랜잭션)을 묶어서 처리해주는 애야.이게 붙은 메서드는 실행 중 DB에 변경이 생기면,
+    메서드가 끝날 때 자동으로 commit 해주고, 중간에 오류 나면 rollback 해줌. -> 자동저장모드 */
+    @Transactional
+    public void updateAnswer(Long idx, String answerContent) {
+        QnaBoardEntity qna = qnaRepo.findById(idx)
+                             .orElseThrow(() -> new IllegalArgumentException("해당 글이 없습니다: " + idx));
+        
+        qna.setAnswercontent(answerContent);
+        qna.setUpdatedate(LocalDateTime.now()); // LocalDateTime 사용한다면
+
+        // save 안 해도 됨: JPA는 트랜잭션 안에서 변경 감지(dirty checking)로 자동 업데이트 됨
+    }
+
     
     /* ============== qnaBoardWrite 페이지 ================= */
     

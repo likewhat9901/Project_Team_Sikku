@@ -248,7 +248,6 @@ VALUES (board_seq.NEXTVAL, 'cheon',
 commit;
 
 
-
 /* select */
 
 select * from members;
@@ -286,4 +285,4 @@ DROP SEQUENCE qna_board_seq;
 /* admin으로 회원가입 한 후 밑의 코드를 삽입하면 admin계정이 ROLE_ADMIN으로 권한 변경*/
 UPDATE members
 SET authority = 'ROLE_ADMIN'
-WHERE userid = 'admin';
+WHERE userid = '123';

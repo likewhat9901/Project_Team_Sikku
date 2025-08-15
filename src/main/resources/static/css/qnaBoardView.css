@@ -22,8 +22,8 @@ pre, button {
   color: #2c3e50;
 }
 
-/* 메타 정보 */
-.qna-view-header {
+/* 게시글 정보 */
+.qna-post-info {
   font-size: 1rem;
   color: #666;
   display: flex;
@@ -32,7 +32,7 @@ pre, button {
   margin-bottom: 40px;
 }
 
-.qna-view-header span {
+.qna-post-info span {
   display: flex;
   align-items: center;
   font-size: 1.2rem;
