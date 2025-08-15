@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,12 +28,17 @@ public class QnaBoardController {
 	private MemberRepository memberRepo;
 	
 	//================== List 페이지 ==========================
+	private final int pageSize = 10;
+	
 	// List 페이지 이동
     @GetMapping("/qnaBoardList.do")
-    public String list(Model model) {
+    public String list(@RequestParam(name = "page", defaultValue = "1") int page, Model model) {
+    	model.addAttribute("noticeRows", qnaService.getNoticeList());
     	
-        model.addAttribute("noticeRows", qnaService.getNoticeList());
-        model.addAttribute("qnaRows", qnaService.getQnaList());
+    	Page<QnaBoardEntity> qnaPage = qnaService.getQnaList(page, pageSize);
+
+        model.addAttribute("qnaRows", qnaPage);
+        model.addAttribute("totalPages", qnaPage.getTotalPages());
         
         return "boards/qna/qnaBoardList"; // JSP 경로
     }
@@ -40,6 +46,7 @@ public class QnaBoardController {
     // 검색 기능
     @GetMapping("/qna/search.do")
     public String search(
+		@RequestParam(name = "page", defaultValue = "1") int page,
         @RequestParam("type") String type,
         @RequestParam("keyword") String keyword,
         Model model) {
@@ -49,9 +56,9 @@ public class QnaBoardController {
     	
     	//검색된 게시글로 업데이트
         if (keyword == null || keyword.trim().isEmpty()) {
-            model.addAttribute("qnaRows", qnaService.getQnaList()); // ← 공지 제외된 일반글
+            model.addAttribute("qnaRows", qnaService.getQnaList(page, pageSize)); // ← 공지 제외된 일반글
         } else {
-            model.addAttribute("qnaRows", qnaService.qnaSearch(type, keyword));
+            model.addAttribute("qnaRows", qnaService.qnaSearch(type, keyword, page, pageSize));
         }
         
         return "boards/qna/qnaBoardList";

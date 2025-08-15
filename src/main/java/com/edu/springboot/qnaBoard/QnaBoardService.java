@@ -4,6 +4,10 @@ import java.util.Collections;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import jakarta.transaction.Transactional;
@@ -17,28 +21,29 @@ public class QnaBoardService {
     private QnaBoardRepository qnaRepo;
 	
 	/* ============== qnaBoardList 페이지 ================= */
-	// 공지글
+	// 공지글 (페이징 X)
     public List<QnaBoardEntity> getNoticeList() {
         return qnaRepo.findByNoticeflagOrderByPostdateDesc("Y");
     }
 
-    // 일반 사용자 QnA 글
-    public List<QnaBoardEntity> getQnaList() {
-        return qnaRepo.findByNoticeflagOrderByPostdateDesc("N");
+    // 일반 사용자 QnA 글 (페이징 O)
+    public Page<QnaBoardEntity> getQnaList(int page, int pageSize) {
+        return qnaRepo.findByNoticeflagOrderByPostdateDesc("N",
+                PageRequest.of(page - 1, pageSize, Sort.by("postdate").descending()));
     }
     
-    // 검색 기능
-    public List<QnaBoardEntity> qnaSearch(String type, String keyword) {
-    	if ("writer".equals(type)) {
-            return qnaRepo.findByWriterContaining(keyword);
-        } else if ("title".equals(type)) {
-            return qnaRepo.findByTitleContaining(keyword);
-        } else if ("content".equals(type)) {
-            return qnaRepo.findByContentContaining(keyword);
-        } else if ("titleAndContent".equals(type)) {
-            return qnaRepo.findByTitleContainingOrContentContaining(keyword, keyword);
-        }
-        return Collections.emptyList();
+    // 검색 기능 (페이징 O)
+    public Page<QnaBoardEntity> qnaSearch(String type, String keyword, int page, int pageSize) {
+    	Pageable pageable = PageRequest.of(page - 1, pageSize, Sort.by("	").descending());
+    	
+    	return switch (type) {
+	        case "title" -> qnaRepo.findByTitleContainingAndNoticeflag(keyword, "N", pageable);
+	        case "content" -> qnaRepo.findByContentContainingAndNoticeflag(keyword, "N", pageable);
+	        case "writer" -> qnaRepo.findByWriterContainingAndNoticeflag(keyword, "N", pageable);
+	        case "titleAndContent" ->
+	            qnaRepo.findByTitleContainingOrContentContainingAndNoticeflag(keyword, keyword, "N", pageable);
+	        default -> Page.empty(pageable);
+    	};
     }
     
     /* ============== qnaBoardView 페이지 ================= */

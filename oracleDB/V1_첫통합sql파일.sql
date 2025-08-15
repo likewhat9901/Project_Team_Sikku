@@ -192,7 +192,8 @@ CREATE SEQUENCE qna_board_seq
     NOCYCLE;
 
 
-/* Trigger */  
+/* Trigger */
+-- qna_board 생성 후 반드시 실행(qna_board_seq 시퀀스 필요)
 CREATE OR REPLACE TRIGGER trg_qna_board_idx
 BEFORE INSERT ON qna_board
 FOR EACH ROW
@@ -246,7 +247,7 @@ VALUES (board_seq.NEXTVAL, 'cheon',
 /* 커밋 */
 commit;
 
-SELECT * FROM qna_board where noticeflag = 'N';
+
 
 /* select */
 
@@ -256,6 +257,9 @@ select * from comments;
 select * from diary;
 select * from plantdict;
 select * from mbti;
+select * from qna_board;
+select * from board_image;
+select * from board_report;
 
 /* drop table */
 DROP TABLE members CASCADE CONSTRAINTS;
@@ -266,7 +270,8 @@ DROP TABLE plantdict CASCADE CONSTRAINTS;
 DROP TABLE mbti CASCADE CONSTRAINTS;
 DROP TABLE hlike CASCADE CONSTRAINTS;
 /* 게시판 이미지 테이블 삭제 */
-drop table BOARD_IMAGE;
+DROP TABLE board_image CASCADE CONSTRAINTS;
+DROP TABLE board_report CASCADE CONSTRAINTS;
 DROP TABLE qna_board CASCADE CONSTRAINTS;
 
 /* 시퀀스 삭제 */
@@ -275,6 +280,7 @@ DROP SEQUENCE diary_seq;
 DROP SEQUENCE board_seq;
 DROP SEQUENCE comment_seq;
 DROP SEQUENCE mbti_seq;
+DROP SEQUENCE report_seq;
 DROP SEQUENCE qna_board_seq;
 
 /* admin으로 회원가입 한 후 밑의 코드를 삽입하면 admin계정이 ROLE_ADMIN으로 권한 변경*/
