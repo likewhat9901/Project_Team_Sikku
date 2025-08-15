@@ -4,8 +4,9 @@
 
 </div>
 <div class="floating-nav">
-  <button onclick="location.href='/chat/chatbot.do'">AI채팅</button>
-  <button onclick="location.href='/chat/chatbot.do'">도움말</button>
+  <button onclick="location.href='#'">Top ↑</button>
+  <button onclick="location.href='/chat/chatstart.do'">AI채팅</button>
+  <button onclick="window.open('/checkout', 'checkoutPopup', 'width=600,height=700,resizable=yes,scrollbars=yes')">구독하기</button>
   <button onclick="location.href='/qna/qnaBoard.do'">QnA</button>
 </div>
 <footer class="oopy-my-footer">
@@ -48,6 +49,21 @@
         <p>&copy; 2025 Oopy Inc. All Rights Reserved.</p>
     </div>
 </footer>
+
+<script>
+function openCheckoutPopup() {
+    const width = 600;
+    const height = 700;
+    const left = (window.screen.width - width) / 2;
+    const top = (window.screen.height - height) / 2;
+
+    window.open(
+        '/checkout',
+        'checkoutPopup',
+        `width=${width},height=${height},top=${top},left=${left},resizable=yes,scrollbars=yes`
+    );
+}
+</script>
 
 <script>
     // 모바일 푸터 토글 기능을 위한 스크립트

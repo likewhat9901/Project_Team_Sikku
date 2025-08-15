@@ -123,6 +123,10 @@ public class MyDiaryController {
 				String savedFileName = MyFunctions.renameFile(uploadDir, originalFileName);
 				myDiaryDTO.setSfile(savedFileName); // 저장된 파일명 DTO에 저장
 			}
+			if(file == null || file.isEmpty()) {
+				myDiaryDTO.setOfileName("");
+				myDiaryDTO.setSfile("");
+			}
 
 			// 나머지 정보 폼값 매핑
 			myDiaryDTO.setDescription(req.getParameter("description"));

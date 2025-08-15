@@ -34,7 +34,7 @@
         기록하고, 공유하고, 함께 가꿔요.
       </p>
       <div class="identity-cta">
-        <a href="${pageContext.request.contextPath}/signup" class="identity-btn identity-btn--primary">지금 시작하기</a>
+        <a onclick="window.open('/checkout', 'checkoutPopup', 'width=600,height=700,resizable=yes,scrollbars=yes')" class="identity-btn identity-btn--primary">지금 시작하기</a>
         <a href="${pageContext.request.contextPath}/mydiary/list.do" class="identity-btn identity-btn--ghost">다이어리 구경</a>
       </div>
 
@@ -126,7 +126,7 @@
   <section class="identity-cta-wide fade-in">
     <div class="identity-cta-wide-inner">
       <h3>오늘 씨앗을 심으면, 내일의 데이터가 됩니다</h3>
-      <a href="${pageContext.request.contextPath}/signup" class="identity-btn identity-btn--light">무료로 시작</a>
+      <a onclick="window.open('/checkout', 'checkoutPopup', 'width=600,height=700,resizable=yes,scrollbars=yes')" class="identity-btn identity-btn--light">식꾸와 함께하기</a>
     </div>
   </section>
 
@@ -156,6 +156,21 @@ document.addEventListener("DOMContentLoaded", () => {
     observer.observe(card);
   });
 });
+</script>
+
+<script>
+function openCheckoutPopup() {
+    const width = 600;
+    const height = 700;
+    const left = (window.screen.width - width) / 2;
+    const top = (window.screen.height - height) / 2;
+
+    window.open(
+        '/checkout',
+        'checkoutPopup',
+        `width=${width},height=${height},top=${top},left=${left},resizable=yes,scrollbars=yes`
+    );
+}
 </script>
 </body>
 </html>
