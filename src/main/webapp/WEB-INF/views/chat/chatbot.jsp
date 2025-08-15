@@ -30,7 +30,7 @@
 		</div>
 
 		<br />
-		<div id="chatArea"></div>
+		<div id="chatArea" class="chat-window"></div>
 		<br />
 
 		<div class="chat-inputarea">
@@ -78,20 +78,39 @@ var stompClient = null;
 	$('#message').val('');
 	showUserMessage(chatMessage); // 사용자의 메시지를 바로 표시
   }
-	
-  //메시지 띄우기
-  function showMessage(message) {
-	var messageElement = $('<div class="message ai-message"></div>');
-	messageElement.text(message.sender + ': ' + message.content);
-	$('#chatArea').append(messageElement);
-	$('#chatArea').scrollTop($('#chatArea')[0].scrollHeight); // 스크롤을 아래로
+  
+  function escapeHtml(s){
+	  return String(s)
+	    .replace(/&/g,"&amp;").replace(/</g,"&lt;")
+	    .replace(/>/g,"&gt;").replace(/"/g,"&quot;")
+	    .replace(/'/g,"&#39;");
+	}
+  function nl2br(s){ 
+	return escapeHtml(s).replace(/\n/g,"<br>"); 
   }
-	
-  function showUserMessage(message) {
-	var messageElement = $('<div class="message user-message"></div>');
-	messageElement.text(message.sender + ': ' + message.content);
-	$('#chatArea').append(messageElement);
-	$('#chatArea').scrollTop($('#chatArea')[0].scrollHeight); // 스크롤을 아래로
+  // 사용자, ai 공통 템플릿
+  function bubbleHtml(sender, text, role){
+    const isUser = role === 'user';
+    const name = isUser ? sender : (sender || 'AI');
+    return (
+    		'<div class="message-row ' + (isUser ? 'user' : 'ai') + '">' +
+    	      (isUser ? '' : '<div class="avatar">🍀</div>') +
+    	      '<div class="bubble">' +
+    	        '<div class="meta">' + escapeHtml(name) + '</div>' +
+    	        '<div class="text">' + nl2br(text) + '</div>' +
+    	      '</div>' +
+    	      (isUser ? '<div class="avatar me">🙂</div>' : '') +
+    	    '</div>');
+  }
+  //메시지 띄우기
+  function showMessage(message){
+    $('#chatArea').append(bubbleHtml(message.sender, message.content, 'ai'));
+    $('#chatArea').scrollTop($('#chatArea')[0].scrollHeight);
+  }
+
+  function showUserMessage(message){
+    $('#chatArea').append(bubbleHtml(message.sender, message.content, 'user'));
+    $('#chatArea').scrollTop($('#chatArea')[0].scrollHeight);
   }
 	
   $(function() {
