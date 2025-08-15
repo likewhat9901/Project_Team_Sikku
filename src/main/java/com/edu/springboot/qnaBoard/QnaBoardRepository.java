@@ -6,9 +6,13 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface QnaBoardRepository extends JpaRepository<QnaBoardEntity, Long> {
 
-    // 공지글 목록 (noticeflag = 'Y' or 'N')
+    // 글 목록 가져오기 (noticeflag = 'Y' or 'N')
     List<QnaBoardEntity> findByNoticeflagOrderByPostdateDesc(String noticeflag);
 
-    // 제목 or 내용 검색도 추가 가능
-    List<QnaBoardEntity> findByTitleContainingOrContentContaining(String keyword1, String keyword2);
+    // 작성자 or 제목 or 내용 or 제목+내용 검색
+    List<QnaBoardEntity> findByWriterContaining(String keyword);
+    List<QnaBoardEntity> findByTitleContaining(String keyword);
+    List<QnaBoardEntity> findByContentContaining(String keyword);
+    List<QnaBoardEntity> findByTitleContainingOrContentContaining(String titleKeyword, String contentKeyword);
+    
 }

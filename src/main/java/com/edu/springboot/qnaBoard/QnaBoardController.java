@@ -14,21 +14,32 @@ public class QnaBoardController {
 	@Autowired
 	private QnaBoardService qnaService;
 	
-    @GetMapping("/boards/qna/qnaBoardList.do")
+	// qna게시판 list 페이지
+    @GetMapping("/qnaBoardList.do")
     public String list(Model model) {
+    	
         model.addAttribute("noticeRows", qnaService.getNoticeList());
         model.addAttribute("qnaRows", qnaService.getQnaList());
         
         return "boards/qna/qnaBoardList"; // JSP 경로
     }
-
-    @GetMapping("/search.do")
-    public String search(@RequestParam("keyword") String keyword, Model model) {
-        List<QnaBoardEntity> results = qnaService.search(keyword);
+    
+    // 검색 기능
+    @GetMapping("/qna/search.do")
+    public String search(
+        @RequestParam("type") String type,
+        @RequestParam("keyword") String keyword,
+        Model model) {
+    	
+    	//공지글은 고정
+    	model.addAttribute("noticeRows", qnaService.getNoticeList());
+    	
+    	//검색된 게시글로 업데이트
+        List<QnaBoardEntity> results = qnaService.qnaSearch(type, keyword);
         model.addAttribute("qnaRows", results);
-        model.addAttribute("noticeRows", qnaService.getNoticeList()); // 필요 시 유지
         
-        return "qna/qnaBoardList";
+        return "boards/qna/qnaBoardList";
     }
+
 
 }
