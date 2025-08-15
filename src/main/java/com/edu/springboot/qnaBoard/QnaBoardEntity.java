@@ -3,7 +3,6 @@ package com.edu.springboot.qnaBoard;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -17,7 +16,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+
 @Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
@@ -29,28 +30,29 @@ public class QnaBoardEntity {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "qna_seq_gen")
     @SequenceGenerator(name = "qna_seq_gen", sequenceName = "qna_board_seq", allocationSize = 1)
     private Long idx;
-
-    private Long writerid;
+    
+    private String writerid;
     private String writer;//
-    private String title;//
+    private String title;//글쓰기할때 post로 보낼거
 
     @Lob //Large Object: CLOB, BLOB 등 대용량 텍스트나 파일 필드에 사용
-    private String content;//
-
-    private String category;
-    private String secretflag; //비밀글 여부
-    private String noticeflag; //공지글
-    private String answerstatus; //답변대기상태인지?
+    private String content;//글쓰기할때 post로 보낼거
+    
+    private String category;//글쓰기할때 post로 보낼거
+    private String secretflag;//글쓰기할때 post로 보낼거
+    private String noticeflag = "N"; //이거는 디폴트 되어 있는데, 글쓰기 해보고
+    //디폴트 안들어가면 밑에다 persist로 값 집어넣어주기
+    private String answerstatus = "대기"; //이거는 디폴트 되어 있는데, 글쓰기 해보고
+    //디폴트 안들어가면 밑에다 persist로 값 집어넣어주기
 
     @Lob //Large Object: CLOB, BLOB 등 대용량 텍스트나 파일 필드에 사용
     private String answercontent;
+
+    private Integer views = 0;
+    private Integer likes = 0;
     
-    @Setter
-    private Integer views;
-    private Integer likes;
-    
-    private LocalDateTime postdate;
-    private LocalDateTime updatedate;
+    private LocalDateTime postdate = LocalDateTime.now();
+    private LocalDateTime updatedate = LocalDateTime.now();
     
     
     public String getFormattedPostdate() {
@@ -60,6 +62,7 @@ public class QnaBoardEntity {
     public String getFormattedUpdatedate() {
         return updatedate != null ? updatedate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")) : "";
     }
+
 }
 
 

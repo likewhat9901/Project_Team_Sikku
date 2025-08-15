@@ -2,21 +2,29 @@ package com.edu.springboot.qnaBoard;
 
 import java.security.Principal;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import jakarta.servlet.http.HttpSession;
 
+import com.edu.springboot.jpaboard.MemberEntity;
+import com.edu.springboot.jpaboard.MemberRepository;
 
 @Controller
 public class QnaBoardController {
 	
 	@Autowired
 	private QnaBoardService qnaService;
+	@Autowired
+	private QnaBoardRepository qnaRepo;
+	@Autowired
+	private MemberRepository memberRepo;
 	
 	//================== List 페이지 ==========================
 	// List 페이지 이동
@@ -91,10 +99,47 @@ public class QnaBoardController {
     //================== Write 페이지 ==========================
   	// Write 페이지 이동
     @GetMapping("/qnaBoardWrite.do")
-    public String write(Model model) {
+    public String write(Model model, Principal principal) {
     	
+    	//유저 아이디 가져오기
+    	QnaBoardEntity qEntity = new QnaBoardEntity();
+    	String writerid = principal.getName();
+    	qEntity.setWriterid(writerid);
+    	
+    	//멤버 테이블에서 닉네임 가져오기
+    	Optional<MemberEntity> memberOpt = memberRepo.findById(writerid);
+    	String writer = memberOpt.get().getUsername();
+    	System.out.println("writer는 뭘까여->"+ writer);
+    	
+    	//모델에 담기
+    	model.addAttribute("writerid", writerid);
+    	model.addAttribute("writer", writer);
         
         return "boards/qna/qnaBoardWrite"; // JSP 경로
+    }
+    
+  	// Write 글쓰기 처리 (Create) 
+    @PostMapping("/qnaBoardWriteProc.do")
+    public String writeProc(@RequestParam("title") String title,
+                           @RequestParam("content") String content,
+                           @RequestParam("category") String category,
+                           @RequestParam("writer") String writer,
+                           @RequestParam("writerid") String writerid,
+                           @RequestParam(value="secretflag", required = false) String secretflag
+    ) {
+        // 직접 새 객체 생성
+        QnaBoardEntity qEntity = new QnaBoardEntity();
+        qEntity.setTitle(title);
+        qEntity.setContent(content);
+        qEntity.setCategory(category);
+        qEntity.setWriter(writer);
+        qEntity.setWriterid(writerid);
+        qEntity.setSecretflag("Y".equals(secretflag) ? "Y" : "N");
+        
+        // 기본값들은 Entity에서 처리하거나 여기서 설정
+        
+        qnaRepo.save(qEntity);
+        return "redirect:/qnaBoardList.do";
     }
 
 
