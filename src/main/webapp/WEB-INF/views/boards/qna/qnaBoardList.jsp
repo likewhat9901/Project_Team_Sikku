@@ -14,7 +14,7 @@
 <body>
 <%@ include file="/WEB-INF/views/common/header.jsp" %>
 	
-	<div class="qnaboard-container">
+	<div class="qna-list-container">
 		<h1>Q&A</h1>
 		
 		<button class="write-btn"
@@ -34,7 +34,7 @@
 			</form>
 		</div>
 		
-		<table class="qnaboard-table">
+		<table class="qna-list-table">
 			<tr>
 				<th>No</th>
 				<th>카테고리</th>
