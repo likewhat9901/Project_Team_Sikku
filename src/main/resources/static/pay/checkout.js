@@ -2,7 +2,7 @@ const button = document.getElementById("payment-button");
 const coupon = document.getElementById("coupon-box");
 const generateRandomString = () =>
 	window.btoa(Math.random()).slice(0, 20);
-const amount = 500;
+const amount = 50000;
 console.log("checkout")
 // ------  결제위젯 초기화 ------
 // TODO: clientKey는 개발자센터의 결제위젯 연동 키 > 클라이언트 키로 바꾸세요.

@@ -111,6 +111,7 @@
 .identity-btn--primary {
   background: #164b2f;
   color: #fff;
+  cursor: pointer;
 }
 
 .identity-btn--primary:hover {
@@ -338,6 +339,7 @@
   font-weight: bold;
   display: inline-block;
   margin-top: 20px;
+  cursor: pointer;
 }
 
 
