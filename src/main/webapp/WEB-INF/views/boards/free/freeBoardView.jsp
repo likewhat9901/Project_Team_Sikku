@@ -31,68 +31,72 @@
 			<h4>${board.userId}</h4>
 		</div>
 		<br> <span>🕒 ${beFormattedDate} 👁‍🗨 ${board.visitcount}</span>
-		
-		<button type="button" class="board-report-btn" 
-			data-board-idx="${board.boardIdx}"
-			${checkReport ? 'disabled' : ''}>
-	        <c:choose>
-		        <c:when test="${checkReport}">신고완료</c:when>
-		        <c:otherwise>🚨 신고</c:otherwise>
-		    </c:choose>
-	    </button>
-	    
-	    <!-- 신고 모달창 -->
-	    <div id="reportModal" class="modal-overlay" style="display: none;">
-	        <div class="modal">
-	            <!-- 모달 헤더 -->
-	            <div class="modal-header">
-	                <h3 class="modal-title">게시글 신고</h3>
-	            </div>
-	
-	            <!-- 모달 바디 -->
-	            <div class="modal-body">
-	                <!-- 여기에 action을 추가! -->
-	                <form id="reportForm" action="/boards/free/reportBoard.do" method="POST">
-	                    <label for="reportContent" class="form-label">신고 사유를 입력해주세요</label>
-	                    <textarea 
-	                        id="reportContent" 
-	                        name="content" 
-	                        class="form-control" 
-	                        required></textarea>
-	                    
-	                    <!-- 숨겨진 필드 - 게시글 번호 전달용 -->
-	                    <input type="hidden" id="boardIdx" name="boardIdx" value="${board.boardIdx}">
-			            <!-- 모달 푸터 -->
-			            <div class="modal-footer">
-			                <button type="button" class="btn btn-cancel" id="cancelBtn">취소</button>
-			                <button type="submit" class="btn btn-submit" id="submitBtn" form="reportForm">신고하기</button>
-			            </div>
-                    </form>
-	            </div>
-	
-	                
-	        </div>
-	    </div>
-	    
+
+		<button type="button" class="board-report-btn"
+			data-board-idx="${board.boardIdx}" ${checkReport ? 'disabled' : ''}>
+			<c:choose>
+				<c:when test="${checkReport}">신고완료</c:when>
+				<c:otherwise>🚨 신고</c:otherwise>
+			</c:choose>
+		</button>
+
+		<!-- 신고 모달창 -->
+		<div id="reportModal" class="modal-overlay" style="display: none;">
+			<div class="modal">
+				<!-- 모달 헤더 -->
+				<div class="modal-header">
+					<h3 class="modal-title">게시글 신고</h3>
+				</div>
+
+				<!-- 모달 바디 -->
+				<div class="modal-body">
+					<!-- 여기에 action을 추가! -->
+					<form id="reportForm" action="/boards/free/reportBoard.do"
+						method="POST">
+						<label for="reportContent" class="form-label">신고 사유를
+							입력해주세요</label>
+						<textarea id="reportContent" name="content" class="form-control"
+							required></textarea>
+
+						<!-- 숨겨진 필드 - 게시글 번호 전달용 -->
+						<input type="hidden" id="boardIdx" name="boardIdx"
+							value="${board.boardIdx}">
+						<!-- 모달 푸터 -->
+						<div class="modal-footer">
+							<button type="button" class="btn btn-cancel" id="cancelBtn">취소</button>
+							<button type="submit" class="btn btn-submit" id="submitBtn"
+								form="reportForm">신고하기</button>
+						</div>
+					</form>
+				</div>
+
+
+			</div>
+		</div>
+
 
 		<hr>
 
-		<div class="view-freeboard-content">
-			${board.content}
-		</div>
+		<div class="view-freeboard-content">${board.content}</div>
 
 		<div class="board-view-footer">
 			<div class="like-group" style="display: flex; align-items: center;">
-			    <button type="button" id="board-like-btn" data-board-idx="${board.boardIdx}">
-			        <span id="heart-icon">
-			            <c:choose>
-			                <c:when test="${isLiked}"> 🧡 </c:when>
-			                <c:otherwise> 🤍 </c:otherwise>
-			            </c:choose>
-			        </span>
-			        좋아요 <span id="likes-count">${board.likesCount}</span>
-			    </button>
+				<button type="button" id="board-like-btn"
+					data-board-idx="${board.boardIdx}">
+					<span id="heart-icon"> <c:choose>
+							<c:when test="${isLiked}"> 🧡 </c:when>
+							<c:otherwise> 🤍 </c:otherwise>
+						</c:choose>
+					</span> 좋아요 <span id="likes-count">${board.likesCount}</span>
+				</button>
 			</div>
+
+			<div class="board-actions">
+				<button type="button"
+					onclick="location.href='/boards/free/freeBoardList.do'">
+					목록</button>
+			</div>
+
 
 			<c:if test="${board.userId == loginUserId}">
 				<div class="board-actions">
@@ -123,8 +127,8 @@
 		<h3>댓글 작성</h3>
 		<form action="/boards/free/freeBoardCommentWriteProc.do" method="post"
 			onsubmit="return validateCommentForm()">
-			<input type="hidden" name="boardIdx" value="${board.boardIdx}" />
-			<input type="hidden" name="userId" value="${loginUserId}" />
+			<input type="hidden" name="boardIdx" value="${board.boardIdx}" /> <input
+				type="hidden" name="userId" value="${loginUserId}" />
 			<div class="comment-input-area">
 				<textarea name="content" class="comment-write-textarea"
 					placeholder="댓글을 작성해주세요."></textarea>

@@ -41,5 +41,8 @@ public interface CommentRepository extends JpaRepository<CommentEntity, Long> {
             ORDER BY c.postdate DESC
         """)
         List<MyCommentDto> findMyComments(@Param("userId") String userId);
+    
+    
+    int countByBoard_BoardIdx(Long boardIdx);
 
 }

@@ -1,0 +1,72 @@
+.qna-list-container {
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	position: relative;
+}
+.qna-list-container h1 {
+	margin: 30px auto;
+}
+
+/*===================== 검색창 =======================*/
+.search-box {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 30px;
+}
+
+.search-box form {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+}
+
+.search-box select,
+.search-box input[type="text"] {
+  padding: 8px 12px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 14px;
+  outline: none;
+}
+
+.search-box button {
+  padding: 8px 16px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.2s ease;
+}
+
+.search-box button:hover {
+  background-color: #45a049;
+}
+
+
+/*===================== 테이블 =======================*/
+.qna-list-table {
+  width: 80%;
+  margin-bottom: 50px;
+  border-collapse: collapse;
+}
+.qna-list-table th, td {
+  padding: 14px 8px;
+  text-align: center;
+  border-bottom: 1px solid #ddd;
+}
+.qna-list-table th {
+  background: #f7f7f7;
+}
+.qna-list-table tr.notice-row {
+  background-color: #f9f9f9;
+  font-weight: bold;
+}
+

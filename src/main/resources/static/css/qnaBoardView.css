@@ -1,0 +1,83 @@
+.qna-view-container {
+  min-width: 800px;
+  max-width: 1200px;
+  margin: 80px auto;
+  padding: 50px 60px;
+  background-color: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.06);
+}
+
+/* 제목 */
+.qna-view-container .title {
+  font-size: 2.4rem;
+  font-weight: 600;
+  margin-bottom: 30px;
+  border-bottom: 2px solid #e0e0e0;
+  padding-bottom: 15px;
+  color: #2c3e50;
+}
+
+/* 메타 정보 */
+.qna-view-header {
+  font-size: 1rem;
+  color: #666;
+  display: flex;
+  justify-content: flex-start;
+  gap: 30px;
+  margin-bottom: 40px;
+}
+
+.qna-view-header span {
+  display: flex;
+  align-items: center;
+}
+
+/* 본문 내용 */
+.qna-view-content {
+  font-size: 1.2rem;
+  color: #333;
+  line-height: 1.8;
+  margin-bottom: 60px;
+  white-space: pre-wrap;
+  padding-left: 5px;
+}
+
+/* 답변 영역 */
+.qna-view-answer {
+  background-color: #f0f9f4;
+  border-left: 6px solid #2ecc71;
+  padding: 25px 25px;
+  border-radius: 10px;
+  margin-bottom: 60px;
+}
+
+.qna-view-answer h3 {
+  font-size: 1.3rem;
+  color: #27ae60;
+  margin-bottom: 12px;
+}
+
+/* 버튼 영역 */
+.qna-view-buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+}
+
+.qna-view-buttons button {
+  background-color: #4caf50;
+  color: #fff;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.25s ease;
+  font-family: 'MyFont';
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.qna-view-buttons button:hover {
+  background-color: #388e3c;
+}

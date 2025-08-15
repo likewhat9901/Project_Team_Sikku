@@ -125,6 +125,24 @@ CREATE TABLE BOARD_REPORT (
         REFERENCES hboard(boardidx) ON DELETE CASCADE
 );
 
+-- qnaBoard
+CREATE TABLE qna_board (
+    idx NUMBER PRIMARY KEY,                   -- 게시글 고유번호
+    writerid VARCHAR2(100) NOT NULL,            -- 작성자 아이디 (FK 가능)
+    writer VARCHAR2(100) NOT NULL,              -- 작성자 닉네임
+    title VARCHAR2(255) NOT NULL,               -- 제목
+    content CLOB NOT NULL,                      -- 본문 내용
+    category VARCHAR2(50),                      -- 카테고리
+    secretflag CHAR(1) DEFAULT 'N',              -- 비밀글 여부 (Y/N)
+    noticeflag CHAR(1) DEFAULT 'N',           -- 공지글 여부 (Y/N)
+    answerstatus VARCHAR2(20) DEFAULT '대기',    -- 답변 상태
+    answercontent CLOB,                         -- 답변 내용
+    views NUMBER DEFAULT 0,                     -- 조회수
+    likes NUMBER DEFAULT 0,                     -- 좋아요 수
+    postdate DATE DEFAULT SYSDATE,              -- 작성일
+    updatedate DATE DEFAULT SYSDATE
+);
+
 /* 시퀀스 */
 CREATE SEQUENCE board_seq
   START WITH 1
@@ -166,6 +184,23 @@ CREATE SEQUENCE REPORT_SEQ
   INCREMENT BY 1
   NOCACHE
   NOCYCLE;
+  
+CREATE SEQUENCE qna_board_seq
+    START WITH 1
+    INCREMENT BY 1
+    NOCACHE
+    NOCYCLE;
+
+
+/* Trigger */  
+CREATE OR REPLACE TRIGGER trg_qna_board_idx
+BEFORE INSERT ON qna_board
+FOR EACH ROW
+BEGIN
+    :NEW.idx := qna_board_seq.NEXTVAL;
+END;
+/
+
 
 /* insert */
 /* members */
@@ -211,6 +246,8 @@ VALUES (board_seq.NEXTVAL, 'cheon',
 /* 커밋 */
 commit;
 
+SELECT * FROM qna_board where noticeflag = 'N';
+
 /* select */
 
 select * from members;
@@ -230,6 +267,7 @@ DROP TABLE mbti CASCADE CONSTRAINTS;
 DROP TABLE hlike CASCADE CONSTRAINTS;
 /* 게시판 이미지 테이블 삭제 */
 drop table BOARD_IMAGE;
+DROP TABLE qna_board CASCADE CONSTRAINTS;
 
 /* 시퀀스 삭제 */
 DROP SEQUENCE plant_seq;
@@ -237,9 +275,9 @@ DROP SEQUENCE diary_seq;
 DROP SEQUENCE board_seq;
 DROP SEQUENCE comment_seq;
 DROP SEQUENCE mbti_seq;
+DROP SEQUENCE qna_board_seq;
 
 /* admin으로 회원가입 한 후 밑의 코드를 삽입하면 admin계정이 ROLE_ADMIN으로 권한 변경*/
 UPDATE members
 SET authority = 'ROLE_ADMIN'
 WHERE userid = 'admin';
-db 전체

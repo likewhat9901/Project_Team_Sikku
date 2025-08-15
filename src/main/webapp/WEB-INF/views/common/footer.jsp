@@ -7,7 +7,7 @@
   <button onclick="location.href='#'">Top ↑</button>
   <button onclick="location.href='/chat/chatstart.do'">AI채팅</button>
   <button onclick="window.open('/checkout', 'checkoutPopup', 'width=600,height=700,resizable=yes,scrollbars=yes')">구독하기</button>
-  <button onclick="location.href='/qna/qnaBoard.do'">QnA</button>
+  <button onclick="location.href='/qnaBoardList.do'">QnA</button>
 </div>
 <footer class="oopy-my-footer">
     <div class="oopy-my-footer-mobile-toggle" id="footer-toggle">
