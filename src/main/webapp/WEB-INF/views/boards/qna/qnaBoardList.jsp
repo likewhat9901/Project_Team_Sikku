@@ -18,7 +18,7 @@
 		<h1>Q&A</h1>
 		
 		<button class="write-btn"
-			onclick="location.href='/qnaBoardView.do'">글쓰기</button>
+			onclick="location.href='/qnaBoardWrite.do'">글쓰기</button>
 		
 		<!-- 게시글 검색 -->
 		<div class="search-box">
@@ -67,7 +67,7 @@
 				<td>${ qrow.category }</td>
 				<td style="text-align:left">
 		            <a href="/qnaBoardView.do?idx=${qrow.idx}">
-		                <c:if test="${ qrow.secretflag == 'Y' }">🔒 </c:if>
+		                <c:if test="${ qrow.secretflag == 'Y' }"> (비밀글) </c:if>
 		                ${ qrow.title }
 		            </a>
 		        </td>
