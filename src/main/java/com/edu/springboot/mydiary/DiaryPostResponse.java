@@ -10,6 +10,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 public class DiaryPostResponse {
+	private Long diaryIdx;
 	// yyyy-MM-dd (db의 postdate)
     private String postdate;
     // sfile 값 (서버 파일명)

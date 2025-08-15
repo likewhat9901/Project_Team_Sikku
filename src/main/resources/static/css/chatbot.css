@@ -1,18 +1,53 @@
 @charset "UTF-8";
+
+body {
+    min-height: 100vh;
+}
+
 /* 채팅 창 */
+.chat-body {
+	height: 100vh;
+  position: relative;
+  -ms-flex: 1 1 auto;
+  flex: 1 1 auto;
+  padding: 1rem;
+  background:
+      radial-gradient(70vw 40vh at -5% -20%, #48e96d 0%, transparent 70%),
+      radial-gradient(60% 30% at 100% 100%, rgba(72,233,109,.25) 0%, transparent 70%),
+      #ffffff;
+}
+/* 채팅 상자: 세로 2분할 (메시지/입력창) */
 .chat-window{
   height: 460px;
-  overflow-y: auto;
-  padding: 16px;
+  display: flex;
+  flex-direction: column;
   border: 1px solid #e6e9ef;
   border-radius: 16px;
   background:
     radial-gradient(1200px 400px at 110% -10%, #e9edff 0%, transparent 70%),
-    radial-gradient(900px 300px at -5% -20%, #fbe9ff 0%, transparent 70%),
+    radial-gradient(900px 300px at -5% -20%, #48e96d 0%, transparent 70%),
     #ffffff;
   box-shadow: 0 8px 24px rgba(0,0,0,.06);
+}
+
+/* 위쪽: 메시지 리스트(여기가 스크롤) */
+.chat-scroll{
+  flex: 1 1 auto;
+  overflow-y: auto;
+  padding: 16px;
   scroll-behavior: smooth;
 }
+
+/* 아래쪽: 입력창(항상 하단 고정) */
+.chat-inputarea{
+  flex: 0 0 auto;
+  display:flex; gap:8px; align-items:center;
+  padding: 10px;
+  border-top: 1px solid #e6e9ef;
+  background: rgba(255,255,255,.85);
+  backdrop-filter: blur(2px);
+}
+
 /* 메시지 */
 .message {
 	padding: 5px;
@@ -46,7 +81,7 @@
 .message-row.ai{ justify-content: flex-start; }
 .message-row.user{ justify-content: flex-end; }
 
-/* 아바타(옵션) */
+/* 아바타 */
 .avatar{
   width: 32px; height: 32px;
   border-radius: 50%;
@@ -85,7 +120,7 @@
 
 /* 사용자 말풍선(오른쪽) */
 .message-row.user .bubble{
-  background: #dcf8c6; /* WhatsApp 스타일 연녹색 */
+  background: #dcf8c6;
   color:#111;
   border-top-right-radius: 6px;
 }
@@ -105,43 +140,38 @@
 }
 
 #chatArea {
-	height: 300px;
-	overflow-y: scroll;
+	height: 550px;
+	/*overflow-y: scroll;*/
 	border: 1px solid black;
 	padding: 10px;
 }
 
-/* 입력과 버튼을 한 줄에 배치하는 컨테이너 */
-.chat-inputarea {
-	display: flex;
-	gap: 8px;
+/* 입력창 높이(한 군데에서 관리) */
+:root { --chat-input-h: 60px; }   /* 원하는 높이로 조절 */
+
+.chat-input{
+  flex:1;
+  height: var(--chat-input-h);
+  padding:8px;
+  font-size:14px;
+  box-sizing:border-box;
+  border:1px solid #ccc;
+  border-radius:4px;
 }
 
-/* 텍스트 입력창 */
-.chat-input {
-	flex-grow: 1;
-	padding: 8px;
-	font-size: 14px;
-	box-sizing: border-box;
-	border: 1px solid #ccc;
-	border-radius: 4px;
+/* 정사각 + 글자 자동 확대 */
+.send-button{
+  background:#4CAF50;
+  border:none; color:#fff;
+  width: var(--chat-input-h);
+  height: var(--chat-input-h);
+  flex: 0 0 var(--chat-input-h);
+  padding:0;
+  border-radius:12px;
+  display:inline-flex; align-items:center; justify-content:center;
 }
+.send-button:hover{ background:#9acd32; }
 
-/* 전송 버튼 */
-.send-button {
-	background-color: #007bff;
-	border: none;
-	color: white;
-	padding: 0 16px;
-	font-size: 14px;
-	border-radius: 4px;
-	cursor: pointer;
-	transition: background-color 0.2s ease;
-}
-
-.send-button:hover {
-	background-color: #0056b3;
-}
 
 /* chatstart.jsp */
 

@@ -16,11 +16,14 @@
 </style>
 </head>
 <body>
-	<h5 class="mb-3">Chat with AI</h5>
-	<div class="modal-body">
+	<div class="chat-body">
+	<h4 class="mb-3">🍀 식꾸 AI 챗봇</h4>
+	<h6 class="mb-3">모르는 것을 질문해 보세요!</h6>
 		<div class="">
-			<label for="username">Username:</label> 
-			<input type="hid-den"
+			<!-- 
+			<label for="username">Username:</label> 			
+			 -->
+			<input type="hidden"
 				id="username" readonly class="chat-username"
 				value="<sec:authentication property='name'/>" />
 			<!-- 
@@ -29,14 +32,17 @@
 			 -->
 		</div>
 
-		<br />
-		<div id="chatArea" class="chat-window"></div>
-		<br />
-
+		<div id="chatArea" class="chat-window">
+		<!-- 메시지 스크롤 되는 영역 -->
+		<div id="chatList" class="chat-scroll"></div>
+		<!-- 입력 영역 -->
 		<div class="chat-inputarea">
 			<textarea id="message" class="chat-input"></textarea>
 			<button id="sendBtn" class="send-button">Send</button>
 		</div>
+		</div>
+		<br />
+
 	</div>	
 </body>
 <!-- JS 라이브러리 -->
@@ -104,13 +110,13 @@ var stompClient = null;
   }
   //메시지 띄우기
   function showMessage(message){
-    $('#chatArea').append(bubbleHtml(message.sender, message.content, 'ai'));
-    $('#chatArea').scrollTop($('#chatArea')[0].scrollHeight);
+    $('#chatList').append(bubbleHtml(message.sender, message.content, 'ai'));
+    $('#chatList').scrollTop($('#chatList')[0].scrollHeight);
   }
 
   function showUserMessage(message){
-    $('#chatArea').append(bubbleHtml(message.sender, message.content, 'user'));
-    $('#chatArea').scrollTop($('#chatArea')[0].scrollHeight);
+    $('#chatList').append(bubbleHtml(message.sender, message.content, 'user'));
+    $('#chatList').scrollTop($('#chatList')[0].scrollHeight);
   }
 	
   $(function() {

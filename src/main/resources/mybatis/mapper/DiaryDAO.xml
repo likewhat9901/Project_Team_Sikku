@@ -59,7 +59,7 @@
 	
 	<select id="selectByMonth" 
 	resultType="com.edu.springboot.mydiary.DiaryPostResponse">
-	  SELECT diaryIdx, sfile, postdate FROM diary
+	  SELECT diaryIdx, sfile as imageUrl, postdate FROM diary
 	  WHERE TO_CHAR(postdate, 'YYYY') = #{year}
 	    AND TO_CHAR(postdate, 'MM') = #{month}
 	    AND userId=#{userId}
