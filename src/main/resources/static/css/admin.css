@@ -1,0 +1,250 @@
+@charset "UTF-8";
+
+/* ===== 전체 래퍼 ===== */
+.admin-wrapper {
+  display: flex;
+  flex-direction: row;
+  min-height: 100vh;
+  background-color: #f5f7fb;
+  font-family: 'Pretendard', sans-serif;
+}
+
+/* ===== 사이드바 ===== */
+.sidebar {
+  width: 200px;
+  background-color: #ffffff;
+  box-shadow: 2px 0 8px rgba(0,0,0,0.05);
+  padding: 30px 20px;
+  border-radius: 20px;
+  height: fit-content;
+  margin: 40px 20px;
+}
+
+.sidebar a {
+  display: block;
+  padding: 12px 16px;
+  border-radius: 10px;
+  text-decoration: none;
+  font-weight: 600;
+  margin-bottom: 10px;
+  color: #333;
+  transition: 0.2s;
+}
+
+.sidebar a:hover,
+.sidebar a.active {
+  background-color: #f0f4ff;
+  color: #003cff;
+}
+
+/* ===== 본문 ===== */
+.admin-content {
+  flex: 1;
+  margin: 40px;
+  padding: 30px 40px;
+}
+
+.admin-title {
+  position: absolute;
+  top: 30px;   /* 화면 최상단에서 떨어진 거리 */
+  left: 240px; /* 사이드바 너비(200px) + 원하는 여백(40px) */
+  margin: 5px 0 16px 50px; 
+  display: block;
+}
+
+
+.admin-subtitle {
+  font-size: 1.3rem;
+  font-weight: 700;
+  margin: 30px 0 15px;
+  color: #333;
+}
+
+/* ===== 검색 ===== */
+.admin-search-form {
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.admin-search-input {
+  padding: 8px 12px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+}
+
+.admin-search-btn {
+  background-color: #2166ff;
+  color: white;
+  padding: 7px 14px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background 0.2s ease;
+}
+
+.admin-search-btn:hover {
+  background-color: #154bdc;
+}
+
+/* ===== 테이블 ===== */
+.admin-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.admin-table th,
+.admin-table td {
+  padding: 14px 16px;
+  border-bottom: 1px solid #eee;
+  text-align: center;
+  font-size: 14px;
+}
+
+.admin-table th {
+  background-color: #f4f6fa;
+  font-weight: 700;
+  color: #333;
+}
+
+.admin-table tr:last-child td {
+  border-bottom: none;
+}
+
+/* ===== 버튼 ===== */
+.admin-btn {
+  background-color: #1f8fff;
+  color: white;
+  border: none;
+  padding: 6px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 12px;
+  transition: background 0.2s ease;
+}
+
+.admin-btn:hover {
+  background-color: #166edc;
+}
+
+/* admin.css */
+
+.admin-wrapper {
+  display: flex;
+  width: 100%;
+  min-height: 100vh;
+  font-family: sans-serif;
+}
+
+.admin-sidebar {
+  width: 200px;
+  background: #fafafa;
+  border-right: 1px solid #eee;
+  padding: 20px;
+  box-shadow: 2px 0 6px rgba(0,0,0,0.05);
+}
+
+.admin-sidebar ul {
+  list-style: none;
+  padding: 0;
+}
+
+.admin-sidebar li {
+  padding: 12px 14px;
+  margin-bottom: 10px;
+  cursor: pointer;
+  border-radius: 8px;
+  font-weight: bold;
+  color: #333;
+  transition: background 0.2s;
+}
+
+.admin-sidebar li.active,
+.admin-sidebar li:hover {
+  background: #2f70ec;
+  color: #fff;
+}
+
+.admin-content {
+  flex: 1;
+  padding: 30px 40px;
+  background-color: #fff;
+  margin: 40px;
+  margin-top: 100px;
+}
+
+.admin-title {
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+.admin-subtitle {
+  font-size: 1.2rem;
+  margin: 20px 0 10px;
+  font-weight: 600;
+  color: #333;
+}
+
+.admin-search-form {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.admin-search-input {
+  padding: 8px 12px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+
+.admin-search-btn {
+  padding: 8px 14px;
+  background: #2f70ec;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.admin-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #f9f9f9;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.admin-table th,
+.admin-table td {
+  padding: 12px 16px;
+  border-bottom: 1px solid #ddd;
+  text-align: center;
+}
+
+.admin-table th {
+  background-color: #f1f3f7;
+  font-weight: bold;
+}
+
+.admin-btn {
+  padding: 6px 12px;
+  background-color: #2f70ec;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.admin-btn:hover {
+  background-color: #1e56c4;
+}
