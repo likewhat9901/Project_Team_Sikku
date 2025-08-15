@@ -30,16 +30,16 @@ public class QnaBoardEntity {
     private Long idx;
 
     private Long writerid;
-    private String writer;
-    private String title;
+    private String writer;//
+    private String title;//
 
     @Lob //Large Object: CLOB, BLOB 등 대용량 텍스트나 파일 필드에 사용
-    private String content;
+    private String content;//
 
     private String category;
-    private String secretflag;
-    private String noticeflag;
-    private String answerstatus;
+    private String secretflag; //비밀글 여부
+    private String noticeflag; //공지글
+    private String answerstatus; //답변대기상태인지?
 
     @Lob //Large Object: CLOB, BLOB 등 대용량 텍스트나 파일 필드에 사용
     private String answercontent;

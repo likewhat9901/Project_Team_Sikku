@@ -17,6 +17,9 @@
 	<div class="qnaboard-container">
 		<h1>Q&A</h1>
 		
+		<button class="write-btn"
+			onclick="location.href='/boards/qna/qnaBoardWrite.do'">글쓰기</button>
+		
 		<!-- 게시글 검색 -->
 		<div class="search-box">
 			<form action="/qna/search.do" method="get">

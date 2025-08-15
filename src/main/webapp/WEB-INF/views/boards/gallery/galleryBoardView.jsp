@@ -104,17 +104,22 @@
 
 
 			<div class="board-view-footer">
-			<div class="like-group" style="display: flex; align-items: center;">
-			    <button type="button" id="board-like-btn" data-board-idx="${board.boardIdx}">
-			        <span id="heart-icon">
-			            <c:choose>
-			                <c:when test="${isLiked}"> 🧡 </c:when>
-			                <c:otherwise> 🤍 </c:otherwise>
-			            </c:choose>
-			        </span>
-			        좋아요 <span id="likes-count">${board.likesCount}</span>
-			    </button>
-			</div>
+				<div class="like-group" style="display: flex; align-items: center;">
+					<button type="button" id="board-like-btn"
+						data-board-idx="${board.boardIdx}">
+						<span id="heart-icon"> <c:choose>
+								<c:when test="${isLiked}"> 🧡 </c:when>
+								<c:otherwise> 🤍 </c:otherwise>
+							</c:choose>
+						</span> 좋아요 <span id="likes-count">${board.likesCount}</span>
+					</button>
+				</div>
+
+				<div class="board-actions">
+					<button type="button"
+						onclick="location.href='/boards/gallery/galleryBoardList.do'">
+						목록</button>
+				</div>
 
 				<c:if test="${board.userId == loginUserId}">
 					<div class="board-actions">

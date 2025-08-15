@@ -1,51 +1,71 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="jakarta.tags.core" %>
+	pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="jakarta.tags.core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <!DOCTYPE html>
 <html>
 <head>
-  <meta charset="UTF-8">
-  <title>Q&A 글쓰기</title>
-  <link rel="stylesheet" href="/css/common/layout.css" />
-  <link rel="stylesheet" href="/css/qnaBoardWrite.css" />
+<meta charset="UTF-8">
+<title>Q&A</title>
+<link rel="stylesheet" href="/css/common/layout.css" />
+<link rel="stylesheet" href="/css/qnaBoardView.css" />
+<script>
+	function validateWriteForm() {
+		const title = document.querySelector('[name="title"]').value.trim();
+		const content = document.querySelector('[name="content"]').value.trim();
+
+		if (!title) {
+			alert("제목을 입력해주세요.");
+			return false;
+		}
+
+		if (!content) {
+			alert("내용을 입력해주세요.");
+			return false;
+		}
+
+		return true;
+	}
+</script>
 </head>
 <body>
-<%@ include file="/WEB-INF/views/common/header.jsp" %>
+	<%@ include file="/WEB-INF/views/common/header.jsp"%>
 
-<div class="qna-write-container">
-  <h1 class="qna-write-title">Q&A 글쓰기</h1>
+	<h1>Q&A 글 작성하기</h1>
+	<!-- account, payment, service, etc -->
 
-  <form action="/qna/write.do" method="post" class="qna-write-form">
-    
-    <div class="form-row">
-      <label for="category">카테고리</label>
-      <select name="category" id="category">
-        <option value="일반">일반</option>
-        <option value="기타">기타</option>
-      </select>
-    </div>
+	<div class="write-container">
+		<h2>게시글 작성</h2>
+		<form action="/boards/qna/qnaBoardWriteProc.do" method="post"
+			class="write-form" onsubmit="return validateWriteForm()">
 
-    <div class="form-row">
-      <label for="title">제목</label>
-      <input type="text" id="title" name="title" maxlength="255" required />
-    </div>
 
-    <div class="form-row">
-      <label for="content">내용</label>
-      <textarea id="content" name="content" rows="10" required></textarea>
-    </div>
 
-    <div class="form-row form-checkbox">
-      <label><input type="checkbox" name="secretflag" value="Y" /> 비밀글</label>
-    </div>
+			<input type="hidden" name="userId" value="유저아아디" /> <input
+				type="hidden" name="postdate" value="작성일자" />
 
-    <div class="form-row form-btns">
-      <button type="submit">등록</button>
-      <button type="reset">초기화</button>
-    </div>
-  </form>
-</div>
 
-<%@ include file="/WEB-INF/views/common/footer.jsp" %>
+			<div class="search-box">
+				<form action="/boards/qna/search.do" method="get">
+					<select name="type">
+						<option value="writer">작성자</option>
+						<option value="title">제목</option>
+						<option value="content">내용</option>
+						<option value="titleAndContent">제목+내용</option>
+					</select> <input type="text" name="keyword" placeholder="검색어를 입력하세요" />
+					<button type="submit">검색</button>
+				</form>
+			</div>
+			<input type="text" name="title" placeholder="제목을 입력하세요" />
+			<textarea name="content" placeholder="내용을 입력하세요"></textarea>
+			<div class="write-actions">
+				<button type="submit">작성 완료</button>
+				<button type="button" class="cancel-btn"
+					onclick="location.href='/boards/qna/qnaBoardList.do'">취소</button>
+			</div>
+		</form>
+	</div>
+
+	<%@ include file="/WEB-INF/views/common/footer.jsp"%>
 </body>
 </html>
