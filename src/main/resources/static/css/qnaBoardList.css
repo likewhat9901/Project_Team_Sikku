@@ -1,0 +1,29 @@
+.qnaboard-table {
+  width: 80%;
+  margin: 0 auto;
+  border-collapse: collapse;
+}
+.qnaboard-table th, td {
+  padding: 14px 8px;
+  text-align: center;
+  border-bottom: 1px solid #ddd;
+}
+.qnaboard-table th {
+  background: #f7f7f7;
+}
+.qnaboard-table tr.notice-row {
+  background-color: #f9f9f9;
+  font-weight: bold;
+}
+.search-box {
+  width: 80%;
+  margin: 30px auto;
+  text-align: center;
+}
+.search-box input {
+  width: 250px;
+  padding: 8px;
+}
+.search-box button {
+  padding: 8px 15px;
+}
