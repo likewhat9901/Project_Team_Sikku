@@ -18,6 +18,7 @@ public interface QnaBoardRepository extends JpaRepository<QnaBoardEntity, Long> 
     
     /*================ QnaBoardView =======================*/
     // findById(Long idx)는 JpaRepository 기본 메서드 사용.
+    // save, deleteById 기본 메서드
     
     
     

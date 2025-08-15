@@ -41,6 +41,7 @@
 				<th>제목</th>
 				<th>글쓴이</th>
 				<th>작성일</th>
+				<th>조회수</th>
 				<th>답변상태</th>
 			</tr>
 	    
@@ -49,13 +50,14 @@
 		    <tr class="notice-row">
 				<td>📌</td>
 				<td>${ nrow.category }</td>
-				<td style="text-align:left">
+				<td style="text-align:left; width:40%">
 		            <a href="/qnaBoardView.do?idx=${nrow.idx}">
 		                ${ nrow.title }
 		            </a>
 		        </td>
 		        <td>${ nrow.writer }</td>
 		        <td>${ nrow.formattedPostdate}</td>
+		        <td>${ nrow.views}</td>
 		        <td>${ nrow.answerstatus }</td>
 		    </tr>
 		</c:forEach>
@@ -65,7 +67,7 @@
 			<tr>
 				<td>${ var.count }</td>
 				<td>${ qrow.category }</td>
-				<td style="text-align:left">
+				<td style="text-align:left; width:40%">
 		            <a href="/qnaBoardView.do?idx=${qrow.idx}">
 		                <c:if test="${ qrow.secretflag == 'Y' }">🔒 </c:if>
 		                ${ qrow.title }
@@ -73,6 +75,7 @@
 		        </td>
 				<td>${ qrow.writer }</td>
 				<td>${ qrow.formattedPostdate}</td>
+				<td>${ qrow.views}</td>
 				<td>${ qrow.answerstatus }</td>
 			</tr>
 		</c:forEach>

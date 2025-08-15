@@ -18,8 +18,11 @@
 		
 		<div class="qna-view-header">
 			<span class="writer">작성자: ${ qna.writer }</span>
-			<span class="date">
+			<span class="date post">
 			작성일: ${ qna.formattedPostdate }
+			</span>
+			<span class="date update">
+			수정일: ${ qna.formattedUpdatedate }
 			</span>
 			<span class="views">조회수: ${ qna.views }</span>
 		</div>

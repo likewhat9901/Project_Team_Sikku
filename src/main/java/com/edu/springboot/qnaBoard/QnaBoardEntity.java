@@ -15,6 +15,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Getter
 @NoArgsConstructor
@@ -43,7 +44,8 @@ public class QnaBoardEntity {
 
     @Lob //Large Object: CLOB, BLOB 등 대용량 텍스트나 파일 필드에 사용
     private String answercontent;
-
+    
+    @Setter
     private Integer views;
     private Integer likes;
     
