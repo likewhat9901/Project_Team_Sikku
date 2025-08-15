@@ -185,5 +185,45 @@
   });
   
   
-  
+  /**
+   * 신고 버튼을 누르면 나오는 모달창
+   */
+
+  document.addEventListener('DOMContentLoaded', function() {
+  	// 모달 관련 요소들
+  	const reportBtn = document.querySelector('.board-report-btn');
+  	const reportModal = document.getElementById('reportModal');
+  	const cancelBtn = document.getElementById('cancelBtn');
+  	const reportForm = document.getElementById('reportForm');
+  	const submitBtn = document.getElementById('submitBtn');
+  	const reportContent = document.getElementById('reportContent');
+  	const boardIdxInput = document.getElementById('boardIdx');
+  	
+  	// 모달 열기
+  	function openModal() {
+  		const boardIdx = reportBtn.getAttribute('data-board-idx');
+  		boardIdxInput.value = boardIdx;
+  		reportModal.style.display = 'flex';
+  	}
+  	
+  	// 모달 닫기
+  	function closeModal() {
+  		reportModal.style.display = 'none';
+  		reportForm.reset(); // 폼 초기화
+  	}
+  	
+  	
+  	// 이벤트 리스너 등록
+  	reportBtn.addEventListener('click', openModal);
+  	cancelBtn.addEventListener('click', closeModal);
+  	
+  	// 모달 외부 클릭 시 닫기
+  	reportModal.addEventListener('click', function(event) {
+  		if (event.target === reportModal) {
+  			closeModal();
+  		}
+  	});
+
+
+  });
   
