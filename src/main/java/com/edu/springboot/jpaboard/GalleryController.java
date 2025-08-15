@@ -108,6 +108,11 @@ public class GalleryController {
 			System.out.println("디버깅:likesCountMap=" + likesCountMap);
 		}
 		model.addAttribute("likesCountMap", likesCountMap);
+		
+		Map<Long, Long> commentCountMap = new HashMap<>();
+		for (BoardEntity board : rows) {
+//			long commentCount = 
+		}
 
 		// 이미지 정보 추가
 		Map<Long, String> imageMap = new HashMap<>();
