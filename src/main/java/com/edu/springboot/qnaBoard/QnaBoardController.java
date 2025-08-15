@@ -18,6 +18,7 @@ public class QnaBoardController {
     public String list(Model model) {
         model.addAttribute("noticeRows", qnaService.getNoticeList());
         model.addAttribute("qnaRows", qnaService.getQnaList());
+        
         return "boards/qna/qnaBoardList"; // JSP 경로
     }
 
@@ -26,6 +27,7 @@ public class QnaBoardController {
         List<QnaBoardEntity> results = qnaService.search(keyword);
         model.addAttribute("qnaRows", results);
         model.addAttribute("noticeRows", qnaService.getNoticeList()); // 필요 시 유지
+        
         return "qna/qnaBoardList";
     }
 
