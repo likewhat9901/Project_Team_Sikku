@@ -2,6 +2,7 @@ package com.edu.springboot.qnaBoard;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
@@ -9,8 +10,9 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 public class QnaBoardService {
-
-    private final QnaBoardRepository qnaRepo;
+	
+	@Autowired
+    private QnaBoardRepository qnaRepo;
 
     public List<QnaBoardEntity> getNoticeList() {
         return qnaRepo.findByNoticeflagOrderByPostdateDesc("Y");
