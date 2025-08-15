@@ -17,8 +17,8 @@ public interface BoardRepository extends JpaRepository<BoardEntity, Long> {
 	// 카테고리를 기준으로 데이터 가져오기
 	Page<BoardEntity> findByCategory(Pageable pageable, Integer category);
 	
-	// 제목 LIKE 검색을 위한 메서드 (예: %검색어%)
-	Page<BoardEntity> findByCategoryAndTitleLike(Integer category, String title, Pageable pageable);
+	// 검색 기능
+	Page<BoardEntity> findByCategoryAndTitleContaining(Pageable pageable, Integer category, String title);
     
 	
 	

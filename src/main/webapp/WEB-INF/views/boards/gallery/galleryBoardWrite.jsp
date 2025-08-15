@@ -7,12 +7,14 @@
 <title>Insert title here</title>
 
 <!-- CSS import -->
+<link rel="stylesheet" href="/css/common/layout.css">
 <link rel="stylesheet" href="/css/gallery.css">
 <script>
 // 유효성 검사를 위한 함수
 function validateWriteForm() {
     const title = document.querySelector('[name="title"]').value.trim();
     const content = document.querySelector('[name="content"]').value.trim();
+    const fileInput = document.querySelector('[name="ofile"]');
 
     if (!title) {
         alert("제목을 입력해주세요.");
@@ -24,8 +26,9 @@ function validateWriteForm() {
         return false;
     }
     
-    if (form.ofile.value == "") {
+    if (!fileInput.files || fileInput.files.length === 0) {
         alert("첨부파일은 필수 입력입니다.");
+        fileInput.focus();
         return false;
     }
 

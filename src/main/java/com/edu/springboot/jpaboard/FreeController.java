@@ -4,6 +4,7 @@ import java.security.Principal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -45,6 +46,9 @@ public class FreeController {
 	BoardReportService rs;
 	
 	@Autowired
+	LikeService ls;
+	
+	@Autowired
 	BoardReportRepository rr;
 	
 	@Autowired
@@ -78,8 +82,7 @@ public class FreeController {
 		}
 		//검색어가 있을 때 목록
 		else {
-			searchWord = "%" + searchWord + "%";  //검색어를 %검색어% 문자열로 만들어주기.
-			boardResult = bs.selectListSearch(searchWord, pageable, 1);
+			boardResult = bs.selectListSearch(pageable, 1, searchWord);
 		}
 		
 		List<BoardEntity> rows = boardResult.getContent();
@@ -106,12 +109,41 @@ public class FreeController {
 	//무한 스크롤
 	@GetMapping("/boards/free/freeBoardListMore.do")
 	@ResponseBody
-	public Page<BoardEntity> listMore(@RequestParam("pageNum") int pageNum) {
-		System.out.println("디버깅용 - 컨트롤러 (listMore)");
-	    Sort sort = Sort.by(Sort.Order.desc("boardIdx"));
-	    Pageable pageable = PageRequest.of(pageNum, 10, sort);
+	public List<Map<String, Object>> getMoreBoards(@RequestParam("page") int page,
+														HttpServletRequest req) {
+	    System.out.println("요청 페이지: " + page);
 	    
-	    return bs.selectList(pageable, 1);
+		String searchWord = req.getParameter("searchWord");
+		String pageNum = req.getParameter("pageNum");
+	    
+	    // DB에서 실제 데이터 가져오기
+	    Sort sort = Sort.by(Sort.Order.desc("boardIdx"));
+	    Pageable pageable = PageRequest.of(page, 10, sort);
+
+	    Page<BoardEntity> pageResult;
+	    
+	    if(searchWord == null || searchWord.equals("")) {
+	        pageResult = bs.selectList(pageable, 1);
+	    }
+	    else {
+	        pageResult = bs.selectListSearch(pageable, 1, searchWord);
+	    }
+	    
+	    // 간단한 테스트 데이터
+	    List<Map<String, Object>> realData = new ArrayList<>();
+	    
+	    for (BoardEntity board : pageResult.getContent()) {
+	        Map<String, Object> boardMap = new HashMap<>();
+	        boardMap.put("boardIdx", board.getBoardIdx());
+	        boardMap.put("title", board.getTitle());
+	        boardMap.put("content", board.getContent());
+	        boardMap.put("userId", board.getUserId());
+	        boardMap.put("visitcount", board.getVisitcount());
+	        boardMap.put("likes", board.getLikesCount());
+	        realData.add(boardMap);
+	    }
+	    
+	    return realData;
 	}
 
 	
@@ -155,10 +187,6 @@ public class FreeController {
 		String beFormattedDate = DateUtils.formatPostDate(be.getPostdate());
 		model.addAttribute("beFormattedDate", beFormattedDate);
 		
-		//좋아요 갯수 조회
-		long likesCount = lr.countByBoard_BoardIdx(boardIdx);
-		System.out.println("상세보기 좋아요 디버깅:likesCountMap=" + likesCount);
-		model.addAttribute("likesCount", likesCount);
 		
 		// 현재 사용자가 이 게시물에 좋아요를 눌렀는지 확인
 		Optional<LikeEntity> userLike = lr.findByBoard_BoardIdxAndUserId(boardIdx, loginUserId);
@@ -178,6 +206,10 @@ public class FreeController {
 		Optional<BoardEntity> updatedBoard = bs.selectPost(boardIdx);
 		BoardEntity be2 = updatedBoard.get();
 		model.addAttribute("board", be2);
+		
+		// 신고 true / false
+		boolean checkReport = rs.checkReport(boardIdx, loginUserId);
+		model.addAttribute("checkReport", checkReport);
 		
 		return "/boards/free/freeBoardView";
 	}
@@ -234,6 +266,7 @@ public class FreeController {
        }
    }
 	
+	//좋아요 상태
 	@GetMapping("/boards/free/getLikeStatus.do")
 	@ResponseBody
 	public Map<String, Object> getLikeStatus(
@@ -289,12 +322,12 @@ public class FreeController {
          model.addAttribute("board", result.get());
          
        //좋아요 갯수 조회
- 		long likesCount = lr.countByBoard_BoardIdx(boardIdx);
- 		System.out.println("상세보기 좋아요 디버깅:likesCount=" + likesCount);
- 		model.addAttribute("likesCount", likesCount);
+ 		long getLikesCount = ls.getLikesCount(boardIdx);
+ 		System.out.println("상세보기 좋아요 디버깅:getLikesCount=" + getLikesCount);
+ 		model.addAttribute("likesCount", getLikesCount);
       }
       else {
-         model.addAttribute("board", null);
+         model.addAttribute("likesCount", null);
       }
       
       
@@ -361,18 +394,21 @@ public class FreeController {
 	@PostMapping("/boards/free/reportBoard.do")
 	public String reportBoard(BoardReportEntity re, Principal principal) {
 		
+		System.out.println("=== 신고 데이터 확인 ===");
+	    System.out.println("content: " + re.getContent());
+	    System.out.println("boardIdx: " + re.getBoardIdx());
+	    System.out.println("userId: " + principal.getName());
+		
 		String userId = principal.getName();	
 		re.setUserId(userId);
 		rr.save(re);
 		
-	    // 서비스에서 신고 저장 + board 테이블 업데이트 한번에 처리
+		// 컨트롤러에서는 신고 테이블만 DB처리,
+	    // 게시판 테이블의 Report +1증가는 서비스 클래스에서 진행
 	    rs.saveReportAndUpdateBoard(re);
 		
 		return "redirect:freeBoardView.do?boardIdx=" + re.getBoardIdx();
 	}
-	
-	
-		
 	
 	
 }
