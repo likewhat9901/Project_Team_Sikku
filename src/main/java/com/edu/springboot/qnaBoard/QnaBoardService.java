@@ -39,4 +39,12 @@ public class QnaBoardService {
         }
         return Collections.emptyList();
     }
+    
+    /* ============== qnaBoardView 페이지 ================= */
+    public QnaBoardEntity getQnaOneById(Long idx) {
+        return qnaRepo.findById(idx).orElse(null);
+    }
+    
+    
+    /* ============== qnaBoardWrite 페이지 ================= */
 }

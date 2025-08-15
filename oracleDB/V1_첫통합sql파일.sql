@@ -128,7 +128,7 @@ CREATE TABLE BOARD_REPORT (
 -- qnaBoard
 CREATE TABLE qna_board (
     idx NUMBER PRIMARY KEY,                   -- 게시글 고유번호
-    writerid NUMBER NOT NULL,                  -- 작성자 회원번호 (FK 가능)
+    writerid VARCHAR2(100) NOT NULL,            -- 작성자 아이디 (FK 가능)
     writer VARCHAR2(100) NOT NULL,              -- 작성자 닉네임
     title VARCHAR2(255) NOT NULL,               -- 제목
     content CLOB NOT NULL,                      -- 본문 내용
@@ -245,6 +245,8 @@ VALUES (board_seq.NEXTVAL, 'cheon',
 
 /* 커밋 */
 commit;
+
+SELECT * FROM qna_board where noticeflag = 'N';
 
 /* select */
 
