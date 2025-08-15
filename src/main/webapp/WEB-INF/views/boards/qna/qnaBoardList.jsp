@@ -32,7 +32,7 @@
 		<td>${ nrow.category }</td>
 		<td style="text-align:left">${ nrow.title }</td>
         <td>${ nrow.writer }</td>
-        <td><fmt:formatDate value="${ nrow.postdate }" pattern="yyyy-MM-dd" /></td>
+        <td>${ nrow.formattedPostdate}</td>
         <td>${ nrow.answerstatus }</td>
     </tr>
 </c:forEach>
@@ -47,7 +47,7 @@
 		  ${ qrow.title }
 		</td>
 		<td>${ qrow.writer }</td>
-		<td><fmt:formatDate value="${ qrow.postdate }" pattern="yyyy-MM-dd" /></td>
+		<td>${ qrow.formattedPostdate}</td>
 		<td>${ qrow.answerstatus }</td>
     </tr>
 </c:forEach>
