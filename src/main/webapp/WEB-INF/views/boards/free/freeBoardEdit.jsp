@@ -5,7 +5,29 @@
 <head>
 <meta charset="UTF-8">
 <title>게시판 수정</title>
+<link rel="stylesheet" href="/css/common/layout.css">
 <link rel="stylesheet" href="/css/free.css">
+
+<script>
+function validateForm() {
+    const title = document.getElementById('title').value.trim();
+    const content = document.getElementById('content').value.trim();
+    
+    if (!title) {
+        alert('제목을 입력해주세요.');
+        document.getElementById('title').focus();
+        return false;
+    }
+    
+    if (!content) {
+        alert('내용을 입력해주세요.');
+        document.getElementById('content').focus();
+        return false;
+    }
+    
+    return true;
+}
+</script>
 </head>
 <body>
 <%@ include file="/WEB-INF/views/common/header.jsp" %>
@@ -23,7 +45,7 @@
 			</div>
 
 			<div class="form-group">
-				<label for="content">내용</label>${likesCount}
+				<label for="content">내용</label>
 				<textarea id="content" name="content" rows="10" required>${board.content}</textarea>
 			</div>
 

@@ -38,11 +38,10 @@ public class BoardService {
    }
    
    // 목록 (검색어O)
-   public Page<BoardEntity> selectListSearch(String search, Pageable pageable,
-		   												Integer category) {
-      Page<BoardEntity> boardRows = br.findByCategoryAndTitleLike(1, search, pageable);
-      return boardRows;
-   }
+   public Page<BoardEntity> selectListSearch(Pageable pageable, Integer category, String search) {
+	    Page<BoardEntity> boardRows = br.findByCategoryAndTitleContaining(pageable, 1, search);
+	    return boardRows;
+	}
    
    /******************** 갤러리게시판 (카테고리=2) *****************/
    // 목록 (검색어X)
@@ -52,11 +51,10 @@ public class BoardService {
    }
    
    // 목록 (검색어O)
-   public Page<BoardEntity> selectGListSearch(String search, Pageable pageable,
-		   												Integer category) {
-      Page<BoardEntity> boardRows = br.findByCategoryAndTitleLike(2, search, pageable);
-      return boardRows;
-   }
+   public Page<BoardEntity> selectGListSearch(Pageable pageable, Integer category, String search) {
+	    Page<BoardEntity> boardRows = br.findByCategoryAndTitleContaining(pageable, 2, search);
+	    return boardRows;
+	}
    
    
    // 순수하게 게시물 정보만 조회하는 메서드

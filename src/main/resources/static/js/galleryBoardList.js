@@ -4,6 +4,14 @@
 
 let currentPage = 0;
 let loading = false;
+let currentSearchWord = ''; // 현재 검색어 저장용
+
+// 페이지 로드시 검색어 확인
+document.addEventListener('DOMContentLoaded', function() {
+    const urlParams = new URLSearchParams(window.location.search);
+    currentSearchWord = urlParams.get('searchWord') || '';
+    console.log('현재 검색어:', currentSearchWord);
+});
 
 /*
 << 스크롤 감지기 >>
@@ -11,58 +19,56 @@ window.scrollY: 현재 스크롤 위치
 window.innerHeight: 브라우저 화면 높이
 document.body.offsetHeight: 문서 전체 높이
 */
-window.addEventListener('scroll', async function() {
-	if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight - 10) {
-		if (!loading) {
-			loading = true;
-			await loadMorePost();
-			loading = false;
-		}
-	}
+window.addEventListener('scroll', function() {
+    if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 200) {
+        if (!loading) {
+            loadMoreBoards();
+        }
+    }
 });
 
-async function loadMorePost() {
-	try {
-		console.log("loadMorePosts함수 호출");
-		currentPage++;
-		// fetch함수를 사용해서 서버에 비동기 요청 보내기
-		// pageNum이 0부터 시작하는 Spring Data JPA Pageable에 맞게 수정됨
-		const response = await fetch(`galleryBoardListMore2.do ? pageNum = ${ currentPage }`);
-		// fetch가 끝나면, 서버로부터 응답(response) 객체가 오고 그걸 JSON 형식 객체로 변환
-		const data = await response.json();
-		console.log("서버 응답:", data);
+function loadMoreBoards() {
+    loading = true;
+    currentPage++;
 
-		// 서버에서 받은 게시물 리스트를 HTML영역을 만들어 붙임
-		const container = document.getElementById('board-container');
-		if (!container) {
-			console.error("❗ board-container가 존재하지 않습니다. id를 확인해주세요.");
-			return;
-		}
+    console.log('페이지 요청:', currentPage);
+    console.log('검색어:', currentSearchWord);
 
-		data.content.forEach(row => {
-			const card = document.createElement('div');
-			card.className = 'board-card';
-			card.style.cursor = 'pointer';
-			card.onclick = () => location.href = `/galleryBoardView.do?boardIdx=${row.boardIdx}`
-			card.innerHTML = `
-				<div class="board-idx">${row.boardIdx}추가</div>
-				<div class="board-title">${row.title}</div>
-				<div class="board-content">${row.content}</div>
-				<div class="board-footer">
-				<span>${row.memberIdx}</span>
-				<span>${row.likes} · ${row.visitcount}</span>
-				</div>`
-				;
-			container.appendChild(card);
-		});
+    // 검색어가 있으면 파라미터에 추가
+    let url = `/boards/gallery/galleryBoardListMore.do?page=${currentPage}`;
+    if (currentSearchWord && currentSearchWord !== '') {
+        url += `&searchWord=${encodeURIComponent(currentSearchWord)}`;
+    }
 
-		if (data.last) {
-			console.log("🛑 마지막 페이지이므로 스크롤 이벤트 제거");
-			window.removeEventListener('scroll', arguments.callee);
-		}
+    fetch(url)
+        .then(response => response.json())
+        .then(boards => {
+            console.log('받은 데이터:', boards);
 
-	}
-	catch (err) {
-		console.error("게시글 추가 로딩 실패", err);
-	}
+            const container = document.getElementById('board-container');
+
+            boards.forEach(board => {
+                const div = document.createElement('div');
+                div.className = 'board-card';
+                div.onclick = () => location.href = `/boards/gallery/galleryBoardView.do?boardIdx=${board.boardIdx}`;
+                div.innerHTML = `
+                    <input type="hidden" class="board-idx" value="${board.boardIdx}">
+                    <div class="board-title">${board.title}</div>
+                    <div class="board-content-text">
+                        ${board.content.length > 20 ? board.content.substring(0, 20) + '...' : board.content}
+                    </div>
+                    <div class="board-footer">
+                        <span>작성자 : ${board.userId}</span>
+                        <span>조회수 : ${board.visitcount} 좋아요 : ${board.likes}</span>
+                    </div>
+                `;
+                container.appendChild(div);
+            });
+
+            loading = false;
+        })
+        .catch(error => {
+            console.log('에러:', error);
+            loading = false;
+        });
 }

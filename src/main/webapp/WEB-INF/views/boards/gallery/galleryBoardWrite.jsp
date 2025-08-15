@@ -7,6 +7,7 @@
 <title>Insert title here</title>
 
 <!-- CSS import -->
+<link rel="stylesheet" href="/css/common/layout.css">
 <link rel="stylesheet" href="/css/gallery.css">
 <script>
 // 유효성 검사를 위한 함수
