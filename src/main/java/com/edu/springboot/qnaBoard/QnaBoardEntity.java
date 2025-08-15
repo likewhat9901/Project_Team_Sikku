@@ -15,6 +15,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 
 @Getter
 @NoArgsConstructor
@@ -28,7 +30,8 @@ public class QnaBoardEntity {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "qna_seq_gen")
     @SequenceGenerator(name = "qna_seq_gen", sequenceName = "qna_board_seq", allocationSize = 1)
     private Long idx;
-
+    
+    @Setter
     private Long writerid;
     private String writer;//
     private String title;//
@@ -58,6 +61,7 @@ public class QnaBoardEntity {
     public String getFormattedUpdatedate() {
         return updatedate != null ? updatedate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")) : "";
     }
+
 }
 
 

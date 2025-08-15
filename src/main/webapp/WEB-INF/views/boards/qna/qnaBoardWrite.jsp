@@ -45,14 +45,13 @@
 					<option value="payment">결제</option>
 					<option value="service">이용 문의</option>
 					<option value="etc">기타문의</option>
-				</select> <input type="text" name="keyword" placeholder="검색어를 입력하세요" />
-				<button type="submit">검색</button>
+				</select>
 			</div>
 
 			<input type="text" name="title" placeholder="제목을 입력하세요" />
 
 			<textarea name="content" placeholder="내용을 입력하세요"></textarea>
-			<div class="write-actions">
+			<div class="qna-write-actions">
 				<button type="submit">작성 완료</button>
 				<button type="button" class="cancel-btn"
 					onclick="location.href='/boards/qna/qnaBoardList.do'">취소</button>

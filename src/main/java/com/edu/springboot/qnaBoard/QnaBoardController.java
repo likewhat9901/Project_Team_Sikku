@@ -1,11 +1,13 @@
 package com.edu.springboot.qnaBoard;
 
+import java.security.Principal;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
@@ -58,8 +60,21 @@ public class QnaBoardController {
     
     //================== Write 페이지 ==========================
   	// Write 페이지 이동
-    @GetMapping("/qnaBoardWrite.do")
-    public String write(Model model) {
+    @GetMapping("/boards/qna/qnaBoardWrite.do")
+    public String write(Model model, Principal principal) {
+    	
+    	QnaBoardEntity qEntity = new QnaBoardEntity();
+    	String writerid = principal.getName().string;
+    	qEntity.setWriterid(writerid);
+    	System.out.println("qEntity는 뭘까여"+ qEntity.);
+    	
+        
+        return "boards/qna/qnaBoardWrite"; // JSP 경로
+    }
+    
+  	// Write 글쓰기 처리 (Create) 
+    @PostMapping("/qnaBoardWriteProc.do")
+    public String writeProc(Model model) {
     	
         
         return "boards/qna/qnaBoardWrite"; // JSP 경로
