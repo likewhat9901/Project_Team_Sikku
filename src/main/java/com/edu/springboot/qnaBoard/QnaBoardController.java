@@ -14,7 +14,7 @@ public class QnaBoardController {
 	@Autowired
 	private QnaBoardService qnaService;
 	
-    @GetMapping("/qnaBoardList.do")
+    @GetMapping("/boards/qna/qnaBoardList.do")
     public String list(Model model) {
         model.addAttribute("noticeRows", qnaService.getNoticeList());
         model.addAttribute("qnaRows", qnaService.getQnaList());

@@ -8,16 +8,13 @@
   <meta charset="UTF-8">
   <title>Q&A</title>
   <link rel="stylesheet" href="/css/common/layout.css" />
-  <link rel="stylesheet" href="/css/qnaBoardList.css" />
+  <link rel="stylesheet" href="/css/qnaBoardView.css" />
 
 </head>
 <body>
 <%@ include file="/WEB-INF/views/common/header.jsp" %>
 
   <h1>Q&A</h1>
-  
-  		<button class="write-btn"
-			onclick="location.href='/boards/qna/qnaBoardWrite.do'">글쓰기</button>
   <table class="qnaboard-table">
 	<tr>
 		<th>No</th>

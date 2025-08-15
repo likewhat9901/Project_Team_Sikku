@@ -1,6 +1,7 @@
 package com.edu.springboot.qnaBoard;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -37,7 +38,6 @@ public class QnaBoardEntity {
 
     private String category;
     private String secretflag; //비밀글 여부
-    @Column(name = "noticeflag")
     private String noticeflag; //공지글
     private String answerstatus; //답변대기상태인지?
 
@@ -49,7 +49,16 @@ public class QnaBoardEntity {
     
     private LocalDateTime postdate;
     private LocalDateTime updatedate;
+    
+    
+    public String getFormattedPostdate() {
+        return postdate != null ? postdate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")) : "";
+    }
 
+    public String getFormattedUpdatedate() {
+        return updatedate != null ? updatedate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")) : "";
+    }
 }
+
 
 
