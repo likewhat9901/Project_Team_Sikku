@@ -1,6 +1,8 @@
 package com.edu.springboot.qnaBoard;
 
 import java.security.Principal;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,7 +11,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import jakarta.servlet.http.HttpSession;
 
@@ -119,8 +123,22 @@ public class QnaBoardController {
 
         return "redirect:/qnaBoardView.do?idx=" + idx;
     }
-
     
+    // 좋아요 기능
+    @PostMapping("/qnaBoardLike.do")
+    @ResponseBody
+    public Map<String, Object> like(@RequestBody Map<String, Object> payload) {
+        int idx = (int) payload.get("idx");
+
+        // 좋아요 수 증가 처리 (서비스/DAO 사용)
+        int updatedLikes = qnaService.increaseLikeCount(idx);
+
+        // 결과 반환
+        Map<String, Object> result = new HashMap<>();
+        result.put("success", true);
+        result.put("likes", updatedLikes);
+        return result;
+    }
     
     
     //================== Write 페이지 ==========================

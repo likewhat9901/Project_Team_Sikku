@@ -30,6 +30,9 @@
 			수정일: ${ qna.formattedUpdatedate }
 			</span>
 			<span class="views">조회수: ${ qna.views }</span>
+			<span class="likes" onclick="likePost(${qna.idx})">
+		        ❤️ <span id="likeCount">${qna.likes}</span>
+    		</span>
 		</div>
 		
 		<div class="qna-view-content">
@@ -61,17 +64,46 @@
 
 <%@ include file="/WEB-INF/views/common/footer.jsp" %>
 </body>
+
+<!-- 관리자 답변등록 버튼 토글 -->
 <script>
 function toggleAnswerForm() {
     const pre = document.getElementById('answer-pre');
     const form = document.getElementById('answer-form');
 
-    // pre 숨기고 textarea/form 보여주기
-    if (pre) {
-        pre.style.display = 'none';
+    if (form.style.display === 'block') {
+        form.style.display = 'none';
+        if (pre) pre.style.display = 'block';
+    } else {
+        form.style.display = 'block';
+        if (pre) pre.style.display = 'none';
     }
+}
+</script>
 
-    form.style.display = 'block';
+<!-- 좋아요 버튼 -->
+<script>
+function likePost(idx) {
+    fetch('/qnaBoardLike.do', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json' // JSON 형식으로 보낼 거라는 뜻
+        },
+        body: JSON.stringify({ idx: idx }) // idx 값을 JSON 형태({ "idx": 123 })로 바꿔서 보내는 것
+    })
+    .then(response => response.json()) // 서버가 응답한 결과를 JSON 형식으로 파싱. 예: { "success": true, "likes": 42 }
+    .then(data => {
+        if (data.success) { // success가 true일때
+            const countSpan = document.getElementById('likeCount');
+            countSpan.textContent = data.likes; // 서버가 보내준 최신 좋아요 수로 업데이트
+        } else {
+            alert("좋아요 처리 실패");
+        }
+    })
+    .catch(error => {
+        console.error("좋아요 에러 발생:", error);
+        alert("서버 오류 발생 (좋아요)");
+    });
 }
 </script>
 </html>
