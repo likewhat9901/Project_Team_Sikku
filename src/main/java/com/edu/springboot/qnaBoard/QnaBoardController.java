@@ -72,11 +72,18 @@ public class QnaBoardController {
   	// View 페이지 이동
     @GetMapping("/qnaBoardView.do")
     public String view(@RequestParam("idx") Long idx, 
-    		Model model, Principal principal, HttpSession session,
-    		RedirectAttributes redirectAttributes) {
+			    		Model model, 
+			    		Principal principal, 
+			    		HttpSession session,
+			    		RedirectAttributes redirectAttributes) {
     	// 로그인한 사용자 id, 게시글 idx
     	String userId = principal.getName();
     	String viewKey = "viewed_qna_" + idx;
+    	
+    	/*============== 좋아요 확인 =================*/
+    	String likeKey = "liked_" + idx + "_" + userId;
+    	boolean alreadyLiked = session.getAttribute(likeKey) != null;
+        model.addAttribute("alreadyLiked", alreadyLiked); // 🔥 JSP로 전달
         
         /*============== 게시글 하나 가져오기 =================*/
         QnaBoardEntity qna = qnaService.getQnaOneById(idx);
@@ -159,17 +166,22 @@ public class QnaBoardController {
             return result;
         }
         
-        // 이미 좋아요 눌렀을때
-        if (session.getAttribute(likeKey) != null) {
-            result.put("success", false);
-            result.put("message", "이미 좋아요를 눌렀습니다.");
-            return result;
+        boolean alreadyLiked = session.getAttribute(likeKey) != null;
+
+        int updatedLikes;
+        if (alreadyLiked) {
+            // 👉 좋아요 취소
+            updatedLikes = qnaService.decreaseLikeCount(idx);
+            session.removeAttribute(likeKey);
+            result.put("message", "좋아요를 취소했습니다.");
+            result.put("liked", false);
+        } else {
+            // 👉 좋아요 증가
+            updatedLikes = qnaService.increaseLikeCount(idx);
+            session.setAttribute(likeKey, true);
+            result.put("message", "좋아요를 눌렀습니다.");
+            result.put("liked", true);
         }
-        
-        // 좋아요 수 증가 처리
-        int updatedLikes = qnaService.increaseLikeCount(idx);
-        
-        session.setAttribute(likeKey, true); // 세션 기록
 
         result.put("success", true);
         result.put("likes", updatedLikes);

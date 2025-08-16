@@ -231,7 +231,6 @@ public class MyDiaryController {
 		return "redirect:list.do";
 	}
 	
-	// 입력1 : 작성페이지 매핑
 	@GetMapping("/mydiary/calendar.do")
 	public String calender() {
 		return "mydiary/calendar";

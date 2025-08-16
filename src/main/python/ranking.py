@@ -154,6 +154,10 @@ def ranking_data(category):
 		"상추": "/images/ranking/farm/상추.jpg",
 		"배추": "/images/ranking/farm/배추.jpg",
 		"고추": "/images/ranking/farm/고추.jpg",
+		"가지": "/images/ranking/farm/eggplant.jpg",
+		"쪽파": "/images/ranking/farm/chives.jpg",
+		"방울토마토": "/images/ranking/farm/cherry_tomato.jpg",
+		"로메인": "/images/ranking/farm/romaine.jpg",
 		
 		"알로카시아": "/images/ranking/foliage/alocasia.jpg",
 		"행운목": "/images/ranking/foliage/happy_plant.jpg",
@@ -161,6 +165,7 @@ def ranking_data(category):
 		"올리브나무": "/images/ranking/foliage/olive_tree.jpg",
 		"파키라": "/images/ranking/foliage/pachira.jpg",
 		"금전수": "/images/ranking/foliage/ZZ_plant.jpg",
+		"사랑초": "/images/ranking/foliage/oxalis.jpg",
 	}
     
 	# top10 데이터 뽑기

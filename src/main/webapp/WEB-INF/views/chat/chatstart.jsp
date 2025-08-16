@@ -15,12 +15,8 @@
 	<h1 class="chat-h">식꾸 챗봇에게 궁금한 것을 물어보세요!</h1>
 	<div class="chatstart">
 		<div class="chat-box">
-			<h4>회원 사용 시</h4>
+			<h4>챗봇 사용 예시</h4>
 			<img alt="chatbot-user" src="/images/chatimg.JPG">
-		</div>
-		<div class="chat-box">
-			<h4>비회원 사용 시</h4>
-			<img alt="chatbot-nonuser" src="/images/chatimg.JPG">
 		</div>
 
 	</div>

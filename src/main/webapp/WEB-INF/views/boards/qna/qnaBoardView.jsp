@@ -1,5 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
@@ -9,6 +8,7 @@
   <title>Q&A 상세보기</title>
   <link rel="stylesheet" href="/css/common/layout.css">
   <link rel="stylesheet" href="/css/qnaBoardView.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
 <body>
 <%@ include file="/WEB-INF/views/common/header.jsp" %>
@@ -22,17 +22,28 @@
 		</div>
 		
 		<div class="qna-post-info">
-			<span class="writer">작성자: ${ qna.writer }</span>
-			<span class="date post">
-			작성일: ${ qna.formattedPostdate }
-			</span>
-			<span class="date update">
-			수정일: ${ qna.formattedUpdatedate }
-			</span>
-			<span class="views">조회수: ${ qna.views }</span>
+			<div class="left-info">
+				<span class="writer">작성자: ${ qna.writer }</span>
+				<span class="date post">
+				작성일: ${ qna.formattedPostdate }
+				</span>
+				<span class="date update">
+				수정일: ${ qna.formattedUpdatedate }
+				</span>
+				<span class="views">조회수: ${ qna.views }</span>
+			</div>
+			
 			<span class="likes" onclick="likePost(${qna.idx})">
-		        ❤️ <span id="likeCount">${qna.likes}</span>
-    		</span>
+			    <c:choose>
+			        <c:when test="${alreadyLiked}">
+			            <i id="heartIcon" class="fa-solid fa-heart" style="color:#e91e63;"></i>
+			        </c:when>
+			        <c:otherwise>
+			            <i id="heartIcon" class="fa-regular fa-heart" style="color:#999;"></i>
+			        </c:otherwise>
+			    </c:choose>
+				<span id="likeCount">${qna.likes}</span>
+			</span>
 		</div>
 		
 		<div class="qna-view-content">
@@ -99,6 +110,18 @@ function likePost(idx) {
         if (data.success) { // success가 true일때
             const countSpan = document.getElementById('likeCount');
             countSpan.textContent = data.likes; // 서버가 보내준 최신 좋아요 수로 업데이트
+            
+         	// 하트 아이콘 변경
+            const heartIcon = document.getElementById('heartIcon');
+            if (data.liked) {
+                heartIcon.classList.remove('fa-regular');
+                heartIcon.classList.add('fa-solid');
+                heartIcon.style.color = '#e91e63';  // 좋아요 누른 경우 색도 바꾸면 더 좋음
+            } else {
+                heartIcon.classList.remove('fa-solid');
+                heartIcon.classList.add('fa-regular');
+                heartIcon.style.color = '#999';  // 좋아요 취소한 경우 색 복원
+            }
         } else {
             alert(data.message);
         }

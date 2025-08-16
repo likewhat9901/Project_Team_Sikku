@@ -10,7 +10,6 @@
 <body>
 <%@ include file="/WEB-INF/views/common/header.jsp" %>
 
-  <h2>calendar</h2>
   <div class="calendar-container">
     <div class="calendar-controls">
       <button id="prev-month">◀ 이전달</button>
@@ -23,11 +22,6 @@
   </div>
 
 <%@ include file="/WEB-INF/views/common/footer.jsp" %>
-
-<script>
-  // 컨텍스트 경로
-  const ctx = '${pageContext.request.contextPath}';
-</script>
 
 <script type="module">
     import {
@@ -43,8 +37,7 @@
       const y = year;
       const m = String(month + 1).padStart(2, "0");
 
-      //const url = `${ctx}/mydiary/calendar/images?year=${y}&month=${m}`;
-      const url = ctx + '/mydiary/calendar/images?year=' + y + '&month=' + m;
+      const url = '/mydiary/calendar/images?year=' + y + '&month=' + m;
 	  console.log('FETCH URL:', url);
 	  try {
         const response = await fetch(url, { method: 'GET' });
@@ -111,19 +104,32 @@
           dateText.textContent = format(day, 'd');
           cell.appendChild(dateText);
 
-          // postdate(스네이크/카멜 혼용 대비)
+          // 해당 날짜의 첫번째 포스트(이미지가 있는 글만)
           const post = posts.find(p => {
             const postDateStr = p.postdate || p.postDate;
             return postDateStr && format(new Date(postDateStr), 'yyyy-MM-dd') === formattedDate && p.imageUrl;
           });
 
+		  //이미지 썸네일 추가
           if (post) {
+			let imgSrc;
+			if (post.imageUrl.includes('/')) {
+              imgSrc = post.imageUrl; // 이미 경로 포함
+            } else {
+              imgSrc = '/uploads/' + encodeURIComponent(post.imageUrl); // 파일명만
+            }
+
             const img = document.createElement('img');
-            //img.src = `${ctx}/uploads/${post.imageUrl}?v=${Date.now()}`; // 캐시 방지
-            img.src = ctx + '/uploads/' + encodeURIComponent(post.imageUrl) + '?v=' + Date.now();
-			img.alt = "썸네일";
-            img.className = "thumbnail";
-            cell.appendChild(img);
+            img.src = imgSrc + '?v=' + Date.now();
+            img.alt = "썸네일";
+
+            // ★ 링크 생성 (상세 페이지로 이동)
+            const link = document.createElement('a');
+            link.href = '/mydiary/view.do?diaryIdx='+encodeURIComponent(post.diaryIdx);
+            link.title = formattedDate +'의 일기 보기';
+            link.appendChild(img);
+
+            cell.appendChild(link);
           }
 
           row.appendChild(cell);

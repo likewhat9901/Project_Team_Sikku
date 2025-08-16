@@ -89,11 +89,18 @@ public class QnaBoardService {
         
         qna.setAnswercontent(answerContent);
         qna.setUpdatedate(LocalDateTime.now()); // LocalDateTime 사용한다면
+        
+        if (answerContent != null && !answerContent.trim().isEmpty()) {
+            qna.setAnswerstatus("완료");
+        }
+        else {
+        	qna.setAnswerstatus("대기");
+        }
 
         // save 안 해도 됨: JPA는 트랜잭션 안에서 변경 감지(dirty checking)로 자동 업데이트 됨
     }
     
-    // 좋아요 기능
+    // 좋아요 기능(+1)
     @Transactional
     public int increaseLikeCount(Long idx) {
         QnaBoardEntity qna = qnaRepo.findById(idx)
@@ -106,6 +113,20 @@ public class QnaBoardService {
         qnaRepo.save(qna); // DB 반영
 
         return newLikes; // 최신 좋아요 수 반환
+    }
+    
+    // 좋아요 기능(-1)
+    public int decreaseLikeCount(Long idx) {
+        QnaBoardEntity qna = qnaRepo.findById(idx)
+            .orElseThrow(() -> new IllegalArgumentException("게시글이 없습니다."));
+
+        int currentLikes = qna.getLikes() != null ? qna.getLikes() : 0;
+        int newLikes = Math.max(0, currentLikes - 1); // 음수 방지
+        qna.setLikes(newLikes);
+        
+        qnaRepo.save(qna);
+
+        return newLikes;
     }
 
     
