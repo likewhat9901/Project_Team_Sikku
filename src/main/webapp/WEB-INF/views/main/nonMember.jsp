@@ -16,6 +16,7 @@
     <!-- Ranking -->
 	<div class="ranking-container">
 		<div class="category-select-container">
+			<h2>인기식물 순위</h2>
 			<select id="category-select" onchange="fetchRanking(this.value);">
 		        <option value="farm">텃밭식물</option>
 		        <option value="foliage">관엽식물</option>
