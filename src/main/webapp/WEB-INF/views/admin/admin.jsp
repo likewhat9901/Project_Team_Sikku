@@ -22,7 +22,14 @@
 
     <!-- 회원관리 탭 -->
     <div class="admin-tab-content" id="member-tab">
+    <div class="admin-header">
       <h1 class="admin-title">관리자 페이지</h1>
+		    <a href="/main/member.do">
+	            <button class="admin-home-btn" type="button" onclick="location.href='/main/member.do'" >
+	            홈페이지
+	            </button>
+		    </a>
+    </div>
       <h2 class="admin-subtitle">회원 목록</h2>
 
       <form action="/admin/index.do" method="get" class="admin-search-form">

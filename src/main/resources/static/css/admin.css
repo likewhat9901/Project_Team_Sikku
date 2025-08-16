@@ -44,12 +44,33 @@
   padding: 30px 40px;
 }
 
-.admin-title {
+/* 헤더 컨테이너 추가 */
+.admin-header {
   position: absolute;
-  top: 30px;   /* 화면 최상단에서 떨어진 거리 */
-  left: 240px; /* 사이드바 너비(200px) + 원하는 여백(40px) */
-  margin: 5px 0 16px 50px; 
-  display: block;
+  top: 30px;
+  left: 240px;
+  right: 40px; /* 우측 여백 */
+  display: flex;
+  justify-content: space-between; /* 양 끝으로 배치 */
+  align-items: center; /* 수직 가운데 정렬 */
+  margin: 5px 0 16px 50px;
+}
+
+.admin-title {
+  /* position: absolute 제거 */
+  margin: 0; /* 기존 margin 제거 */
+}
+
+.admin-home-btn {
+  /* position: absolute 제거 */
+  background-color: #2166ff;
+  color: white;
+  padding: 9px 14px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 800;
+  transition: background 0.2s ease;
 }
 
 
