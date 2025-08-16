@@ -46,8 +46,8 @@ pre, button {
   font-size: 1rem;
   color: #666;
   display: flex;
-  justify-content: flex-start;
-  gap: 30px;
+  justify-content: space-between;
+  align-items: center;
   margin-bottom: 40px;
 }
 
@@ -55,6 +55,11 @@ pre, button {
   display: flex;
   align-items: center;
   font-size: 1.2rem;
+}
+
+.left-info {
+	display: flex;
+	gap: 20px;
 }
 
 .qna-post-info .likes {
@@ -66,11 +71,24 @@ pre, button {
 	display: inline-flex;
 	align-items: center;
 	gap: 6px;
+	padding: 4px 8px;
+	border-radius: 20px;
+	background-color: rgba(233, 30, 99, 0.05); /* 흐린 핑크 배경 */
+	padding-bottom: 5px;
+}
+
+.qna-post-info .likes i {
+  font-size: 1.2rem;
+  line-height: 1;
+  vertical-align: middle;
+  position: relative;
+  top: 3px; /* 🔥 아이콘 살짝 내리기 */
 }
 
 .qna-post-info .likes:hover {
 	transform: scale(1.1);
-	color: #e91e63; /* 핑크 계열로 하트 강조 */
+	color: #e91e63;
+	background-color: rgba(233, 30, 99, 0.3); /* 진한 배경으로 변경 */
 	opacity: 1;
 }
 
