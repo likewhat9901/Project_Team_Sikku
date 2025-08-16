@@ -46,7 +46,7 @@
     font-size: 14px;
 }
 
-/* 비밀글 체크박스 (오른쪽) */
+/* 공지글, 비밀글 체크박스 (오른쪽) */
 .qna-select-box {
     display: flex;
     align-items: center;

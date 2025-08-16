@@ -207,6 +207,12 @@ public class QnaBoardController {
     	//모델에 담기
     	model.addAttribute("writerid", writerid);
     	model.addAttribute("writer", writer);
+    	
+    	// 관리자 체크
+    	String userId = principal.getName();
+    	MemberEntity member = memberRepo.findByUserId(userId).orElse(null);
+        String authority = (member != null) ? member.getAuthority() : "ROLE_USER";
+        model.addAttribute("userRole", authority);
         
         return "boards/qna/qnaBoardWrite"; // JSP 경로
     }
@@ -220,6 +226,9 @@ public class QnaBoardController {
     	if(qEntity.getSecretflag()==null) {
     		qEntity.setSecretflag("N");
     	}
+    	if(qEntity.getNoticeflag()==null) {
+    		qEntity.setNoticeflag("N");
+    	}
         
         qnaRepo.save(qEntity);
         
@@ -227,7 +236,7 @@ public class QnaBoardController {
     }
     
     
-    //================== Write 페이지 ==========================
+    //================== Write 페이지(Edit) ==========================
   	// Edit 페이지 이동
     @GetMapping("/qnaBoardEdit.do")
     public String edit(Model model, @RequestParam("idx") Long idx) {
@@ -241,9 +250,6 @@ public class QnaBoardController {
         
         return "boards/qna/qnaBoardEdit"; // JSP 경로
     }
-    
-    
-    
 
   	// Edit 수정하기 처리 (Update)
     @PostMapping("/qnaBoardEditProc.do")

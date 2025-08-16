@@ -50,10 +50,17 @@
 				
 				
 				<div class="qna-select-box">
+					<c:if test="${userRole eq 'ROLE_ADMIN'}">
+						<label for="noticeflag">
+							공지글&nbsp;&nbsp;
+						</label>
+						<input type="checkbox" id="noticeflag" name="noticeflag" value="Y" />
+					</c:if>
+					&nbsp;&nbsp;&nbsp;
 					<label for="secretflag">
-					비밀글&nbsp;
-					<input type="checkbox" id="secretflag" name="secretflag" value="Y" />
+						비밀글&nbsp;&nbsp;
 					</label>
+					<input type="checkbox" id="secretflag" name="secretflag" value="Y" />
 				</div>
 			</div>
 			
