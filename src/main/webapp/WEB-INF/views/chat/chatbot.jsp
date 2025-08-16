@@ -16,11 +16,14 @@
 </style>
 </head>
 <body>
-	<h5 class="mb-3">Chat with AI</h5>
-	<div class="modal-body">
+	<div class="chat-body">
+	<h4 class="mb-3">🍀 식꾸 AI 챗봇</h4>
+	<h6 class="mb-3">모르는 것을 질문해 보세요!</h6>
 		<div class="">
-			<label for="username">Username:</label> 
-			<input type="hid-den"
+			<!-- 
+			<label for="username">Username:</label> 			
+			 -->
+			<input type="hidden"
 				id="username" readonly class="chat-username"
 				value="<sec:authentication property='name'/>" />
 			<!-- 
@@ -29,14 +32,17 @@
 			 -->
 		</div>
 
-		<br />
-		<div id="chatArea"></div>
-		<br />
-
+		<div id="chatArea" class="chat-window">
+		<!-- 메시지 스크롤 되는 영역 -->
+		<div id="chatList" class="chat-scroll"></div>
+		<!-- 입력 영역 -->
 		<div class="chat-inputarea">
 			<textarea id="message" class="chat-input"></textarea>
 			<button id="sendBtn" class="send-button">Send</button>
 		</div>
+		</div>
+		<br />
+
 	</div>	
 </body>
 <!-- JS 라이브러리 -->
@@ -78,20 +84,39 @@ var stompClient = null;
 	$('#message').val('');
 	showUserMessage(chatMessage); // 사용자의 메시지를 바로 표시
   }
-	
-  //메시지 띄우기
-  function showMessage(message) {
-	var messageElement = $('<div class="message ai-message"></div>');
-	messageElement.text(message.sender + ': ' + message.content);
-	$('#chatArea').append(messageElement);
-	$('#chatArea').scrollTop($('#chatArea')[0].scrollHeight); // 스크롤을 아래로
+  
+  function escapeHtml(s){
+	  return String(s)
+	    .replace(/&/g,"&amp;").replace(/</g,"&lt;")
+	    .replace(/>/g,"&gt;").replace(/"/g,"&quot;")
+	    .replace(/'/g,"&#39;");
+	}
+  function nl2br(s){ 
+	return escapeHtml(s).replace(/\n/g,"<br>"); 
   }
-	
-  function showUserMessage(message) {
-	var messageElement = $('<div class="message user-message"></div>');
-	messageElement.text(message.sender + ': ' + message.content);
-	$('#chatArea').append(messageElement);
-	$('#chatArea').scrollTop($('#chatArea')[0].scrollHeight); // 스크롤을 아래로
+  // 사용자, ai 공통 템플릿
+  function bubbleHtml(sender, text, role){
+    const isUser = role === 'user';
+    const name = isUser ? sender : (sender || 'AI');
+    return (
+    		'<div class="message-row ' + (isUser ? 'user' : 'ai') + '">' +
+    	      (isUser ? '' : '<div class="avatar">🍀</div>') +
+    	      '<div class="bubble">' +
+    	        '<div class="meta">' + escapeHtml(name) + '</div>' +
+    	        '<div class="text">' + nl2br(text) + '</div>' +
+    	      '</div>' +
+    	      (isUser ? '<div class="avatar me">🙂</div>' : '') +
+    	    '</div>');
+  }
+  //메시지 띄우기
+  function showMessage(message){
+    $('#chatList').append(bubbleHtml(message.sender, message.content, 'ai'));
+    $('#chatList').scrollTop($('#chatList')[0].scrollHeight);
+  }
+
+  function showUserMessage(message){
+    $('#chatList').append(bubbleHtml(message.sender, message.content, 'user'));
+    $('#chatList').scrollTop($('#chatList')[0].scrollHeight);
   }
 	
   $(function() {
