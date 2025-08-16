@@ -57,8 +57,11 @@
 		
 		<div class="qna-view-buttons">
 			<button onclick="location.href='/qnaBoardList.do'">목록</button>
-			<button onclick="location.href='/qnaBoardEdit.do?idx=${ qna.idx }'">수정</button>
-			<button onclick="if(confirm('정말 삭제할까요?')) location.href='/qnaBoardDelete.do?idx=${ qna.idx }'">삭제</button>
+			<c:if test="${ qna.writerid == userId }">
+				<button onclick="location.href='/qnaBoardEdit.do?idx=${ qna.idx }'">수정</button>
+				<button onclick="if(confirm('정말 삭제할까요?')) location.href='/qnaBoardDelete.do?idx=${ qna.idx }'">삭제</button>
+			</c:if>
+			
 		</div>
 	</div>
 
@@ -97,7 +100,7 @@ function likePost(idx) {
             const countSpan = document.getElementById('likeCount');
             countSpan.textContent = data.likes; // 서버가 보내준 최신 좋아요 수로 업데이트
         } else {
-            alert("좋아요 처리 실패");
+            alert(data.message);
         }
     })
     .catch(error => {

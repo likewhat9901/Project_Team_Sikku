@@ -57,6 +57,28 @@ pre, button {
   font-size: 1.2rem;
 }
 
+.qna-post-info .likes {
+	cursor: pointer;
+	transition: all 0.2s ease;
+	user-select: none;
+	color: #555;
+	font-weight: 500;
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+}
+
+.qna-post-info .likes:hover {
+	transform: scale(1.1);
+	color: #e91e63; /* 핑크 계열로 하트 강조 */
+	opacity: 1;
+}
+
+.qna-post-info .likes:active {
+	transform: scale(0.95);
+	opacity: 0.6;
+}
+
 /* 본문 내용 */
 .qna-view-content {
   margin: 50px 0;

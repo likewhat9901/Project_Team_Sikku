@@ -97,4 +97,9 @@
 
 <%@ include file="/WEB-INF/views/common/footer.jsp" %>
 </body>
+<c:if test="${not empty errorMsg}">
+    <script>
+        alert("${errorMsg}");
+    </script>
+</c:if>
 </html>

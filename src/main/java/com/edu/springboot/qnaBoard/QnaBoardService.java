@@ -21,6 +21,14 @@ public class QnaBoardService {
 	@Autowired
     private QnaBoardRepository qnaRepo;
 	
+	
+	/* ============== 공통 ================= */
+	public QnaBoardEntity findById(Long idx) {
+	    return qnaRepo.findById(idx)
+	        .orElseThrow(() -> new IllegalArgumentException("게시글이 없습니다."));
+	}
+	
+	
 	/* ============== qnaBoardList 페이지 ================= */
 	// 공지글 (페이징 X)
     public List<QnaBoardEntity> getNoticeList() {
@@ -83,6 +91,21 @@ public class QnaBoardService {
         qna.setUpdatedate(LocalDateTime.now()); // LocalDateTime 사용한다면
 
         // save 안 해도 됨: JPA는 트랜잭션 안에서 변경 감지(dirty checking)로 자동 업데이트 됨
+    }
+    
+    // 좋아요 기능
+    @Transactional
+    public int increaseLikeCount(Long idx) {
+        QnaBoardEntity qna = qnaRepo.findById(idx)
+            .orElseThrow(() -> new IllegalArgumentException("게시글이 없습니다."));
+
+        int currentLikes = qna.getLikes() != null ? qna.getLikes() : 0;
+        int newLikes = currentLikes + 1;
+        qna.setLikes(newLikes);
+        
+        qnaRepo.save(qna); // DB 반영
+
+        return newLikes; // 최신 좋아요 수 반환
     }
 
     

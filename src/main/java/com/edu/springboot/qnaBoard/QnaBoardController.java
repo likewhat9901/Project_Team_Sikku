@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import jakarta.servlet.http.HttpSession;
 
@@ -71,18 +72,12 @@ public class QnaBoardController {
   	// View 페이지 이동
     @GetMapping("/qnaBoardView.do")
     public String view(@RequestParam("idx") Long idx, 
-    		Model model, Principal principal, HttpSession session) {
-    	/*============== 조회수 증가 =================*/
-        // 로그인한 사용자 id, 게시글 idx
-        String userId = principal.getName();
-        String viewKey = "viewed_qna_" + idx;
+    		Model model, Principal principal, HttpSession session,
+    		RedirectAttributes redirectAttributes) {
+    	// 로그인한 사용자 id, 게시글 idx
+    	String userId = principal.getName();
+    	String viewKey = "viewed_qna_" + idx;
         
-        // 이전에 본 적 없는 경우만 조회수 증가
-        if (session.getAttribute(viewKey) == null) {
-            qnaService.increaseViews(idx, userId);
-            session.setAttribute(viewKey, true);
-        }
-    	
         /*============== 게시글 하나 가져오기 =================*/
         QnaBoardEntity qna = qnaService.getQnaOneById(idx);
         
@@ -91,18 +86,31 @@ public class QnaBoardController {
         	model.addAttribute("errorMsg", "존재하지 않는 게시글입니다.");
             return "redirect:/qnaBoardList.do";
         }
-
-        model.addAttribute("qna", qna);
         
-        /*============== 관리자 계정 확인 =================*/
+        /*============== 비밀글 접근 제한(본인, 관리자), 관리자 계정 확인 =================*/
         MemberEntity member = memberRepo.findByUserId(userId).orElse(null);
-        String authority = member.getAuthority();
+        // 관리자 체크
+        String authority = (member != null) ? member.getAuthority() : "ROLE_USER";
         
-        if (member != null) {
-            model.addAttribute("userRole", member.getAuthority());
-        } else {
-            model.addAttribute("userRole", "ROLE_USER"); // 기본값
+        boolean isAdmin = authority.equals("ROLE_ADMIN");
+        boolean isOwner = qna.getWriterid().equals(userId);
+        boolean isSecret = "Y".equalsIgnoreCase(qna.getSecretflag());
+        
+        if (isSecret && !(isOwner || isAdmin)) {
+            redirectAttributes.addFlashAttribute("errorMsg", "비밀글은 본인 또는 관리자만 열람할 수 있습니다.");
+            return "redirect:/qnaBoardList.do";
         }
+        
+        /*============== 조회수 증가 =================*/
+        // 이전에 본 적 없는 경우만 조회수 증가
+        if (session.getAttribute(viewKey) == null) {
+        	qnaService.increaseViews(idx, userId);
+        	session.setAttribute(viewKey, true);
+        }
+        
+        model.addAttribute("qna", qna);
+        model.addAttribute("userId", userId);
+        model.addAttribute("userRole", authority);
         
         return "boards/qna/qnaBoardView"; // JSP 경로
     }
@@ -114,6 +122,7 @@ public class QnaBoardController {
         return "redirect:/qnaBoardList.do"; // 삭제 후 목록으로 이동
     }
     
+    // 관리자 답변
     @PostMapping("/qnaBoardAnswer.do")
     public String submitAnswer(@RequestParam("idx") Long idx,
                                @RequestParam("answercontent") String answerContent) {
@@ -127,14 +136,41 @@ public class QnaBoardController {
     // 좋아요 기능
     @PostMapping("/qnaBoardLike.do")
     @ResponseBody
-    public Map<String, Object> like(@RequestBody Map<String, Object> payload) {
-        int idx = (int) payload.get("idx");
-
-        // 좋아요 수 증가 처리 (서비스/DAO 사용)
+    public Map<String, Object> like(@RequestBody Map<String, Object> payload,
+						    		HttpSession session,
+						            Principal principal) {
+    	Map<String, Object> result = new HashMap<>();
+    	
+    	//게시글 번호
+    	//Long.valueOf -> 문자열을 Long 객체로 변환
+        Long idx = Long.valueOf(payload.get("idx").toString()) ; // Object → String → Long
+        String userId = principal.getName(); // 로그인한 사용자
+        
+        // 작성자 key
+        String likeKey = "liked_" + idx + "_" + userId;
+        
+        // 게시글 가져오기
+        QnaBoardEntity qna = qnaService.findById(idx);
+        
+        // 내 글일 때
+        if (qna.getWriterid().equals(userId)) {
+            result.put("success", false);
+            result.put("message", "내 글에는 좋아요를 누를 수 없습니다.");
+            return result;
+        }
+        
+        // 이미 좋아요 눌렀을때
+        if (session.getAttribute(likeKey) != null) {
+            result.put("success", false);
+            result.put("message", "이미 좋아요를 눌렀습니다.");
+            return result;
+        }
+        
+        // 좋아요 수 증가 처리
         int updatedLikes = qnaService.increaseLikeCount(idx);
+        
+        session.setAttribute(likeKey, true); // 세션 기록
 
-        // 결과 반환
-        Map<String, Object> result = new HashMap<>();
         result.put("success", true);
         result.put("likes", updatedLikes);
         return result;
@@ -165,27 +201,50 @@ public class QnaBoardController {
     
   	// Write 글쓰기 처리 (Create) 
     @PostMapping("/qnaBoardWriteProc.do")
-    public String writeProc(@RequestParam("title") String title,
-                           @RequestParam("content") String content,
-                           @RequestParam("category") String category,
-                           @RequestParam("writer") String writer,
-                           @RequestParam("writerid") String writerid,
-                           @RequestParam(value="secretflag", required = false) String secretflag
-    ) {
-        // 직접 새 객체 생성
-        QnaBoardEntity qEntity = new QnaBoardEntity();
-        qEntity.setTitle(title);
-        qEntity.setContent(content);
-        qEntity.setCategory(category);
-        qEntity.setWriter(writer);
-        qEntity.setWriterid(writerid);
-        qEntity.setSecretflag("Y".equals(secretflag) ? "Y" : "N");
+    public String writeProc(QnaBoardEntity qEntity) {
         
-        // 기본값들은 Entity에서 처리하거나 여기서 설정
+    	//secretFlag(비밀글 여부)는 체크박스로 받기때문에 체크를 안하면 null이다.
+    	//따라서 secretFlag만 "N"으로 초기화해준다. 
+    	if(qEntity.getSecretflag()==null) {
+    		qEntity.setSecretflag("N");
+    	}
         
         qnaRepo.save(qEntity);
+        
         return "redirect:/qnaBoardList.do";
     }
+    
+    
+    //================== Write 페이지 ==========================
+  	// Edit 페이지 이동
+    @GetMapping("/qnaBoardEdit.do")
+    public String edit(Model model, @RequestParam("idx") Long idx) {
+    	
+    	Optional<QnaBoardEntity> qBoardOpt = qnaRepo.findById(idx);
+    	QnaBoardEntity qna = qBoardOpt.get();
+    	
+    	System.out.println("qna 가져와->" + qna.getIdx());
+    	
+    	model.addAttribute("qna", qna);
+        
+        return "boards/qna/qnaBoardEdit"; // JSP 경로
+    }
+    
+    
+    
 
+  	// Edit 수정하기 처리 (Update)
+    @PostMapping("/qnaBoardEditProc.do")
+    public String editProc(Model model, QnaBoardEntity qEntity) {
+    	
+    	//null값 방지를 위해 "N"으로 초기화. (Write 와 동일)
+    	if(qEntity.getSecretflag()==null) {
+    		qEntity.setSecretflag("N");
+    	}
+        
+        qnaRepo.save(qEntity);
+        
+    	return "redirect:/qnaBoardView.do?idx=" + qEntity.getIdx();
+    }
 
 }
