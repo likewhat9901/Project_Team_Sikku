@@ -36,9 +36,36 @@
 	
 	<!-- 관리자: 식물도감 등록 -->
    <insert id="insertPlantDict" parameterType="com.edu.springboot.dict.DictDTO">
-    INSERT INTO plantdict (plantidx, name, engname, category, imgpath)
-    VALUES (PLANTDICT_SEQ.NEXTVAL, #{name}, #{engname}, #{category}, #{imgpath})
-</insert>
+	    INSERT INTO plantdict (
+	        plantidx, name, engname, category, imgpath,
+	        growseason, bloomingseason, sunlight, humidity, temperature,
+	        water, disease, summary, note
+	    ) VALUES (
+	        #{plantidx},
+	        #{name, jdbcType=VARCHAR},
+	        #{engname, jdbcType=VARCHAR},
+	        #{category, jdbcType=VARCHAR},
+	        #{imgpath, jdbcType=VARCHAR},
+	        #{growseason , jdbcType=VARCHAR},
+	        #{bloomingseason, jdbcType=VARCHAR},
+	        #{sunlight, jdbcType=VARCHAR},
+	        #{humidity, jdbcType=VARCHAR},
+	        #{temperature, jdbcType=VARCHAR},
+	        #{water, jdbcType=VARCHAR},
+	        #{disease, jdbcType=VARCHAR},
+	        #{summary, jdbcType=VARCHAR},
+	        #{note, jdbcType=VARCHAR}
+	    )
+	</insert>
+
+	
+	<!-- plantidx 시퀀스 -->
+	<select id="getMaxPlantIdx" resultType="int">
+	  SELECT NVL(MAX(plantidx), 0) FROM plantdict
+	</select>
+
+
+
 
 
     <!-- 관리자: 식물도감 전체 조회 (최신순) -->

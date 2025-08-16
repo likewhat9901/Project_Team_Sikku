@@ -13,9 +13,11 @@ public interface IDictService {
 	public List<DictDTO> selectPlantsByUser(@Param("userId") String userId);
 	
 	 // 관리자 기능
-	void insertPlantDict(DictDTO dto);
+	int insertPlantDict(DictDTO dto);
 
     List<DictDTO> selectAllPlants();
 
     public int deletePlantDict(int plantidx);
+    
+    int getMaxPlantIdx();
 }

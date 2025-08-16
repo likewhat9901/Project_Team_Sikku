@@ -156,29 +156,31 @@
 
       <!-- 등록 폼 (처음엔 숨김) -->
 	<div id="dict-form" style="display:none; margin-top:20px;">
-	  <form action="${pageContext.request.contextPath}/admin/dict/insert.do"
-	        method="post" enctype="multipart/form-data" class="admin-form">
-	
-	    <input type="text" name="name" placeholder="식물 이름" required>
-	    <input type="text" name="engname" placeholder="영문 이름">
-	    <input type="text" name="category" placeholder="카테고리">
-	    <textarea name="summary" placeholder="요약 설명"></textarea>
-	    <textarea name="feature" placeholder="특징"></textarea>
-	
-	    <input type="text" name="growingSeason" placeholder="생육 시기 (예: 봄~가을)">
-	    <input type="text" name="bloomingSeason" placeholder="개화 시기 (예: 7~8월)">
-	    
-	    <input type="number" step="0.1" name="temperatureMin" placeholder="최저 온도 (°C)">
-	    <input type="number" step="0.1" name="temperatureMax" placeholder="최고 온도 (°C)">
-	    <input type="text" name="humidity" placeholder="습도 (예: 50~60%)">
-	    <input type="text" name="watering" placeholder="물 주기 (예: 주 1회)">
-	    <textarea name="pest" placeholder="병충해"></textarea>
-	
-	    <input type="file" name="image" accept="image/*" required>
-	
-	    <input type="submit" value="등록" class="admin-btn">
-	  </form>
-	</div>
+  <form id="dictForm"
+        action="${pageContext.request.contextPath}/admin/dict/insert.do"
+        method="post" enctype="multipart/form-data" class="admin-form"
+         onsubmit="window.location.reload();">
+
+    <input type="text" name="name" placeholder="식물 이름" required>
+    <input type="text" name="engname" placeholder="영문 이름">
+    <input type="text" name="category" placeholder="카테고리">
+    <textarea name="summary" placeholder="요약 설명"></textarea>
+    <textarea name="feature" placeholder="특징"></textarea>
+    <input type="text" name="growseason" placeholder="생육 시기 (예: 봄~가을)">
+    <input type="text" name="bloomingseason" placeholder="개화 시기 (예: 7~8월)">
+    <input type="text" name="sunlight" placeholder="햇빛 환경 (예: 반양지~양지)">
+    <input type="text" name="temperature" placeholder="재배 온도 (예: 18~25℃)">
+    <input type="text" name="humidity" placeholder="습도 (예: 50~60%)">
+    <input type="text" name="water" placeholder="물 주기 (예: 주 1회)">
+    <textarea name="disease" placeholder="병충해"></textarea>
+    <textarea name="summary" placeholder="요약 설명"></textarea>
+    <textarea name="note" placeholder="기타 메모"></textarea>
+
+    <input type="file" name="image" accept="image/*" required>
+
+    <input type="submit" value="등록" class="admin-btn" >
+  </form>
+</div>
 
     </div>
   </div>
@@ -203,6 +205,10 @@
     document.getElementById("dict-list").style.display = "none";
     document.getElementById("dict-form").style.display = "block";
   });
+  
+  
+  
 </script>
+
 </body>
 </html>

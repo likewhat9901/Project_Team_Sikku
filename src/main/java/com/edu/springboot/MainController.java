@@ -1,6 +1,5 @@
-package com.edu.springboot;
+ package com.edu.springboot;
 
-import java.io.IOException;
 import java.nio.file.*;
 import java.security.Principal;
 import java.sql.*;
@@ -10,6 +9,7 @@ import java.util.*;
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -130,56 +130,53 @@ public class MainController {
         return "admin/admin";
     }
 
-    // 식물도감 등록
+    // 🌱 식물도감 등록 (리다이렉트 방식)
     @PostMapping("/admin/dict/insert.do")
-    public String insertPlantDict(DictDTO dto,
-                                  @RequestParam("image") MultipartFile image,
-                                  RedirectAttributes redirectAttrs) {
+    public String insertPlantDict(
+            DictDTO dto,
+            @RequestParam("image") MultipartFile image,
+            RedirectAttributes redirectAttrs) {
 
-        // 이미지 저장 경로
-        Path uploadRoot = Paths.get(System.getProperty("user.dir"),
-                "src/main/resources/static/images/dict").toAbsolutePath().normalize();
         try {
+            long newIdx = dao.getMaxPlantIdx() + 1;
+            dto.setPlantidx(newIdx);
+
+            // 이미지 저장
+            Path uploadRoot = Paths.get(new ClassPathResource("static/images/dict").getFile().getAbsolutePath());
             Files.createDirectories(uploadRoot);
-        } catch (IOException e) {
-            redirectAttrs.addFlashAttribute("errorMsg", "업로드 폴더 생성 실패: " + e.getMessage());
-            return "redirect:/admin/index.do";
-        }
 
-        String ext = "";
-        String original = image.getOriginalFilename();
-        if (original != null && original.contains(".")) {
-            ext = original.substring(original.lastIndexOf("."));
-        }
-        String savedName = "dict_" +
-                LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss_SSS")) + ext;
+            String ext = "";
+            String original = image.getOriginalFilename();
+            if (original != null && original.contains(".")) {
+                ext = original.substring(original.lastIndexOf("."));
+            }
+            String savedName = "dict_" +
+                    LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss_SSS")) + ext;
 
-        try {
             Files.copy(image.getInputStream(),
                     uploadRoot.resolve(savedName),
                     StandardCopyOption.REPLACE_EXISTING);
-        } catch (IOException e) {
-            redirectAttrs.addFlashAttribute("errorMsg", "이미지 저장 실패: " + e.getMessage());
-            return "redirect:/admin/index.do";
+
+            dto.setImgpath(savedName);
+            dao.insertPlantDict(dto);
+
+            redirectAttrs.addFlashAttribute("successMsg", "식물 등록 완료!");
+        } catch (Exception e) {
+            e.printStackTrace();
+            redirectAttrs.addFlashAttribute("errorMsg", "등록 실패: " + e.getMessage());
         }
 
-        // 파일명만 저장
-        dto.setImgpath(savedName);
-
-        dao.insertPlantDict(dto);
-
-        redirectAttrs.addFlashAttribute("successMsg", "식물도감이 등록되었습니다.");
         return "redirect:/admin/index.do";
     }
 
-    // 식물도감 삭제
+    // 🌱 식물도감 삭제
     @PostMapping("/admin/deletePlantDict.do")
     public String deletePlantDict(@RequestParam("plantidx") int plantidx) {
         dao.deletePlantDict(plantidx);
         return "redirect:/admin/index.do";
     }
 
-    // 회원 비활성화
+    // 👤 회원 비활성화
     @RequestMapping("/admin/disableMember.do")
     public String disableMember(@RequestParam("userid") String userid, RedirectAttributes redirectAttrs) {
         try (Connection conn = dataSource.getConnection();
@@ -198,7 +195,7 @@ public class MainController {
         return "redirect:/admin/index.do";
     }
 
-    // 회원 활성화
+    // 👤 회원 활성화
     @RequestMapping("/admin/enableMember.do")
     public String enableMember(@RequestParam("userid") String userid, RedirectAttributes redirectAttrs) {
         try (Connection conn = dataSource.getConnection();
@@ -217,7 +214,7 @@ public class MainController {
         return "redirect:/admin/index.do";
     }
 
-    // 회원 권한 변경
+    // 👤 회원 권한 변경
     @RequestMapping("/admin/changeAuthority.do")
     public String changeAuthority(
             @RequestParam("userid") String userid,
