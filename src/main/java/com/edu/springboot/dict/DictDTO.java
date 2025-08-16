@@ -21,4 +21,6 @@ public class DictDTO {
 	private String summary;
 	private String note;
 	private Date postdate;
+	private String feature;
+
 }
