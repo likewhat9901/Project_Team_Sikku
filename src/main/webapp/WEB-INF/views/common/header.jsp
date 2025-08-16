@@ -1,8 +1,17 @@
 <!-- /WEB-INF/views/common/header.jsp -->
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
-<%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <link rel="stylesheet" href="/css/common/header.css">
+
+<script>
+	window.onload = function() {
+	    var userRole = '${userRole}';
+	    
+	    if (userRole === 'ROLE_ADMIN') {
+	        document.getElementById('admin-link').style.display = 'inline';
+	    }
+	};
+</script>
 
 <!-- Header Section -->
 <div class="header">
@@ -67,9 +76,8 @@
 				
 		     <!-- 로그인 시 -->
 		     <sec:authorize access="isAuthenticated()">
-	   			<c:if test="${userRole == 'ROLE_ADMIN'}">
-					<span class="admin-link" onclick="location.href='/admin/index.do'">관리자페이지</span>
-				</c:if>
+				<span id="admin-link" class="admin-link"
+					style="display:none;" onclick="location.href='/admin/index.do'">관리자페이지</span>
 		        <span class="mypage-link" onclick="location.href='/mypage.do'">마이페이지</span>
 		        <span class="logout-link" onclick="location.href='/myLogout.do'">로그아웃</span>
 		        <div class="user-icon" onclick="location.href='/mypage.do'">
