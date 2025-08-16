@@ -158,6 +158,7 @@ def ranking_data(category):
 		"쪽파": "/images/ranking/farm/chives.jpg",
 		"방울토마토": "/images/ranking/farm/cherry_tomato.jpg",
 		"로메인": "/images/ranking/farm/romaine.jpg",
+		"파슬리": "/images/ranking/farm/parsley.jpg",
 		
 		"알로카시아": "/images/ranking/foliage/alocasia.jpg",
 		"행운목": "/images/ranking/foliage/happy_plant.jpg",

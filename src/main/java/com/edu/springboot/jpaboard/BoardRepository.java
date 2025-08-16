@@ -58,6 +58,6 @@ public interface BoardRepository extends JpaRepository<BoardEntity, Long> {
     	    group by b.boardIdx, b.title, b.postdate
     	    order by count(l) desc
     	""")
-    	List<IBoardRow> findTop10ByCategory(@Param("category") Integer category);
+    	Page<IBoardRow> findTopByCategory(@Param("category") Integer category, Pageable pageable);
     
 }

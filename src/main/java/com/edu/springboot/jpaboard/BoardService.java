@@ -8,6 +8,7 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -152,8 +153,9 @@ public class BoardService {
     }
 
     // 카테고리별 좋아요 TOP10
-    public List<IBoardRow> getTop10BoardsByCategory(Integer category) {
-        return br.findTop10ByCategory(category);
+    public Page<IBoardRow> getTop10BoardsByCategory(Integer category, int page, int size) {
+    	Pageable pageable = PageRequest.of(page, size);
+        return br.findTopByCategory(category, pageable);
     }
 
  // 마이페이지: 내가 좋아요 누른 글 목록 조회  

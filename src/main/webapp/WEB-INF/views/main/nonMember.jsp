@@ -132,6 +132,7 @@ setInterval(changeSlideRight, 5000);
 
 </script>
 
+<!-- 인기 게시물 Top10 -->
 <script type="text/javascript">
 function fetchPopularBoards(category) {
 	console.log("인기게시물 category: "+category);
@@ -142,7 +143,7 @@ function fetchPopularBoards(category) {
 	boardContainer.innerHTML = 
 		`<%@ include file="/WEB-INF/views/common/features/loading.jsp" %>`;
 	
-    fetch('/api/top10boards?category='+category)
+    fetch('/api/top10boards?category='+category+'&page=0&size=10')
         .then(response => response.json())
         .then(data => {
         	boardContainer.innerHTML = ''; // 초기화
@@ -152,7 +153,7 @@ function fetchPopularBoards(category) {
                 return;
             }
 			
-            const top10 = data.top10Boards;
+            const top10 = data.top10Boards.content;
             const category_name = (category == "1") ? "자유게시판" : "갤러리게시판";
             board_header.innerHTML = category_name+ ' 인기 Top10';
             
