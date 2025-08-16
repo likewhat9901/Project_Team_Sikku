@@ -9,6 +9,7 @@ import java.util.*;
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -20,12 +21,24 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.edu.springboot.dict.DictDTO;
 import com.edu.springboot.dict.IDictService;
+import com.edu.springboot.jpaboard.MemberEntity;
+import com.edu.springboot.jpaboard.MemberRepository;
+import com.edu.springboot.qnaBoard.QnaBoardEntity;
+import com.edu.springboot.qnaBoard.QnaBoardService;
+
+import jakarta.servlet.http.HttpSession;
 
 @Controller
 public class MainController {
 
     @Autowired
     IDictService dao;
+    
+    //서비스 추가
+    @Autowired
+    QnaBoardService qnaService;
+    @Autowired
+    MemberRepository memberRepo;
 
     @Autowired
     private DataSource dataSource;
@@ -57,12 +70,13 @@ public class MainController {
     public String ajax_local_callback() {
         return "dict/ajax_local_callback";
     }
-
+    private final int pageSize = 10;
     @RequestMapping("/admin/index.do")
     public String adminPage(
             @RequestParam(value = "searchUserId", required = false) String searchUserId,
             Model model,
-            Principal principal) {
+            Principal principal,
+            @RequestParam(name = "page", defaultValue = "1")int page) {
 
         String userId = principal.getName();
         model.addAttribute("userId", userId);
@@ -129,6 +143,14 @@ public class MainController {
             e.printStackTrace();
             model.addAttribute("errorMsg", "신고 게시글 조회 실패: " + e.getMessage());
         }
+        
+        /*  동수가 추가 */
+    	model.addAttribute("noticeRows", qnaService.getNoticeList());
+    	
+    	Page<QnaBoardEntity> qnaPage = qnaService.getQnaByAnswerstatus(page, pageSize);
+
+        model.addAttribute("qnaRows", qnaPage);
+        model.addAttribute("totalPages", qnaPage.getTotalPages());
 
         return "admin/admin";
     }
@@ -201,4 +223,22 @@ public class MainController {
 
         return "redirect:/admin/index.do";
     }
+    
+    //================== QnA 관리자 탭 ==========================
+    
+  //================== List 페이지 ==========================
+	
+	// List 페이지 이동
+    @GetMapping("/qnaAdminList.do")
+    public String list(@RequestParam(name = "page", defaultValue = "1") int page, Model model) {
+    	model.addAttribute("noticeRows", qnaService.getNoticeList());
+    	
+    	Page<QnaBoardEntity> qnaPage = qnaService.getQnaByAnswerstatus(page, pageSize);
+
+        model.addAttribute("qnaRows", qnaPage);
+        model.addAttribute("totalPages", qnaPage.getTotalPages());
+        
+        return "/admin/admin"; // JSP 경로
+    }
+    
 }
