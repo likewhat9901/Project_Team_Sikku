@@ -41,6 +41,10 @@ public class MainController {
         String userId = auth.getName();
         List<DictDTO> plants = dao.selectPlantsByUser(userId);
         model.addAttribute("plants", plants);
+        
+        //관리자 role 확인.
+        String authority = auth.getAuthorities().iterator().next().getAuthority();
+        model.addAttribute("userRole", authority);
         return "main/member";
     }
 
