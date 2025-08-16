@@ -60,6 +60,12 @@ public class QnaBoardService {
     public QnaBoardEntity getQnaOneById(Long idx) {
         return qnaRepo.findById(idx).orElse(null);
     }
+
+    // 답변상태(answerstatus)가 "대기"인것만 가져오기
+    public Page<QnaBoardEntity> getQnaByAnswerstatus(int page, int pageSize) {
+    	return qnaRepo.findByAnswerstatusOrderByPostdateDesc("대기",
+                PageRequest.of(page - 1, pageSize, Sort.by("postdate").descending()));
+    }
     
     // 조회수 증가
     @Transactional
