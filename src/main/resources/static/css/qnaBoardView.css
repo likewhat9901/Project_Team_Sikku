@@ -1,5 +1,9 @@
+pre, button {
+	font-family: 'MyFont';
+}
+
 .qna-view-container {
-  min-width: 800px;
+  min-width: 900px;
   max-width: 1200px;
   margin: 80px auto;
   padding: 50px 60px;
@@ -8,18 +12,37 @@
   box-shadow: 0 8px 30px rgba(0, 0, 0, 0.06);
 }
 
-/* 제목 */
-.qna-view-container .title {
+/* Header */
+.qna-view-header {
+	position: relative;
+}
+.qna-view-header .title {
   font-size: 2.4rem;
   font-weight: 600;
-  margin-bottom: 30px;
+  margin-bottom: 10px;
   border-bottom: 2px solid #e0e0e0;
   padding-bottom: 15px;
   color: #2c3e50;
 }
+.qna-view-header button {
+	position: absolute;
+	top: 20px; right: 0;
+	background-color: #42a5f5;
+	color: #fff;
+	border: none;
+	padding: 4px 16px;
+	border-radius: 16px;
+	font-size: 1rem;
+	cursor: pointer;
+	transition: background-color 0.25s ease;
+	box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+.qna-view-header button:hover {
+  background-color: #1e88e5;
+}
 
-/* 메타 정보 */
-.qna-view-header {
+/* 게시글 정보 */
+.qna-post-info {
   font-size: 1rem;
   color: #666;
   display: flex;
@@ -28,19 +51,44 @@
   margin-bottom: 40px;
 }
 
-.qna-view-header span {
+.qna-post-info span {
   display: flex;
   align-items: center;
+  font-size: 1.2rem;
+}
+
+.qna-post-info .likes {
+	cursor: pointer;
+	transition: all 0.2s ease;
+	user-select: none;
+	color: #555;
+	font-weight: 500;
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+}
+
+.qna-post-info .likes:hover {
+	transform: scale(1.1);
+	color: #e91e63; /* 핑크 계열로 하트 강조 */
+	opacity: 1;
+}
+
+.qna-post-info .likes:active {
+	transform: scale(0.95);
+	opacity: 0.6;
 }
 
 /* 본문 내용 */
 .qna-view-content {
-  font-size: 1.2rem;
-  color: #333;
-  line-height: 1.8;
-  margin-bottom: 60px;
-  white-space: pre-wrap;
+  margin: 50px 0;
   padding-left: 5px;
+}
+.qna-view-content pre {
+	white-space: pre-wrap;
+	font-size: 1.4rem;
+	color: #333;
+	line-height: 1.8;
 }
 
 /* 답변 영역 */
@@ -48,14 +96,56 @@
   background-color: #f0f9f4;
   border-left: 6px solid #2ecc71;
   padding: 25px 25px;
-  border-radius: 10px;
-  margin-bottom: 60px;
+  border-radius: 20px;
+  margin-bottom: 30px;
 }
 
 .qna-view-answer h3 {
   font-size: 1.3rem;
   color: #27ae60;
   margin-bottom: 12px;
+}
+
+#answer-form {
+	text-align: right;
+}
+
+#answer-form textarea {
+	width: 100%;
+	min-height: 150px;
+	padding: 12px;
+	border: 1px solid #ccc;
+	border-radius: 8px;
+	resize: vertical;
+	font-size: 1rem;
+	line-height: 1.5;
+	font-family: 'Segoe UI', sans-serif;
+	box-sizing: border-box;
+	transition: border-color 0.3s ease;
+}
+
+#answer-form textarea:focus {
+	outline: none;
+	border-color: #4caf50;
+	box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.2);
+}
+
+#answer-form button {
+	background-color: #4caf50;
+	color: white;
+	border: none;
+	padding: 4px 16px;
+	border-radius: 20px;
+	font-size: 1rem;
+	cursor: pointer;
+	transition: background-color 0.3s ease, transform 0.1s ease;
+	box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+	margin-top: 12px;
+}
+
+#answer-form button:hover {
+	background-color: #388e3c;
+	transform: scale(1.03);
 }
 
 /* 버튼 영역 */
@@ -69,12 +159,11 @@
   background-color: #4caf50;
   color: #fff;
   border: none;
-  padding: 12px 24px;
-  border-radius: 8px;
-  font-size: 1rem;
+  padding: 6px 20px;
+  border-radius: 16px;
+  font-size: 1.1rem;
   cursor: pointer;
   transition: background-color 0.25s ease;
-  font-family: 'MyFont';
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
 }
 

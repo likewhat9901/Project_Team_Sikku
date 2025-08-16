@@ -1,15 +1,20 @@
 package com.edu.springboot.qnaBoard;
 
 import java.security.Principal;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import jakarta.servlet.http.HttpSession;
 
@@ -27,12 +32,17 @@ public class QnaBoardController {
 	private MemberRepository memberRepo;
 	
 	//================== List 페이지 ==========================
+	private final int pageSize = 10;
+	
 	// List 페이지 이동
     @GetMapping("/qnaBoardList.do")
-    public String list(Model model) {
+    public String list(@RequestParam(name = "page", defaultValue = "1") int page, Model model) {
+    	model.addAttribute("noticeRows", qnaService.getNoticeList());
     	
-        model.addAttribute("noticeRows", qnaService.getNoticeList());
-        model.addAttribute("qnaRows", qnaService.getQnaList());
+    	Page<QnaBoardEntity> qnaPage = qnaService.getQnaList(page, pageSize);
+
+        model.addAttribute("qnaRows", qnaPage);
+        model.addAttribute("totalPages", qnaPage.getTotalPages());
         
         return "boards/qna/qnaBoardList"; // JSP 경로
     }
@@ -40,6 +50,7 @@ public class QnaBoardController {
     // 검색 기능
     @GetMapping("/qna/search.do")
     public String search(
+		@RequestParam(name = "page", defaultValue = "1") int page,
         @RequestParam("type") String type,
         @RequestParam("keyword") String keyword,
         Model model) {
@@ -49,9 +60,9 @@ public class QnaBoardController {
     	
     	//검색된 게시글로 업데이트
         if (keyword == null || keyword.trim().isEmpty()) {
-            model.addAttribute("qnaRows", qnaService.getQnaList()); // ← 공지 제외된 일반글
+            model.addAttribute("qnaRows", qnaService.getQnaList(page, pageSize)); // ← 공지 제외된 일반글
         } else {
-            model.addAttribute("qnaRows", qnaService.qnaSearch(type, keyword));
+            model.addAttribute("qnaRows", qnaService.qnaSearch(type, keyword, page, pageSize));
         }
         
         return "boards/qna/qnaBoardList";
@@ -61,20 +72,12 @@ public class QnaBoardController {
   	// View 페이지 이동
     @GetMapping("/qnaBoardView.do")
     public String view(@RequestParam("idx") Long idx, 
-    		Model model, Principal principal, HttpSession session) {
-    	/*============== 조회수 증가 =================*/
-        // 로그인한 사용자 id, 게시글 idx
-        String userId = principal.getName();
-        String viewKey = "viewed_qna_" + idx;
+    		Model model, Principal principal, HttpSession session,
+    		RedirectAttributes redirectAttributes) {
+    	// 로그인한 사용자 id, 게시글 idx
+    	String userId = principal.getName();
+    	String viewKey = "viewed_qna_" + idx;
         
-        // 이전에 본 적 없는 경우만 조회수 증가
-        if (session.getAttribute(viewKey) == null) {
-            qnaService.increaseViews(idx, userId);
-            session.setAttribute(viewKey, true);
-        }
-        
-        model.addAttribute("userId", userId);
-    	
         /*============== 게시글 하나 가져오기 =================*/
         QnaBoardEntity qna = qnaService.getQnaOneById(idx);
         
@@ -83,8 +86,31 @@ public class QnaBoardController {
         	model.addAttribute("errorMsg", "존재하지 않는 게시글입니다.");
             return "redirect:/qnaBoardList.do";
         }
-
+        
+        /*============== 비밀글 접근 제한(본인, 관리자), 관리자 계정 확인 =================*/
+        MemberEntity member = memberRepo.findByUserId(userId).orElse(null);
+        // 관리자 체크
+        String authority = (member != null) ? member.getAuthority() : "ROLE_USER";
+        
+        boolean isAdmin = authority.equals("ROLE_ADMIN");
+        boolean isOwner = qna.getWriterid().equals(userId);
+        boolean isSecret = "Y".equalsIgnoreCase(qna.getSecretflag());
+        
+        if (isSecret && !(isOwner || isAdmin)) {
+            redirectAttributes.addFlashAttribute("errorMsg", "비밀글은 본인 또는 관리자만 열람할 수 있습니다.");
+            return "redirect:/qnaBoardList.do";
+        }
+        
+        /*============== 조회수 증가 =================*/
+        // 이전에 본 적 없는 경우만 조회수 증가
+        if (session.getAttribute(viewKey) == null) {
+        	qnaService.increaseViews(idx, userId);
+        	session.setAttribute(viewKey, true);
+        }
+        
         model.addAttribute("qna", qna);
+        model.addAttribute("userId", userId);
+        model.addAttribute("userRole", authority);
         
         return "boards/qna/qnaBoardView"; // JSP 경로
     }
@@ -96,6 +122,59 @@ public class QnaBoardController {
         return "redirect:/qnaBoardList.do"; // 삭제 후 목록으로 이동
     }
     
+    // 관리자 답변
+    @PostMapping("/qnaBoardAnswer.do")
+    public String submitAnswer(@RequestParam("idx") Long idx,
+                               @RequestParam("answercontent") String answerContent) {
+
+        // 답변 내용 DB에 업데이트
+        qnaService.updateAnswer(idx, answerContent);
+
+        return "redirect:/qnaBoardView.do?idx=" + idx;
+    }
+    
+    // 좋아요 기능
+    @PostMapping("/qnaBoardLike.do")
+    @ResponseBody
+    public Map<String, Object> like(@RequestBody Map<String, Object> payload,
+						    		HttpSession session,
+						            Principal principal) {
+    	Map<String, Object> result = new HashMap<>();
+    	
+    	//게시글 번호
+    	//Long.valueOf -> 문자열을 Long 객체로 변환
+        Long idx = Long.valueOf(payload.get("idx").toString()) ; // Object → String → Long
+        String userId = principal.getName(); // 로그인한 사용자
+        
+        // 작성자 key
+        String likeKey = "liked_" + idx + "_" + userId;
+        
+        // 게시글 가져오기
+        QnaBoardEntity qna = qnaService.findById(idx);
+        
+        // 내 글일 때
+        if (qna.getWriterid().equals(userId)) {
+            result.put("success", false);
+            result.put("message", "내 글에는 좋아요를 누를 수 없습니다.");
+            return result;
+        }
+        
+        // 이미 좋아요 눌렀을때
+        if (session.getAttribute(likeKey) != null) {
+            result.put("success", false);
+            result.put("message", "이미 좋아요를 눌렀습니다.");
+            return result;
+        }
+        
+        // 좋아요 수 증가 처리
+        int updatedLikes = qnaService.increaseLikeCount(idx);
+        
+        session.setAttribute(likeKey, true); // 세션 기록
+
+        result.put("success", true);
+        result.put("likes", updatedLikes);
+        return result;
+    }
     
     
     //================== Write 페이지 ==========================

@@ -2,6 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -17,10 +18,9 @@
 	<div class="qna-list-container">
 		<h1>Q&A</h1>
 		
-		
-		<!-- 게시글 검색 -->
-		<div class="search-box">
-			<form action="/qna/search.do" method="get">
+		<!-- 게시글 검색, 글쓰기 -->
+		<div class="board-controls">
+			<form class="search-box" action="/qna/search.do" method="get">
 				<select name="type">
 					<option value="writer">작성자</option>
 					<option value="title">제목</option>
@@ -30,8 +30,10 @@
 				<input type="text" name="keyword" placeholder="검색어를 입력하세요" />
 				<button type="submit">검색</button>
 			</form>
-			<button class="write-btn"
-				onclick="location.href='/qnaBoardWrite.do'">글쓰기</button>
+			
+			<button class="write-btn" onclick="location.href='/qnaBoardWrite.do'">
+				글쓰기
+			</button>
 		</div>
 		
 		<table class="qna-list-table">
@@ -63,9 +65,12 @@
 		</c:forEach>
 	
 		<!-- 일반 Q&A -->
-		<c:forEach items="${qnaRows}" var="qrow" varStatus="var">
+		<c:set var="total" value="${qnaRows.totalElements}" />
+		<c:set var="offset" value="${qnaRows.number * qnaRows.size}" />
+		
+		<c:forEach items="${qnaRows.content}" var="qrow" varStatus="var">
 			<tr>
-				<td>${ var.count }</td>
+				<td>${ total - offset - var.index }</td>
 				<td>${ qrow.category }</td>
 				<td style="text-align:left; width:40%">
 		            <a href="/qnaBoardView.do?idx=${qrow.idx}">
@@ -80,9 +85,21 @@
 			</tr>
 		</c:forEach>
 		</table>
+		
+		<!-- 페이징 -->
+		<div class="pagination">
+			<c:forEach var="p" begin="1" end="${totalPages}">
+				<a href="?page=${p}" class="${p == (empty param.page ? 1 : param.page) ? 'active' : ''}">${p}</a>
+			</c:forEach>
+		</div>
 
 	</div>
 
 <%@ include file="/WEB-INF/views/common/footer.jsp" %>
 </body>
+<c:if test="${not empty errorMsg}">
+    <script>
+        alert("${errorMsg}");
+    </script>
+</c:if>
 </html>
