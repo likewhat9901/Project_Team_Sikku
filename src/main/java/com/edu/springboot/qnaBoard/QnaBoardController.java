@@ -72,6 +72,8 @@ public class QnaBoardController {
             qnaService.increaseViews(idx, userId);
             session.setAttribute(viewKey, true);
         }
+        
+        model.addAttribute("userId", userId);
     	
         /*============== 게시글 하나 가져오기 =================*/
         QnaBoardEntity qna = qnaService.getQnaOneById(idx);
@@ -120,27 +122,50 @@ public class QnaBoardController {
     
   	// Write 글쓰기 처리 (Create) 
     @PostMapping("/qnaBoardWriteProc.do")
-    public String writeProc(@RequestParam("title") String title,
-                           @RequestParam("content") String content,
-                           @RequestParam("category") String category,
-                           @RequestParam("writer") String writer,
-                           @RequestParam("writerid") String writerid,
-                           @RequestParam(value="secretflag", required = false) String secretflag
-    ) {
-        // 직접 새 객체 생성
-        QnaBoardEntity qEntity = new QnaBoardEntity();
-        qEntity.setTitle(title);
-        qEntity.setContent(content);
-        qEntity.setCategory(category);
-        qEntity.setWriter(writer);
-        qEntity.setWriterid(writerid);
-        qEntity.setSecretflag("Y".equals(secretflag) ? "Y" : "N");
+    public String writeProc(QnaBoardEntity qEntity) {
         
-        // 기본값들은 Entity에서 처리하거나 여기서 설정
+    	//secretFlag(비밀글 여부)는 체크박스로 받기때문에 체크를 안하면 null이다.
+    	//따라서 secretFlag만 "N"으로 초기화해준다. 
+    	if(qEntity.getSecretflag()==null) {
+    		qEntity.setSecretflag("N");
+    	}
         
         qnaRepo.save(qEntity);
+        
         return "redirect:/qnaBoardList.do";
     }
+    
+    
+    //================== Write 페이지 ==========================
+  	// Edit 페이지 이동
+    @GetMapping("/qnaBoardEdit.do")
+    public String edit(Model model, @RequestParam("idx") Long idx) {
+    	
+    	Optional<QnaBoardEntity> qBoardOpt = qnaRepo.findById(idx);
+    	QnaBoardEntity qna = qBoardOpt.get();
+    	
+    	System.out.println("qna 가져와->" + qna.getIdx());
+    	
+    	model.addAttribute("qna", qna);
+        
+        return "boards/qna/qnaBoardEdit"; // JSP 경로
+    }
+    
+    
+    
 
+  	// Edit 수정하기 처리 (Update)
+    @PostMapping("/qnaBoardEditProc.do")
+    public String editProc(Model model, QnaBoardEntity qEntity) {
+    	
+    	//null값 방지를 위해 "N"으로 초기화. (Write 와 동일)
+    	if(qEntity.getSecretflag()==null) {
+    		qEntity.setSecretflag("N");
+    	}
+        
+        qnaRepo.save(qEntity);
+        
+    	return "redirect:/qnaBoardView.do?idx=" + qEntity.getIdx();
+    }
 
 }

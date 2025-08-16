@@ -17,8 +17,6 @@
 	<div class="qna-list-container">
 		<h1>Q&A</h1>
 		
-		<button class="write-btn"
-			onclick="location.href='/qnaBoardWrite.do'">글쓰기</button>
 		
 		<!-- 게시글 검색 -->
 		<div class="search-box">
@@ -32,6 +30,8 @@
 				<input type="text" name="keyword" placeholder="검색어를 입력하세요" />
 				<button type="submit">검색</button>
 			</form>
+			<button class="write-btn"
+				onclick="location.href='/qnaBoardWrite.do'">글쓰기</button>
 		</div>
 		
 		<table class="qna-list-table">

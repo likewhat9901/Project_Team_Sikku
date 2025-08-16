@@ -8,7 +8,7 @@
 <meta charset="UTF-8">
 <title>Q&A</title>
 <link rel="stylesheet" href="/css/common/layout.css" />
-<link rel="stylesheet" href="/css/qnaBoardWrite.css" />
+<link rel="stylesheet" href="/css/qnaBoardEdit.css" />
 <script>
 	function validateWriteForm() {
 		const title = document.querySelector('[name="title"]').value.trim();
@@ -31,41 +31,46 @@
 <body>
 	<%@ include file="/WEB-INF/views/common/header.jsp"%>
 
-	<h1>Q&A 글 작성하기</h1>
-	<!-- account, payment, service, etc -->
+	<h1>Q&A 글 수정하기</h1>
+	
 
 	<div class="qna-write-container">
-		<form action="/qnaBoardWriteProc.do" method="post"
-			class="qna-write-form" onsubmit="return validateWriteForm()">
+		<h2>게시글 수정</h2>
+		<form action="/qnaBoardEditProc.do" method="post"
+			class="qna-edit-form" onsubmit="return validateWriteForm()">
 			<div class="qna-category-row">
 				<div class="qna-category-box">
 					<span>카테고리를 선택해주세요</span>
 					<select name="category">
-						<option value="계정문의">계정문의</option>
-						<option value="결제문의">결제문의</option>
-						<option value="이용문의">이용문의</option>
-						<option value="기타문의">기타문의</option>
+						<option value="계정문의"
+							${qna.category == '계정문의' ? 'selected' : ''}>계정문의</option>
+						<option value="결제문의"
+							${qna.category == '결제문의' ? 'selected' : ''}>결제문의</option>
+						<option value="이용문의"
+							${qna.category == '이용문의' ? 'selected' : ''}>이용문의</option>
+						<option value="기타문의"
+							${qna.category == '기타문의' ? 'selected' : ''}>기타문의</option>
 					</select>
 				</div>
-				
 				
 				<div class="qna-select-box">
 					<label for="secretflag">
 					비밀글&nbsp;
-					<input type="checkbox" id="secretflag" name="secretflag" value="Y" />
+					<input type="checkbox" id="secretflag" name="secretflag" value="Y"
+						${qna.secretflag == 'Y' ? 'checked' : ''} />
 					</label>
 				</div>
 			</div>
 			
-			<div class="qna-write-header">
-				<input class="writerid" type="hidden" name="writerid" value="${writerid}" readonly />
-				<input class="writer" type="hidden" name="writer" value="${writer}" readonly />
-	
-				<input class="title" type="text" name="title" placeholder="제목을 입력하세요" />
-			</div>
+			
+			<input type="hidden" name="idx" value="${qna.idx}" />
+			<input type="hidden" name="writerid" value="${qna.writerid}" readonly />
+			<input type="hidden" name="writer" value="${qna.writer}" readonly />
 
-			<textarea name="content" placeholder="내용을 입력하세요"></textarea>
-			<div class="qna-write-buttons">
+			<input type="text" name="title" value="${qna.title}" />
+
+			<textarea name="content">${qna.content}</textarea>
+			<div class="qna-edit-buttons">
 				<button type="submit">작성 완료</button>
 				<button type="button" class="cancel-btn"
 					onclick="location.href='/qnaBoardList.do'">취소</button>

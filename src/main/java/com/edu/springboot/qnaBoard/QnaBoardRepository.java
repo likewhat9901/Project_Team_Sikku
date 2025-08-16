@@ -15,6 +15,7 @@ public interface QnaBoardRepository extends JpaRepository<QnaBoardEntity, Long> 
     List<QnaBoardEntity> findByTitleContaining(String keyword);
     List<QnaBoardEntity> findByContentContaining(String keyword);
     List<QnaBoardEntity> findByTitleContainingOrContentContaining(String titleKeyword, String contentKeyword);
+
     
     /*================ QnaBoardView =======================*/
     // findById(Long idx)는 JpaRepository 기본 메서드 사용.

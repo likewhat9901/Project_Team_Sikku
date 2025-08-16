@@ -40,8 +40,11 @@
 		
 		<div class="qna-view-buttons">
 			<button onclick="location.href='/qnaBoardList.do'">목록</button>
-			<button onclick="location.href='/qnaBoardEdit.do?idx=${ qna.idx }'">수정</button>
-			<button onclick="if(confirm('정말 삭제할까요?')) location.href='/qnaBoardDelete.do?idx=${ qna.idx }'">삭제</button>
+			<c:if test="${ qna.writerid == userId }">
+				<button onclick="location.href='/qnaBoardEdit.do?idx=${ qna.idx }'">수정</button>
+				<button onclick="if(confirm('정말 삭제할까요?')) location.href='/qnaBoardDelete.do?idx=${ qna.idx }'">삭제</button>
+			</c:if>
+			
 		</div>
 	</div>
 

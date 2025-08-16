@@ -13,13 +13,24 @@
 /*===================== 검색창 =======================*/
 .search-box {
   display: flex;
-  justify-content: center;
+  justify-content: space-between; /* center에서 space-between으로 변경 */
+  align-items: center; /* 세로 가운데 정렬 추가 */
   margin-bottom: 30px;
+  width: 80%; /* 테이블 너비와 동일하게 맞춤 */
 }
 
 .search-box form {
   display: flex;
   align-items: center;
+  gap: 10px;
+  padding: 12px 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+}
+
+.search-box .write-btn {
+  display: inline-block;
+  align-items: end;
   gap: 10px;
   padding: 12px 20px;
   border-radius: 10px;
