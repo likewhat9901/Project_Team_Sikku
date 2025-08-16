@@ -76,9 +76,9 @@ public class QnaBoardController {
 			    		Principal principal, 
 			    		HttpSession session,
 			    		RedirectAttributes redirectAttributes) {
-    	// 로그인한 사용자 id, 게시글 idx
+    	// 로그인한 사용자 id
     	String userId = principal.getName();
-    	String viewKey = "viewed_qna_" + idx;
+    	model.addAttribute("userId", userId);
     	
     	/*============== 좋아요 확인 =================*/
     	String likeKey = "liked_" + idx + "_" + userId;
@@ -86,7 +86,7 @@ public class QnaBoardController {
         model.addAttribute("alreadyLiked", alreadyLiked); // 🔥 JSP로 전달
         
         /*============== 게시글 하나 가져오기 =================*/
-        QnaBoardEntity qna = qnaService.getQnaOneById(idx);
+        QnaBoardEntity qna = qnaService.getPost(idx);
         
         // 예외상황 대비
         if (qna == null) {
@@ -94,29 +94,25 @@ public class QnaBoardController {
             return "redirect:/qnaBoardList.do";
         }
         
+        model.addAttribute("qna", qna);
+        
         /*============== 비밀글 접근 제한(본인, 관리자), 관리자 계정 확인 =================*/
-        MemberEntity member = memberRepo.findByUserId(userId).orElse(null);
         // 관리자 체크
-        String authority = (member != null) ? member.getAuthority() : "ROLE_USER";
+        String authority = qnaService.getAuthorityByUserId(userId);
         
-        boolean isAdmin = authority.equals("ROLE_ADMIN");
-        boolean isOwner = qna.getWriterid().equals(userId);
-        boolean isSecret = "Y".equalsIgnoreCase(qna.getSecretflag());
-        
-        if (isSecret && !(isOwner || isAdmin)) {
+        if (!qnaService.canAccessSecret(qna, userId, authority)) {
             redirectAttributes.addFlashAttribute("errorMsg", "비밀글은 본인 또는 관리자만 열람할 수 있습니다.");
             return "redirect:/qnaBoardList.do";
         }
         
         /*============== 조회수 증가 =================*/
-        // 이전에 본 적 없는 경우만 조회수 증가
-        if (session.getAttribute(viewKey) == null) {
-        	qnaService.increaseViews(idx, userId);
+        String viewKey = "viewed_qna_" + idx;
+        // 본일 글이 아님 && 이전에 본 적 없는 경우만 조회수 증가
+        if (!qna.getWriterid().equals(userId) && session.getAttribute(viewKey) == null) {
+        	qnaService.increaseViews(idx);
         	session.setAttribute(viewKey, true);
         }
         
-        model.addAttribute("qna", qna);
-        model.addAttribute("userId", userId);
         model.addAttribute("userRole", authority);
         
         return "boards/qna/qnaBoardView"; // JSP 경로
@@ -146,45 +142,40 @@ public class QnaBoardController {
     public Map<String, Object> like(@RequestBody Map<String, Object> payload,
 						    		HttpSession session,
 						            Principal principal) {
-    	Map<String, Object> result = new HashMap<>();
-    	
     	//게시글 번호
     	//Long.valueOf -> 문자열을 Long 객체로 변환
-        Long idx = Long.valueOf(payload.get("idx").toString()) ; // Object → String → Long
-        String userId = principal.getName(); // 로그인한 사용자
-        
-        // 작성자 key
-        String likeKey = "liked_" + idx + "_" + userId;
-        
-        // 게시글 가져오기
-        QnaBoardEntity qna = qnaService.findById(idx);
-        
+    	Long idx = Long.valueOf(payload.get("idx").toString()) ; // Object → String → Long
+    	String userId = principal.getName(); // 로그인한 사용자
+    	// 작성자 key
+    	String likeKey = "liked_" + idx + "_" + userId;
+    	
+    	Map<String, Object> result = new HashMap<>();
+    	
         // 내 글일 때
-        if (qna.getWriterid().equals(userId)) {
+        if (qnaService.isAuthor(idx, userId)) {
             result.put("success", false);
             result.put("message", "내 글에는 좋아요를 누를 수 없습니다.");
             return result;
         }
         
         boolean alreadyLiked = session.getAttribute(likeKey) != null;
-
         int updatedLikes;
+
         if (alreadyLiked) {
             // 👉 좋아요 취소
             updatedLikes = qnaService.decreaseLikeCount(idx);
             session.removeAttribute(likeKey);
-            result.put("message", "좋아요를 취소했습니다.");
-            result.put("liked", false);
         } else {
             // 👉 좋아요 증가
             updatedLikes = qnaService.increaseLikeCount(idx);
             session.setAttribute(likeKey, true);
-            result.put("message", "좋아요를 눌렀습니다.");
-            result.put("liked", true);
         }
 
         result.put("success", true);
         result.put("likes", updatedLikes);
+        result.put("liked", !alreadyLiked);
+        result.put("message", alreadyLiked ? "좋아요를 취소했습니다." : "좋아요를 눌렀습니다.");
+        
         return result;
     }
     
