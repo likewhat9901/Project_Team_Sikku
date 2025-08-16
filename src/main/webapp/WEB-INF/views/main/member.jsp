@@ -272,19 +272,37 @@ window.addEventListener('DOMContentLoaded', function () {
 
       const latestDate = fmtDate(m.latestDate);
       var html = '';
-      html += '<div style="display:flex;flex-direction:column;gap:8px;padding:10px;">';
-      html +=   '<div style="font-weight:600;">최신 기록일: ' + fmtDate(m.latestDate) + '</div>';
-      html +=   '<div style="display:grid;grid-template-columns:120px 1fr;row-gap:6px;column-gap:12px;align-items:center;">';
-      html +=     '<div>키(Height)</div>';
-      html +=     '<div><b>' + num(m.latestHeight,1) + ' cm</b> ';
-      html +=           '<span style="color:#666;">(7일: ' + signNum(m.deltaHeight7d,'cm',1) + ', 30일: ' + signNum(m.deltaHeight30d,'cm',1) + ')</span>';
-      html +=     '</div>';
-      html +=     '<div>열매 수(Fruit)</div>';
-      html +=     '<div><b>' + num(m.latestFruit,0) + ' 개</b> ';
-      html +=           '<span style="color:#666;">(7일: ' + signNum(m.deltaFruit7d,'개',0) + (m.weeklyAvgFruitInc==null ? '' : ', 주간평균: ' + num(m.weeklyAvgFruitInc,2) + ' 개/주') + ')</span>';
-      html +=     '</div>';
+      html += '<div style="display: flex; flex-direction: column; gap: 20px; padding: 20px 30px;">';
+
+      // 최신 기록일
+      html += '<div style="font-weight: 700; font-size: 20px; color: #1e293b;">🗓️ 최신 기록일: ' + fmtDate(m.latestDate) + '</div>';
+
+      // 키(Height)
+      html += '<div style="display: flex; gap: 30px;">'
+      html += '<div style="background: #f0fdfa; border-radius: 12px; padding: 16px 20px;">';
+      html +=   '<div style="font-size: 18px; font-weight: 600; margin-bottom: 8px;">🌱 키 (Height)</div>';
+      html +=   '<div style="font-size: 20px; font-weight: bold; color: #0f172a;">' + num(m.latestHeight,1) + ' cm</div>';
+      html +=   '<div style="font-size: 15px; color: #64748b; margin-top: 4px;">';
+      html +=     '(7일: ' + signNum(m.deltaHeight7d, 'cm', 1) + ', 30일: ' + signNum(m.deltaHeight30d, 'cm', 1) + ')';
       html +=   '</div>';
       html += '</div>';
+
+      // 열매 수(Fruit)
+      html += '<div style="background: #fef9c3; border-radius: 12px; padding: 16px 20px;">';
+      html +=   '<div style="font-size: 18px; font-weight: 600; margin-bottom: 8px;">🍎 열매 수 (Fruit)</div>';
+      html +=   '<div style="font-size: 20px; font-weight: bold; color: #0f172a;">' + num(m.latestFruit,0) + ' 개</div>';
+      html +=   '<div style="font-size: 15px; color: #64748b; margin-top: 4px;">';
+      html +=     '(7일: ' + signNum(m.deltaFruit7d, '개', 0);
+      if (m.weeklyAvgFruitInc != null) {
+        html += ', 주간평균: ' + num(m.weeklyAvgFruitInc, 2) + ' 개/주';
+      }
+      html +=     ')';
+      html +=   '</div>';
+      html += '</div>';
+      html += '</div>';
+
+      html += '</div>';
+
 
       box.innerHTML = html;
     container.dataset.mode = 'info';
