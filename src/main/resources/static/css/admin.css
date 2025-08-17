@@ -7,6 +7,20 @@
   min-height: 100vh;
   background-color: #f5f7fb;
   font-family: 'Pretendard', sans-serif;
+  position: relative;
+}
+
+.admin-home-btn {
+  position: absolute;
+  background-color: #2166ff;
+  color: white;
+  padding: 9px 14px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 800;
+  transition: background 0.2s ease;
+  top: 40px; right: 50px;
 }
 
 /* ===== 사이드바 ===== */
@@ -57,20 +71,9 @@
 }
 
 .admin-title {
-  /* position: absolute 제거 */
-  margin: 0; /* 기존 margin 제거 */
-}
-
-.admin-home-btn {
-  /* position: absolute 제거 */
-  background-color: #2166ff;
-  color: white;
-  padding: 9px 14px;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  font-weight: 800;
-  transition: background 0.2s ease;
+  position: absolute;
+  margin: 0;
+  top: 30px; left: 300px;
 }
 
 

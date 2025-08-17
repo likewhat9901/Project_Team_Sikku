@@ -19,19 +19,18 @@
       <li class="admin-tab-btn" data-tab="dict">식물도감</li>
     </ul>
   </div>
+   <button class="admin-home-btn" type="button" onclick="location.href='/main/member.do'" >
+   		홈페이지
+   </button>
 
   <!-- 본문 컨텐츠 -->
   <div class="admin-content">
+	<h1 class="admin-title">관리자 페이지</h1>
 
     <!-- 회원관리 탭 -->
     <div class="admin-tab-content" id="member-tab">
     <div class="admin-header">
-      <h1 class="admin-title">관리자 페이지</h1>
-		    <a href="/main/member.do">
-	            <button class="admin-home-btn" type="button" onclick="location.href='/main/member.do'" >
-	            홈페이지
-	            </button>
-		    </a>
+	           
     </div>
       <h2 class="admin-subtitle">회원 목록</h2>
 
@@ -127,12 +126,11 @@
       <!-- -----------------------동수 작업------------------------------------ -->
     <!-- QnA 관리 탭 -->
     <div class="admin-tab-content" id="qna-tab" style="display:none;">
-    <h1 class="admin-title">관리자 페이지</h1>
       <h2 class="admin-subtitle">QnA 관리</h2>
-      <c:if test="${empty reportedPosts}">
+      <c:if test="${empty totalPages}">
         <p>답변 대기중인 게시물이 없습니다.</p>
       </c:if>
-      <c:if test="${not empty reportedPosts}">
+      <c:if test="${not empty totalPages}">
         <table class="qna-list-table">
 			<tr>
 				<th>No</th>
