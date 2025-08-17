@@ -232,6 +232,7 @@
 
       <!-- 등록 폼 (처음엔 숨김) -->
 	  <div id="dict-form" style="display:none; margin-top:20px;">
+	  	<h3>🌱 식물도감 등록하기</h3>
 		  <form id="dictForm"
 		        action="${pageContext.request.contextPath}/admin/dict/insert.do"
 		        method="post" enctype="multipart/form-data" class="admin-form"
@@ -277,10 +278,11 @@
     });
   });
 
-  // 등록하기 버튼 클릭 시 폼만 보이게
+  //등록하기 버튼 클릭 시 폼만 보이게
   document.getElementById("show-dict-form").addEventListener("click", function(){
     document.getElementById("dict-list").style.display = "none";
     document.getElementById("dict-form").style.display = "block";
+    this.style.display = "none"; // 버튼 자체를 숨김
   });
   
   
