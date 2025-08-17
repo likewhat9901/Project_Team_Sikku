@@ -27,6 +27,8 @@ import com.edu.springboot.qnaBoard.QnaBoardEntity;
 import com.edu.springboot.qnaBoard.QnaBoardService;
 
 import jakarta.servlet.http.HttpSession;
+import com.edu.springboot.mydiary.IMyDiaryMapper;
+import com.edu.springboot.mydiary.MyDiaryDTO;
 
 @Controller
 public class MainController {
@@ -39,6 +41,8 @@ public class MainController {
     QnaBoardService qnaService;
     @Autowired
     MemberRepository memberRepo;
+    @Autowired
+    IMyDiaryMapper diaryDao;
 
     @Autowired
     private DataSource dataSource;
@@ -49,15 +53,32 @@ public class MainController {
     }
 
     @GetMapping("/main/member.do")
-    public String member(Model model, Principal principal) {
-    	Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        String userId = principal.getName();
+    public String member(Model model) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String userId = auth.getName();
+        
+        //사용자가 식물도감 기반으로 다이어리에 작성한 일지
         List<DictDTO> plants = dao.selectPlantsByUser(userId);
+        
+        // 식물별 최신 다이어리 이미지 가져와 Map<plantidx, sfile> 구성
+        Map<Long, String> diaryImages = new HashMap<>();
+        for (DictDTO p : plants) {
+            Long plantidx = p.getPlantidx();
+            if (plantidx == null) continue;
+
+            MyDiaryDTO latest = diaryDao.selectLatestByUserAndPlant(userId, plantidx);
+            if (latest != null && latest.getSfile() != null && !latest.getSfile().isBlank()) {
+                diaryImages.put(plantidx, latest.getSfile());
+            }
+        }
         model.addAttribute("plants", plants);
         
         //관리자 role 확인.
         String authority = auth.getAuthorities().iterator().next().getAuthority();
         model.addAttribute("userRole", authority);
+        model.addAttribute("diaryImages", diaryImages);
+        
+        model.addAttribute("diaryUploadBase", "/uploads/mydiary");
         return "main/member";
     }
 

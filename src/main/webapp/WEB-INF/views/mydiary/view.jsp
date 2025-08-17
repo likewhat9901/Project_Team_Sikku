@@ -56,7 +56,7 @@ function deletePost(idx){
 					<!-- 이미지 박스 -->
 					<div class="mydiary-view-image-box">
 						<c:if test="${not empty myDiaryDTO.sfile}">
-							<img src="/uploads/${myDiaryDTO.sfile}" class="mydiary-main-image"
+							<img src="/uploads/mydiary/${myDiaryDTO.sfile}" class="mydiary-main-image"
 								alt="식물 이미지" />
 						</c:if>
 						<c:if test="${empty myDiaryDTO.sfile}">
