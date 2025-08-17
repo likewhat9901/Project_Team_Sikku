@@ -374,7 +374,7 @@ public class AuthController {
 
 			try (Connection conn = dataSource.getConnection();
 					PreparedStatement ps = conn
-							.prepareStatement("SELECT username, profileImgPath FROM members WHERE userid = ?")) {
+							.prepareStatement("SELECT username, profileImgPath, authority FROM members WHERE userid = ?")) {
 				ps.setString(1, userid);
 				try (ResultSet rs = ps.executeQuery()) {
 					if (rs.next()) {
@@ -388,6 +388,7 @@ public class AuthController {
 						} else {
 							session.removeAttribute("profileImgPath");
 						}
+						
 					}
 				}
 			}

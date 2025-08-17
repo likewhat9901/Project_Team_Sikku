@@ -5,7 +5,7 @@
 
 <script>
 	window.onload = function() {
-	    var userRole = '${userRole}';
+	    var userRole = '${sessionScope.userRole}';
 	    
 	    if (userRole === 'ROLE_ADMIN') {
 	        document.getElementById('admin-link').style.display = 'inline';
