@@ -82,7 +82,7 @@ public class GalleryController {
 		int iPageNum = (pageNum == null) ? 0 : Integer.parseInt(pageNum) - 1;
 
 		// PageRequest : 페이징 요청 객체
-		Pageable pageable = PageRequest.ofSize(10).withPage(iPageNum).withSort(sort);
+		Pageable pageable = PageRequest.ofSize(5).withPage(iPageNum).withSort(sort);
 
 		Page<BoardEntity> boardResult;
 		// 검색어가 없을 때 목록
@@ -140,42 +140,78 @@ public class GalleryController {
 
 	// 무한 스크롤
 	@GetMapping("/boards/gallery/galleryBoardListMore.do")
+	// 서버에서 클라이언트 쪽으로 JSON형태로 바로 보이도록 하는 어노테이션
 	@ResponseBody
-	public List<Map<String, Object>> getMoreBoards(@RequestParam("page") int page, HttpServletRequest req) {
-		System.out.println("요청 페이지: " + page);
-
-		String searchWord = req.getParameter("searchWord");
-		String pageNum = req.getParameter("pageNum");
-
-		// DB에서 실제 데이터 가져오기
-		Sort sort = Sort.by(Sort.Order.desc("boardIdx"));
-		Pageable pageable = PageRequest.of(page, 10, sort);
-
-		Page<BoardEntity> pageResult;
-
-		if (searchWord == null || searchWord.equals("")) {
-			pageResult = bs.selectGList(pageable, 2);
-		} else {
-			pageResult = bs.selectGListSearch(pageable, 2, searchWord);
-		}
-
-		// 간단한 테스트 데이터
-		List<Map<String, Object>> realData = new ArrayList<>();
-
-		for (BoardEntity board : pageResult.getContent()) {
-			Map<String, Object> boardMap = new HashMap<>();
-			boardMap.put("boardIdx", board.getBoardIdx());
-			boardMap.put("title", board.getTitle());
-			boardMap.put("content", board.getContent());
-			boardMap.put("userId", board.getUserId());
-			boardMap.put("visitcount", board.getVisitcount());
-			boardMap.put("likes", board.getLikesCount());
-			realData.add(boardMap);
-		}
-
-		return realData;
+	// 반환타입이 Map<문자타입, 객체>
+	public Map<String, Object> getMoreBoards(@RequestParam("page") int page,
+													HttpServletRequest req) {
+	    System.out.println("요청 페이지: " + page);
+	    
+	    String searchWord = req.getParameter("searchWord");
+	    
+	    // DB에서 실제 데이터 가져오기
+	    Sort sort = Sort.by(Sort.Order.desc("boardIdx"));
+	    Pageable pageable = PageRequest.of(page, 5, sort);
+	    
+	    Page<BoardEntity> pageResult;
+	    
+	    if (searchWord == null || searchWord.equals("")) {
+	        pageResult = bs.selectGList(pageable, 2);
+	    } else {
+	        pageResult = bs.selectGListSearch(pageable, 2, searchWord);
+	    }
+	    
+	    List<BoardEntity> boardEntities = pageResult.getContent();
+	    
+	    // BoardEntity를 Map으로 변환
+	    List<Map<String, Object>> rows = new ArrayList<>();
+	    for (BoardEntity board : boardEntities) {
+	        Map<String, Object> boardMap = new HashMap<>();
+	        boardMap.put("boardIdx", board.getBoardIdx());
+	        boardMap.put("title", board.getTitle());
+	        boardMap.put("content", board.getContent());
+	        boardMap.put("userId", board.getUserId());
+	        boardMap.put("visitcount", board.getVisitcount());
+	        rows.add(boardMap);
+	    }
+	    
+	    // 좋아요 갯수 맵
+	    Map<Long, Long> likesCountMap = new HashMap<>();
+	    for (BoardEntity board : boardEntities) {
+	        long likesCount = lr.countByBoard_BoardIdx(board.getBoardIdx());
+	        likesCountMap.put(board.getBoardIdx(), likesCount);
+	    }
+	    
+	    // 댓글 갯수 맵
+	    Map<Long, Integer> commentCountMap = new HashMap<>();
+	    for (BoardEntity board : boardEntities) {
+	        int commentCount = cr.countByBoard_BoardIdx(board.getBoardIdx());
+	        commentCountMap.put(board.getBoardIdx(), commentCount);
+	    }
+	    
+	    // 이미지 맵
+	    Map<Long, String> imageMap = new HashMap<>();
+	    for (BoardEntity board : boardEntities) {
+	        List<BoardImageEntity> images = ir.findByBoard_BoardIdx(board.getBoardIdx());
+	        if (!images.isEmpty()) {
+	            imageMap.put(board.getBoardIdx(), images.get(0).getSavedName());
+	        } else {
+	            imageMap.put(board.getBoardIdx(), "default.jpg");
+	        }
+	    }
+	    
+	    // 전체 응답 데이터 구성
+	    Map<String, Object> response = new HashMap<>();
+	    response.put("rows", rows);
+	    response.put("likesCountMap", likesCountMap);
+	    response.put("commentCountMap", commentCountMap);
+	    response.put("imageMap", imageMap);
+	    
+	    System.out.println("응답 데이터: " + response);
+	    
+	    return response;
 	}
-
+	
 	// 게시물 상세보기
 	@GetMapping("/boards/gallery/galleryBoardView.do")
 	public String view(@RequestParam("boardIdx") Long boardIdx, Model model,

@@ -224,21 +224,4 @@ public class MainController {
         return "redirect:/admin/index.do";
     }
     
-    //================== QnA 관리자 탭 ==========================
-    
-  //================== List 페이지 ==========================
-	
-	// List 페이지 이동
-    @GetMapping("/qnaAdminList.do")
-    public String list(@RequestParam(name = "page", defaultValue = "1") int page, Model model) {
-    	model.addAttribute("noticeRows", qnaService.getNoticeList());
-    	
-    	Page<QnaBoardEntity> qnaPage = qnaService.getQnaByAnswerstatus(page, pageSize);
-
-        model.addAttribute("qnaRows", qnaPage);
-        model.addAttribute("totalPages", qnaPage.getTotalPages());
-        
-        return "/admin/admin"; // JSP 경로
-    }
-    
 }

@@ -6,16 +6,17 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>freeBoardList</title>
+<title>galleryBoardList</title>
 <link rel="stylesheet" href="/css/common/layout.css">
 <link rel="stylesheet" href="/css/gallery.css">
 
 <!-- JS import -->
-<script src="/js/freeBoardList.js"></script>
+<script src="/js/galleryBoardList.js"></script>
 </head>
 <body>
 	<%@ include file="/WEB-INF/views/common/header.jsp"%>
 
+	<!-- 게시판 선택 버튼 -->
 	<div class="board-btn-container">
 		<button class="board-btn blue"
 			onclick="location.href='/boards/free/freeBoardList.do'">자유게시판</button>
@@ -23,6 +24,7 @@
 			onclick="location.href='/boards/gallery/galleryBoardList.do'">갤러리게시판</button>
 	</div>
 
+	<!-- 검색창 + 글쓰기 버튼 -->
 	<div class="search-write-container">
 		<form action="/boards/gallery/galleryBoardList.do" method="get">
 			<input type="search" name="searchWord" placeholder="검색어를 입력해보세요"
@@ -34,6 +36,7 @@
 			onclick="location.href='/boards/gallery/galleryBoardWrite.do'">글쓰기</button>
 	</div>
 
+	<!-- 게시물 리스트 -->
 	<div class="feed-container">
 		<c:forEach items="${rows}" var="row">
 			<div class="feed-post"
