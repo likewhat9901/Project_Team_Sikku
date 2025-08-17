@@ -45,7 +45,7 @@
 								<!-- 이미지 박스 -->
 								<div class="mydiary-image-box">
 									<c:if test="${not empty row.sfile}">
-										<img src="/uploads/${row.sfile}" class="mydiary-main-image"
+										<img src="/uploads/mydiary/${row.sfile}" class="mydiary-main-image"
 											alt="식물 이미지" />
 									</c:if>
 									<c:if test="${empty row.sfile}">

@@ -52,28 +52,37 @@
     <c:otherwise>
     <!-- 다이어리에 글을 썼을 때 보이는 기존 카드 형식. -->
 <c:forEach items="${ plants }" var="row" varStatus="loop">
-	<div class="plant-container" data-plant-name="${row.name}" data-plant-idx="${row.plantidx}">
-		<div class="plant-card">
-			<div class="plant-info">
-			    <div class="plant-image">
-			        <img src="/images/dict/${row.imgpath }" alt="식물사진">
-			    </div>
-			    <div class="plant-info-box">
-			        <p class="plant-name">식물명 : ${ row.name }</p>
-			        <p class="plant-description">${ row.summary }</p>
-			    </div>
-			</div>
-			<div class="navigation-btn prev-btn">&#8249;</div>
-			<div class="plant-status">
-			    <div class="status-header">식물 상태창 내용</div>
-			    <div class="status-content">
-			        <!-- 상태 정보가 들어갈 공간 -->
-			    </div>
-			</div>
-			<div class="navigation-btn next-btn">&#8250;</div>
-		</div>
-	</div>
+  <c:set var="diarySfile" value="${ diaryImages[row.plantidx] }" />
+  <c:choose>
+    <c:when test="${ not empty diarySfile }">
+      <c:set var="imgUrl" value="${ diaryUploadBase }/${ diarySfile }" />
+    </c:when>
+    <c:otherwise>
+      <c:set var="imgUrl" value="/images/dict/${ row.imgpath }" />
+    </c:otherwise>
+  </c:choose>
+
+  <div class="plant-container" data-plant-name="${row.name}" data-plant-idx="${row.plantidx}">
+    <div class="plant-card">
+      <div class="plant-info">
+        <div class="plant-image">
+          <img src="${ imgUrl }" alt="식물사진">
+        </div>
+        <div class="plant-info-box">
+          <p class="plant-name">식물명 : ${ row.name }</p>
+          <p class="plant-description">${ row.summary }</p>
+        </div>
+      </div>
+      <div class="navigation-btn prev-btn">&#8249;</div>
+      <div class="plant-status">
+        <div class="status-header">식물 상태창 내용</div>
+        <div class="status-content"><!-- 상태 정보 --></div>
+      </div>
+      <div class="navigation-btn next-btn">&#8250;</div>
+    </div>
+  </div>
 </c:forEach>
+
 </c:otherwise>
   </c:choose>
 </div>

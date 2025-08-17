@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
-
+import com.edu.springboot.auth.AuthController;
 import jakarta.servlet.http.HttpServletRequest;
 import utils.MyFunctions;
 import utils.PagingUtil;
@@ -25,11 +25,17 @@ import utils.PagingUtil;
 @Controller
 public class MyDiaryController {
 
+    private final AuthController authController;
+
 	@Autowired
 	IMyDiaryMapper dao;
 
 	@Autowired
 	private com.edu.springboot.dict.IDictService dictDao;
+
+    MyDiaryController(AuthController authController) {
+        this.authController = authController;
+    }
 
 	@RequestMapping("/mydiary/list.do")
 	public String mydiaryList(Model model, HttpServletRequest req, 
@@ -104,13 +110,22 @@ public class MyDiaryController {
 			
 			myDiaryDTO.setUserId(userId);
 			
+			//uploads/mydiary가 없으면 생성
+			String uploadDir;
+            // 개발 환경: classpath:static 기준
+            File staticRoot = ResourceUtils.getFile("classpath:static/");
+            File uploadsDir = new File(staticRoot, "uploads");
+            File mydiaryDir = new File(uploadsDir, "mydiary");
+            if (!mydiaryDir.exists() && !mydiaryDir.mkdirs()) {
+            	System.out.println("업로드 디렉터리 생성 실패: " + mydiaryDir.getAbsolutePath());
+            }
+            uploadDir = mydiaryDir.getAbsolutePath();
+			
 			MultipartFile file = myDiaryDTO.getOfile();
 			System.out.println("로그인한 userid:"+userId);
+			System.out.println("물리적 업로드 경로: " + uploadDir);
+			
 			if (file != null && !file.isEmpty()) {
-				// 저장 폴더 경로
-				String uploadDir = ResourceUtils.getFile("classpath:static/uploads/").toPath().toString();
-				System.out.println("물리적 경로: " + uploadDir);
-
 				// 원본 파일명
 				String originalFileName = file.getOriginalFilename();
 				myDiaryDTO.setOfileName(originalFileName); // 원본 파일명 DTO에 저장
@@ -185,7 +200,7 @@ public class MyDiaryController {
 
 			if (file != null && !file.isEmpty()) {
 				// 새 이미지 업로드가 있을 경우에만 처리
-				String uploadDir = ResourceUtils.getFile("classpath:static/uploads/").toPath().toString();
+				String uploadDir = ResourceUtils.getFile("classpath:static/uploads/mydiary/").toPath().toString();
 				String originalFileName = file.getOriginalFilename();
 
 				myDiaryDTO.setOfileName(originalFileName);

@@ -20,12 +20,17 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.edu.springboot.dict.DictDTO;
 import com.edu.springboot.dict.IDictService;
+import com.edu.springboot.mydiary.IMyDiaryMapper;
+import com.edu.springboot.mydiary.MyDiaryDTO;
 
 @Controller
 public class MainController {
 
     @Autowired
     IDictService dao;
+    
+    @Autowired
+    IMyDiaryMapper diaryDao;
 
     @Autowired
     private DataSource dataSource;
@@ -39,8 +44,25 @@ public class MainController {
     public String member(Model model) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String userId = auth.getName();
+        
+        //사용자가 식물도감 기반으로 다이어리에 작성한 일지
         List<DictDTO> plants = dao.selectPlantsByUser(userId);
+        
+        // 식물별 최신 다이어리 이미지 가져와 Map<plantidx, sfile> 구성
+        Map<Long, String> diaryImages = new HashMap<>();
+        for (DictDTO p : plants) {
+            Long plantidx = p.getPlantidx();
+            if (plantidx == null) continue;
+
+            MyDiaryDTO latest = diaryDao.selectLatestByUserAndPlant(userId, plantidx);
+            if (latest != null && latest.getSfile() != null && !latest.getSfile().isBlank()) {
+                diaryImages.put(plantidx, latest.getSfile());
+            }
+        }
         model.addAttribute("plants", plants);
+        model.addAttribute("diaryImages", diaryImages);
+        
+        model.addAttribute("diaryUploadBase", "/uploads/mydiary");
         return "main/member";
     }
 

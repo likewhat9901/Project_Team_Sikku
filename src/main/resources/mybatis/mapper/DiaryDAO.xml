@@ -7,85 +7,91 @@
 <mapper namespace="com.edu.springboot.mydiary.IMyDiaryMapper">
 
 	<select id="getTotalCount" resultType="int"
-	parameterType="com.edu.springboot.mydiary.MyDiaryDTO">
+		parameterType="com.edu.springboot.mydiary.MyDiaryDTO">
 		SELECT COUNT(*) from diary WHERE userId=#{userId}
 	</select>
-	
+
 	<select id="listPage"
 		resultType="com.edu.springboot.mydiary.MyDiaryDTO"
 		parameterType="com.edu.springboot.mydiary.ParameterDTO">
 		SELECT * FROM (
-		    SELECT tb.*, rownum rNum from (
-		        SELECT * FROM diary	
-		         WHERE userId = #{userId}
-	        	ORDER BY diaryIdx DESC
-		    ) Tb
+		SELECT tb.*, rownum rNum from (
+		SELECT * FROM diary
+		WHERE userId = #{userId}
+		ORDER BY diaryIdx DESC
+		) Tb
 		)
 		where rNum<![CDATA[>=]]>#{start}
-				and rNum<![CDATA[<=]]>#{end}
+		and rNum<![CDATA[<=]]>#{end}
 	</select>
-	<!-- where rNum between #{start}
-				and #{end} -->
-				
-  	<insert id="write" parameterType="com.edu.springboot.mydiary.MyDiaryDTO">
-	 	insert into diary (diaryIdx, userId, ofileName, sfile, description, 
-	 	temperature, humidity, sunlight, height, fruit, plantidx)
-	 	values
-	 	(DIARY_SEQ.nextval, #{userId, jdbcType=VARCHAR}, #{ofileName}, #{sfile}, 
-	 	#{description}, #{temperature}, #{humidity}, #{sunlight}, #{height}, #{fruit},
-	 	#{plantidx, javaType=java.lang.Long, jdbcType=NUMERIC})
+	<!-- where rNum between #{start} and #{end} -->
+
+	<insert id="write"
+		parameterType="com.edu.springboot.mydiary.MyDiaryDTO">
+		insert into diary (diaryIdx, userId, ofileName, sfile, description,
+		temperature, humidity, sunlight, height, fruit, plantidx)
+		values
+		(DIARY_SEQ.nextval, #{userId, jdbcType=VARCHAR}, #{ofileName}, #{sfile},
+		#{description}, #{temperature}, #{humidity}, #{sunlight}, #{height}, #{fruit},
+		#{plantidx, javaType=java.lang.Long, jdbcType=NUMERIC})
 	</insert>
-	 
- 	<select id="view"
- 		resultType="com.edu.springboot.mydiary.MyDiaryDTO"
+
+	<select id="view"
+		resultType="com.edu.springboot.mydiary.MyDiaryDTO"
 		parameterType="com.edu.springboot.mydiary.ParameterDTO">
 		SELECT * FROM diary WHERE diaryIdx=#{diaryIdx}
 	</select>
-	
-	
- 	<update id="edit"
+
+
+	<update id="edit"
 		parameterType="com.edu.springboot.mydiary.MyDiaryDTO">
 		UPDATE diary SET
-		ofileName = #{ofileName, jdbcType=VARCHAR}, sfile=#{sfile, jdbcType=VARCHAR},
-		description=#{description}, temperature=#{temperature}, 
-		humidity=#{humidity}, sunlight=#{sunlight}, plantidx=#{plantidx, javaType=java.lang.Long, jdbcType=NUMERIC}
+		ofileName = #{ofileName,
+		jdbcType=VARCHAR}, sfile=#{sfile, jdbcType=VARCHAR},
+		description=#{description}, temperature=#{temperature},
+		humidity=#{humidity}, sunlight=#{sunlight}, plantidx=#{plantidx,
+		javaType=java.lang.Long, jdbcType=NUMERIC}
 		WHERE diaryIdx=#{diaryIdx}
 	</update>
-	 
-  	<delete id="delete">
-		DELETE FROM diary WHERE diaryIdx=#{diaryIdx} AND userId=#{userId}
+
+	<delete id="delete">
+		DELETE FROM diary WHERE diaryIdx=#{diaryIdx} AND
+		userId=#{userId}
 	</delete>
-	
-	
-	<select id="selectByMonth" 
-	resultType="com.edu.springboot.mydiary.DiaryPostResponse">
-	  SELECT diaryIdx, sfile as imageUrl, postdate FROM diary
-	  WHERE TO_CHAR(postdate, 'YYYY') = #{year}
-	    AND TO_CHAR(postdate, 'MM') = #{month}
-	    AND userId=#{userId}
-	  ORDER BY postdate DESC
+
+	<!-- 캘린더에 이미지 추가 -->
+	<select id="selectByMonth"
+		resultType="com.edu.springboot.mydiary.DiaryPostResponse">
+		SELECT diaryIdx, sfile as imageUrl, postdate FROM diary
+		WHERE TO_CHAR(postdate, 'YYYY') = #{year}
+		AND TO_CHAR(postdate, 'MM') = #{month}
+		AND userId=#{userId}
+		ORDER BY postdate DESC
+	</select>
+
+	<!-- 카드 계산 -->
+	<select id="selectLatestByUserAndPlant" parameterType="map"
+		resultType="com.edu.springboot.mydiary.MyDiaryDTO">
+		SELECT diaryIdx, userId, postdate, height, fruit, plantidx, sfile
+		FROM (
+		SELECT diaryIdx, userId, postdate, height, fruit, plantidx, sfile
+		FROM diary
+		WHERE userId = #{userId}
+		AND plantidx = #{plantidx}
+		ORDER BY postdate DESC
+		)
+		WHERE ROWNUM = 1
+	</select>
+
+	<select id="selectByUserAndPlantSince" parameterType="map"
+		resultType="com.edu.springboot.mydiary.MyDiaryDTO">
+		SELECT diaryIdx, userId, postdate, height, fruit, plantidx
+		FROM diary
+		WHERE userId = #{userId}
+		AND plantidx = #{plantidx}
+		AND postdate >= #{since}
+		ORDER BY postdate ASC
 	</select>
 	
-  <select id="selectLatestByUserAndPlant" parameterType="map" 
-  resultType="com.edu.springboot.mydiary.MyDiaryDTO">
-    SELECT diaryIdx, userId, postdate, height, fruit, plantidx
-  	FROM (
-	    SELECT diaryIdx, userId, postdate, height, fruit, plantidx
-	    FROM diary
-	    WHERE userId = #{userId}
-	      AND plantidx = #{plantidx}
-	    ORDER BY postdate DESC
-	  )
-	  WHERE ROWNUM = 1
-  </select>
-
-  <select id="selectByUserAndPlantSince" parameterType="map" 
-  resultType="com.edu.springboot.mydiary.MyDiaryDTO">
-    SELECT diaryIdx, userId, postdate, height, fruit, plantidx
-    FROM diary
-    WHERE userId = #{userId}
-      AND plantidx = #{plantidx}
-      AND postdate >= #{since}
-    ORDER BY postdate ASC
-  </select>
+	
 </mapper>

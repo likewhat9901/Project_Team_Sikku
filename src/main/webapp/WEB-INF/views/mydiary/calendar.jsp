@@ -15,7 +15,7 @@
       <button id="prev-month">◀ 이전달</button>
       <div class="calendar-title" id="calendar-title"></div>
       <button id="next-month">다음달 ▶</button>
-      <button type="button" onclick="location.href='${pageContext.request.contextPath}/mydiary/write.do';">글쓰기</button>
+      <button type="button" onclick="location.href='/mydiary/write.do';">글쓰기</button>
     </div>
     <div class="calendar-header" id="calendar-header"></div>
     <div class="calendar-body" id="calendar-body"></div>
@@ -116,7 +116,7 @@
 			if (post.imageUrl.includes('/')) {
               imgSrc = post.imageUrl; // 이미 경로 포함
             } else {
-              imgSrc = '/uploads/' + encodeURIComponent(post.imageUrl); // 파일명만
+              imgSrc = '/uploads/mydiary/' + encodeURIComponent(post.imageUrl); // 파일명만
             }
 
             const img = document.createElement('img');
