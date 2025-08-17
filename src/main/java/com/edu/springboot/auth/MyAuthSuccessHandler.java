@@ -26,11 +26,13 @@ public class MyAuthSuccessHandler implements AuthenticationSuccessHandler {
         User user = (User) authentication.getPrincipal();
         boolean isAdmin = user.getAuthorities().stream()
                 .anyMatch(auth -> "ROLE_ADMIN".equals(auth.getAuthority()));
+        
+        request.getSession().setAttribute("userRole", isAdmin ? "ROLE_ADMIN" : "ROLE_USER");
 
         if (isAdmin) {
             response.sendRedirect("/admin/index.do"); 
         } else {
-            response.sendRedirect("/myLogin.do");
+            response.sendRedirect("/main/member.do");
         }
 
     }
