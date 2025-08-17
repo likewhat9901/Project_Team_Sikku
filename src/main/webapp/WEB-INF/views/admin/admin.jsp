@@ -16,15 +16,13 @@
       <li class="admin-tab-btn" data-tab="report">신고된 게시물</li>
       <!-- QnA 관리 탭 추가 -->
       <li class="admin-tab-btn" data-tab="qna">QnA 관리</li>
+      <li class="admin-tab-btn" data-tab="dict">식물 도감 관리</li>
     </ul>
   </div>
    <button class="admin-home-btn" type="button" onclick="location.href='/main/member.do'" >
    		홈페이지
    </button>
 
-  <div class="admin-header">
-    <h1 class="admin-title">관리자 페이지</h1>
-  </div>
   <!-- 본문 컨텐츠 -->
   <div class="admin-content">
 	<h1 class="admin-title">관리자 페이지</h1>
