@@ -31,10 +31,6 @@ function loadMoreBoards() {
     loading = true;
     currentPage++;
 
-    console.log('페이지 요청:', currentPage);
-    console.log('검색어:', currentSearchWord);
-
-    // 검색어가 있으면 파라미터에 추가
     let url = `/boards/gallery/galleryBoardListMore.do?page=${currentPage}`;
     if (currentSearchWord && currentSearchWord !== '') {
         url += `&searchWord=${encodeURIComponent(currentSearchWord)}`;
@@ -42,33 +38,45 @@ function loadMoreBoards() {
 
     fetch(url)
         .then(response => response.json())
-        .then(boards => {
-            console.log('받은 데이터:', boards);
-
-            const container = document.getElementById('board-container');
-
-            boards.forEach(board => {
+        .then(data => {
+            console.log('받은 데이터:', data);
+            
+            const container = document.querySelector('.feed-container');
+            
+            data.rows.forEach(row => {
                 const div = document.createElement('div');
-                div.className = 'board-card';
-                div.onclick = () => location.href = `/boards/gallery/galleryBoardView.do?boardIdx=${board.boardIdx}`;
+                div.className = 'feed-post';
+                div.style.cursor = 'pointer';
+                div.onclick = () => location.href = `/boards/gallery/galleryBoardView.do?boardIdx=${row.boardIdx}`;
+                
                 div.innerHTML = `
-                    <input type="hidden" class="board-idx" value="${board.boardIdx}">
-                    <div class="board-title">${board.title}</div>
-                    <div class="board-content-text">
-                        ${board.content.length > 20 ? board.content.substring(0, 20) + '...' : board.content}
+                    <div class="feed-header">
+                        <img src="/images/프로필.png" alt="profile" class="profile-img">
+                        <span class="username">${row.userId}</span>
                     </div>
-                    <div class="board-footer">
-                        <span>작성자 : ${board.userId}</span>
-                        <span>조회수 : ${board.visitcount} 좋아요 : ${board.likes}</span>
+                    
+                    <div class="feed-image">
+                        <img src="/uploads/board/${data.imageMap[row.boardIdx]}" alt="게시물이미지">
+                    </div>
+                    
+                    <div class="feed-actions">
+                        ❤️ &nbsp ${data.likesCountMap[row.boardIdx]} &nbsp&nbsp
+                        💬 &nbsp ${data.commentCountMap[row.boardIdx]}
+                    </div>
+                    
+                    <div class="feed-content">
+                        <span class="username">${row.userId}</span>
+                        ${row.content && row.content.length > 50 ? row.content.substring(0, 50) + '...' : row.content || ''}
                     </div>
                 `;
+                
                 container.appendChild(div);
             });
-
+            
             loading = false;
         })
         .catch(error => {
             console.log('에러:', error);
             loading = false;
         });
-}
+}	
