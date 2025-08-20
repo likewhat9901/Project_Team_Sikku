@@ -5,6 +5,7 @@ import javax.sql.DataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.annotation.Order;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
@@ -38,8 +39,22 @@ public class WebSecurityConfig {
             .authoritiesByUsernameQuery("SELECT userid, authority FROM members WHERE userid = ?")
             .passwordEncoder(bCryptPasswordEncoder);
     }
+    
+    @Bean
+    @Order(1)  // 우선순위 먼저
+    public SecurityFilterChain flutterApiFilterChain(HttpSecurity http) throws Exception {
+        http.securityMatcher("/api/flutter/**")
+            .csrf(csrf -> csrf.disable())
+            .authorizeHttpRequests(auth -> auth
+            	.anyRequest().permitAll() 
+	        )
+            .formLogin(form -> form.disable())   // API에는 로그인폼 적용 안 함
+            .httpBasic(basic -> basic.disable());
+        return http.build();
+    }
 
     @Bean
+    @Order(2)
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.csrf(csrf -> csrf.disable())
             .cors(cors -> cors.disable())
