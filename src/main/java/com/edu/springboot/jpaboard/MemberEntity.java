@@ -3,17 +3,14 @@ package com.edu.springboot.jpaboard;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.time.LocalDateTime;
 
-
-@Data
 @Entity
-@Table(name = "members")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@Table(name = "members")
 public class MemberEntity {
 
 	@Id
@@ -41,4 +38,6 @@ public class MemberEntity {
     @Column(name = "address", length = 200)
     private String address;
 	
+    @Column(name = "PROFILEIMGPATH", length = 255)
+    private String profileImgPath;
 }

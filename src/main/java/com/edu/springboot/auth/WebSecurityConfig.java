@@ -111,6 +111,7 @@ public class WebSecurityConfig {
     public HttpFirewall allowUrlEncodedDoubleSlashHttpFirewall() {
         StrictHttpFirewall firewall = new StrictHttpFirewall();
         firewall.setAllowUrlEncodedDoubleSlash(true);
+        firewall.setAllowSemicolon(true);
         return firewall;
     }
 
