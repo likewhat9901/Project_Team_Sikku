@@ -1,14 +1,14 @@
 package com.edu.springboot.flutter.auth.dto;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@Getter
+@Setter
+@NoArgsConstructor
 public class LoginRequest {
-    private String username;
-    private String password;
+    private String userid;
+    private String userpw;
     
-    public LoginRequest() {}
-
-    public String getUsername() { return username; }
-    public void setUsername(String username) { this.username = username; }
-
-    public String getPassword() { return password; }
-    public void setPassword(String password) { this.password = password; }
 }

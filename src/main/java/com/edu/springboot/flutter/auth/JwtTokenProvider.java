@@ -19,11 +19,11 @@ public class JwtTokenProvider {
 	private static final long EXPIRATION_MS = 1000 * 60 * 60; // 1시간
 
 	// 토큰 생성 메서드
-	public static String generateToken(String username) {
-		return Jwts.builder().setSubject(username) // 누구를 위한 토큰인지
+	public static String generateToken(String userid) {
+		return Jwts.builder().setSubject(userid) // 누구를 위한 토큰인지
 				.setIssuedAt(new Date()) // 발급 시각
 				.setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_MS)) // 만료 시각
-				.signWith(key) // 서명 키
+				.signWith(key, SignatureAlgorithm.HS256) // 서명 키
 				.compact();
 	}
 

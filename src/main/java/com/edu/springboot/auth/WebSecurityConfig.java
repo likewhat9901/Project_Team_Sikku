@@ -49,7 +49,7 @@ public class WebSecurityConfig {
     @Bean
     @Order(1)
     public SecurityFilterChain flutterLoginFilterChain(HttpSecurity http) throws Exception {
-        http.securityMatcher("/api/flutter/login")
+        http.securityMatcher("/api/flutter/login", "/api/flutter/check-id/**", "/api/flutter/register")
             .csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(auth -> auth.anyRequest().permitAll())
             .formLogin(form -> form.disable())
@@ -81,26 +81,6 @@ public class WebSecurityConfig {
 
         return http.build();
     }
-    /*    
-    @Bean
-    @Order(1)
-    public SecurityFilterChain flutterApiFilterChain(HttpSecurity http) throws Exception {
-        http.securityMatcher("/api/flutter/**")
-            .csrf(csrf -> csrf.disable())
-            .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // ✅ 리다이렉트 방지
-            .requestCache(rc -> rc.disable()) // ✅ 리다이렉트 방지
-            .exceptionHandling(ex -> ex.authenticationEntryPoint((req, res, ex2) -> res.setStatus(401))) // ✅ 리다이렉트 방지
-            .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/api/flutter/login").permitAll() // ✅ 로그인은 허용
-                .anyRequest().authenticated()
-            )
-            .formLogin(form -> form.disable())
-            .httpBasic(basic -> basic.disable())
-        	.addFilterBefore(new JwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
-
-        return http.build();
-    }
-*/
 
     @Bean
     @Order(2)
