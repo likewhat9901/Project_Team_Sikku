@@ -1,0 +1,175 @@
+.main_container {
+	padding: 50px 0;
+	gap: 30px;
+}
+
+.mbti-nav-top {
+	width: 1000px;
+	display: flex;
+  	flex-wrap: wrap;   /* 넘치면 다음 줄로 */
+	gap: 10px;         /* 행/열 간격 */
+	align-content: flex-start; /* 여러 줄 정렬 */
+}
+.mbti-nav-top button {
+	flex: 0 0 100px;   /* 버튼 폭 고정 100px */
+  	height: 50px;
+    border-radius: 15px;
+    box-sizing: border-box;
+    background-color: #fff;
+	color: #4E8A5D;
+	border: 2px solid #4E8A5D;
+    font-size: 1.3rem;
+    font-family: 'MyFont';
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    padding-bottom: 4px;
+    cursor: pointer;
+}
+/* hover 효과 */
+.mbti-nav-top button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(0,0,0,.25);
+  border-color: #6d8872; /* #2f5536의 연한 톤 */
+}
+/* 클릭 느낌 */
+.mbti-nav-top button:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 8px rgba(0,0,0,.2);
+}
+
+.mbti-nav-bottom {
+	width: 1000px;
+	display: flex;
+	gap: 50px;         /* 행/열 간격 */
+	justify-content: center;
+	align-items: center;
+}
+.mbti-nav-bottom a {
+	flex: 0 0 100px;   /* 버튼 폭 고정 100px */
+    display: flex;
+    justify-content: center;
+	align-items: center;
+  	height: 50px;
+    background-color: #fff;
+	color: #4E8A5D;
+	border: 2px solid #4E8A5D;
+    border-radius: 15px;
+    box-sizing: border-box;
+    border: 1px solid #829986;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    padding-bottom: 5px;
+    cursor: pointer;
+}
+/* hover 효과 */
+.mbti-nav-bottom a:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(0,0,0,.25);
+  border-color: #6d8872; /* #2f5536의 연한 톤 */
+}
+/* 클릭 느낌 */
+.mbti-nav-bottom a:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 8px rgba(0,0,0,.2);
+}
+
+
+.mbti-section {
+  width: 1000px;
+  height: 450px;
+  padding: 30px 50px;
+  border-radius: 25px;
+  background:
+    linear-gradient(to bottom right, rgba(255,255,255,.5), rgba(255,255,255,.5)),
+    url(/images/header/leaf-background2.png) no-repeat center/cover;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  border: 1px solid #829986;
+}
+
+.mbti-container {
+  flex: 1rgb(47, 85, 54);
+  display: flex;
+  gap: 50px;
+  min-height: 0; /* flex 내부 스크롤 계산용 */
+}
+
+.mbti-profile {
+	width: 250px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.mbti-profile .title {
+  color: #2f5536;
+  font-size: 2rem;
+}
+
+.mbti-img {
+	height: 320px;
+    flex: 0 0 auto;
+	box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+}
+
+.mbti-img img {
+  width: 100%; height: 100%;
+  border-radius: 12px;
+  object-fit: cover;
+  background: #fff;
+}
+
+.mbti-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  border-radius: 12px;
+  min-height: 0;
+  justify-content: flex-end;
+}
+
+.plant-category {
+	z-index: 10;
+}
+.plant-category span {
+	width: 120px; height: 35px;
+	background: #fff;
+	border-top-left-radius: 12px;
+	border-top-right-radius: 12px;
+	display: inline-block;
+	text-align: center;
+	border: 1px solid #e3edd9;
+	box-sizing: border-box;
+	font-size: 1.2rem;
+	cursor: pointer;
+}
+.plant-category span.active { font-weight: 500; border: 2px solid #829986;}
+
+.plant-description {
+	flex: 0 0 350px;
+	display: flex;
+	flex-direction: column;
+	border-top-right-radius: 12px;
+	border-bottom-left-radius: 12px;
+	border-bottom-right-radius: 12px;
+  	padding: 20px 30px;
+	background: #fff;
+	box-sizing: border-box;
+	box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+	gap: 15px;
+}
+
+.plant-description .name {
+  font-size: 1.3rem;
+  color: #2f5536;
+}
+
+.plant-description .desc {
+  flex: 1;
+  overflow: auto;
+  font-size: 1.1rem;
+  color: #555;
+  line-height: 1.5;
+}
+
+.panel { display: none; }
+.panel.active { display: flex; }

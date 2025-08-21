@@ -1,0 +1,425 @@
+/* ===========================
+   Blob 배경
+=========================== */
+.blobs {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  overflow: hidden;
+  z-index: -1;
+}
+
+.blob {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(60px);
+  opacity: 0.8;
+}
+
+.blob1 {
+  width: 300px; height: 300px;
+  background: #b8f0d5;
+  top: -100px; left: -100px;
+}
+.blob2 {
+  width: 300px; height: 300px;
+  background: #c6f5e1;
+  top: 200px; right: -100px;
+}
+.blob3 {
+  width: 250px; height: 250px;
+  background: #e0fbe9;
+  bottom: -100px; left: 50px;
+}
+.blob4 {
+  width: 250px; height: 250px;
+  background: #d0f7dd;
+  bottom: 100px; right: 100px;
+}
+
+/* ===========================
+   공통 스타일
+=========================== */
+.identity-page {
+  color: #164b2f;
+}
+
+.identity-section {
+  padding: 80px 20px;
+  text-align: center;
+}
+
+.identity-section-title {
+  font-size: 3rem;
+  font-weight: bold;
+  margin-bottom: 50px;
+}
+
+/* ===========================
+   Hero
+=========================== */
+.identity-hero {
+  padding: 80px 20px 60px;
+  text-align: center;
+}
+
+.identity-hero-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 50px 40px;
+}
+
+.identity-badge {
+  display: inline-block;
+  padding: 6px 16px;
+  background: rgba(255, 255, 255, 0.5);
+  border-radius: 20px;
+  font-size: 0.9rem;
+  margin-bottom: 20px;
+}
+
+.identity-hero-title {
+  font-size: 3.5rem;
+  line-height: 1.3;
+  margin-bottom: 20px;
+}
+
+.identity-highlight {
+  color: #0f3622;
+}
+
+.identity-hero-sub {
+  font-size: 1.3rem;
+  line-height: 1.6;
+  margin-bottom: 30px;
+}
+
+.identity-cta {
+  margin-bottom: 40px;
+}
+
+.identity-btn {
+  display: inline-block;
+  padding: 12px 28px;
+  border-radius: 30px;
+  font-weight: bold;
+  text-decoration: none;
+  margin: 5px;
+  transition: background 0.3s ease;
+}
+
+.identity-btn--primary {
+  background: #164b2f;
+  color: #fff;
+  cursor: pointer;
+}
+
+.identity-btn--primary:hover {
+  background: #0f3622;
+}
+
+.identity-btn--ghost {
+  background: transparent;
+  border: 2px solid #164b2f;
+  color: #164b2f;
+}
+
+.identity-btn--ghost:hover {
+  background: #164b2f;
+  color: #fff;
+}
+
+.identity-hero-stats {
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+  list-style: none;
+  margin-top: 30px;
+}
+
+.identity-hero-stats li {
+  text-align: center;
+}
+
+.identity-hero-stats strong {
+  display: block;
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.identity-hero-stats span {
+  font-size: 0.9rem;
+}
+
+/* ===========================
+   Features Grid
+=========================== */
+
+
+.identity-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* 2x2 형태 */
+  gap: 30px;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.identity-card {
+  background: rgba(255, 255, 255, 0.7);
+  border-radius: 20px;
+  padding: 40px 30px;
+  text-align: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  font-size: 1.15rem;
+}
+
+.identity-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+}
+
+.identity-card-icon {
+  font-size: 1rem;
+  margin-bottom: 15px;
+}
+
+.identity-card-title {
+  font-size: 1.7rem;
+  margin-bottom: 15px;
+}
+
+.identity-card-desc {
+  font-size: 1.1rem;
+  line-height: 1.6;
+}
+
+/* ===========================
+   Steps
+=========================== */
+.identity-steps {
+  padding-top: 100px; /* 간격 넓힘 */
+}
+
+.identity-steps-list {
+  list-style: none;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 0;
+}
+
+.identity-step {
+  margin-bottom: 40px;
+}
+
+.identity-step-index {
+  display: inline-block;
+  width: 40px; height: 40px;
+  background: #164b2f;
+  color: #fff;
+  border-radius: 50%;
+  line-height: 40px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+/* ===========================
+   Showcase
+=========================== */
+.identity-showcase {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 80px;
+  padding: 120px 20px; /* Steps와 간격 충분히 확보 */
+  flex-wrap: wrap;
+}
+
+.phone-frame {
+  width: 340px;
+  height: 600px;
+  background-color: #f7fff9;
+  border-radius: 25px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.phone-screen {
+  width: 100%;
+  height: 100%;
+  background: #eef7f0;
+  border-radius: 20px;
+  padding: 25px;
+}
+
+.identity-screen-widget {
+  background: #164b2f;
+  color: white;
+  text-align: center;
+  padding: 12px;
+  border-radius: 12px;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+.identity-screen-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 25px;
+}
+
+.identity-screen-card {
+  flex: 0 0 48%;
+  background: white;
+  padding: 8px;
+  border-radius: 10px;
+  text-align: center;
+  font-weight: bold;
+  color: #164b2f;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+  
+}
+
+/* 텍스트 영역 */
+.identity-showcase-copy {
+  max-width: 400px;
+  text-align: left;
+}
+
+.identity-showcase-copy h2 {
+  font-size: 1.8rem;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+.identity-showcase-copy p {
+  font-size: 1rem;
+  line-height: 1.6;
+  margin-bottom: 25px;
+}
+
+.identity-showcase-copy .identity-btn--primary {
+  display: inline-block;
+  padding: 12px 30px;
+  font-size: 1rem;
+  border-radius: 30px;
+  background-color: #164b2f;
+  color: white;
+  text-decoration: none;
+  font-weight: bold;
+  transition: background 0.3s ease;
+}
+
+.identity-showcase-copy .identity-btn--primary:hover {
+  background-color: #0f3622;
+}
+
+/* ===========================
+   Wide CTA
+=========================== */
+.identity-cta-wide {
+  background: #164b2f;
+  color: white;
+  padding: 60px 20px;
+  text-align: center;
+}
+
+.identity-cta-wide-inner {
+  max-width: 100%;
+  margin: 0 auto;
+}
+
+.identity-cta-wide .identity-btn--light {
+  background: white;
+  color: #164b2f;
+  border-radius: 30px;
+  padding: 12px 28px;
+  font-weight: bold;
+  display: inline-block;
+  margin-top: 20px;
+  cursor: pointer;
+}
+
+
+/* 애니메이션 효과 */
+.fade-in {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity 0.8s ease, transform 0.8s ease;
+}
+.fade-in.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.slide-left {
+  opacity: 0;
+  transform: translateX(40px);
+  transition: opacity 0.8s ease, transform 0.8s ease;
+}
+.slide-left.show {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.slide-right {
+  opacity: 0;
+  transform: translateX(-40px);
+  transition: opacity 0.8s ease, transform 0.8s ease;
+}
+.slide-right.show {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* phone-frame 크기 업 */
+.phone-frame {
+  width: 350px;
+  height: 680px;
+  background: #111;
+  border-radius: 40px;
+  padding: 20px;
+  box-shadow: 0 0 30px rgba(0,0,0,0.3);
+}
+.phone-screen {
+  background: #fff;
+  border-radius: 30px;
+  overflow: hidden;
+  height: 100%;
+}
+.identity-screen-row {
+  display: flex;
+}
+.identity-screen-card {
+  flex: 1;
+  padding: 20px;
+  border: 1px solid #ddd;
+  text-align: center;
+}
+
+/* 왜 식꾸일까요? 카드 순차 등장 */
+.fade-in-cards .identity-card {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity 0.8s ease, transform 0.8s ease;
+}
+.fade-in-cards .identity-card.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.identity-cta-wide.fade-in.show {
+  width: 100%;
+  height: 230px;
+  max-width: 100%;   /* 혹시 제한 폭이 있으면 해제 */
+  margin: 0;         /* 중앙 여백 제거 */
+  padding-left: 0;
+  padding-right: 0;
+}
+
+
+
+
+/* 나머지 identity 스타일은 기존 layout.css 및 identity.css 내용 유지 */

@@ -1,0 +1,160 @@
+/* 전체 컨테이터 */
+.qna-write-container {
+    min-width: 800px;
+    max-width: 1200px;
+    margin: 80px auto;
+    padding: 50px 60px;
+    background-color: #ffffff;
+    border-radius: 16px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.06);
+}
+
+/* 컨테이너 내부 제목 */
+.qna-write-container h2 {
+    color: #333;
+    font-size: 24px;
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+/* 폼 전체 스타일 (수정용) */
+.qna-edit-form {
+    display: flex;
+    flex-direction: column; /* 세로로 배치 */
+    gap: 20px; /* 요소들 사이 간격 */
+}
+
+/* 카테고리와 비밀글을 한 줄로 배치하는 컨테이너 */
+.qna-category-row {
+    display: flex;
+    justify-content: space-between; /* 양쪽 끝으로 배치 */
+    align-items: flex-start; /* 위쪽 기준 정렬 */
+    margin-bottom: 20px;
+}
+
+/* 카테고리 선택 박스 (왼쪽) */
+.qna-category-box {
+    display: flex;
+    flex-direction: column; /* 문구 위, 셀렉트 아래 */
+    gap: 8px;
+}
+
+.qna-category-box span {
+    font-weight: bold;
+    color: #333;
+    font-size: 18px;
+}
+
+.qna-category-box select {
+    width: 200px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 14px;
+}
+
+/* 비밀글 체크박스 (오른쪽) */
+.qna-select-box {
+    display: flex;
+    align-items: center;
+    margin-top: 22px; /* 셀렉트박스와 높이 맞추기 */
+}
+
+.qna-select-box label {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    font-weight: bold;
+    color: #333;
+}
+
+.qna-select-box input[type="checkbox"] {
+    margin-left: 8px; /* 체크박스를 텍스트 오른쪽에 배치 */
+    width: 16px;
+    height: 16px;
+}
+
+/* hidden 필드 (보이지 않음) */
+input[type="hidden"] {
+    display: none;
+}
+
+/* 작성자 정보 입력 필드 (읽기 전용) */
+input[name="writerid"], 
+input[name="writer"] {
+    padding: 12px 15px;
+    border: 1px solid #eee;
+    border-radius: 5px;
+    background-color: #f9f9f9; /* 읽기 전용임을 나타내는 회색 배경 */
+    color: #666;
+    font-size: 14px;
+    margin-bottom: 15px;
+}
+
+/* 제목 입력 필드 */
+input[name="title"] {
+    padding: 15px;
+    border: 2px solid #ddd;
+    border-radius: 5px;
+    font-size: 16px;
+    font-weight: bold;
+    transition: border-color 0.3s; /* 포커스 시 애니메이션 */
+    margin-bottom: 15px;
+}
+
+input[name="title"]:focus {
+    outline: none;
+    border-color: #4CAF50; /* 포커스 시 초록색 테두리 */
+}
+
+/* 내용 입력 텍스트영역 */
+textarea[name="content"] {
+    min-height: 300px; /* 최소 높이 */
+    padding: 15px;
+    border: 2px solid #ddd;
+    border-radius: 5px;
+    font-size: 14px;
+    font-family: inherit; /* 부모 폰트 상속 */
+    resize: vertical; /* 세로로만 크기 조절 가능 */
+    line-height: 1.5; /* 줄간격 */
+    transition: border-color 0.3s;
+    margin-bottom: 20px;
+}
+
+textarea[name="content"]:focus {
+    outline: none;
+    border-color: #4CAF50;
+}
+
+/* 버튼 영역 (수정용) */
+.qna-edit-buttons {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+}
+
+.qna-edit-buttons button {
+    background-color: #4caf50;
+    color: #fff;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.25s ease;
+    font-family: 'MyFont';
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.qna-edit-buttons button:hover {
+    background-color: #388e3c;
+}
+
+/* 취소 버튼 스타일 */
+.qna-edit-buttons .cancel-btn {
+    background-color: #f44336;
+}
+
+.qna-edit-buttons .cancel-btn:hover {
+    background-color: #d32f2f;
+}

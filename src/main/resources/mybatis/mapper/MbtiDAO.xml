@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTO Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 컨트롤러가 호출하는 인터페이스의 위치를 namespace로 지정한다. -->
+<mapper namespace="com.edu.springboot.mbti.IMbtiService">
+
+	<select id="MbtiSelectAll"
+		resultType="com.edu.springboot.mbti.MbtiDTO">
+		SELECT * from MBTI 
+	</select>
+	
+	<select id="MbtiSelectOneByName"
+		parameterType="String"
+		resultType="com.edu.springboot.mbti.MbtiDTO">
+		SELECT * from MBTI where name = #{mbtiName}
+	</select>
+	
+	<select id="MbtiSelectDistinct"
+		resultType="com.edu.springboot.mbti.MbtiDTO">
+		SELECT DISTINCT name, imgFile from MBTI
+	</select>
+	
+</mapper>

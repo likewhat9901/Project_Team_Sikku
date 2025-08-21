@@ -1,0 +1,438 @@
+@charset "UTF-8";
+
+/* ===== 전체 래퍼 ===== */
+.admin-wrapper {
+  display: flex;
+  flex-direction: row;
+  min-height: 100vh;
+  background-color: #f5f7fb;
+  font-family: 'Pretendard', sans-serif;
+  position: relative;
+}
+
+.admin-home-btn {
+  position: absolute;
+  background-color: #2166ff;
+  color: white;
+  padding: 9px 14px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 800;
+  transition: background 0.2s ease;
+  top: 40px; right: 50px;
+  z-index: 10;
+}
+
+/* ===== 사이드바 ===== */
+.sidebar {
+  width: 200px;
+  background-color: #ffffff;
+  box-shadow: 2px 0 8px rgba(0,0,0,0.05);
+  padding: 30px 20px;
+  border-radius: 20px;
+  height: fit-content;
+  margin: 40px 20px;
+}
+
+.sidebar a {
+  display: block;
+  padding: 12px 16px;
+  border-radius: 10px;
+  text-decoration: none;
+  font-weight: 600;
+  margin-bottom: 10px;
+  color: #333;
+  transition: 0.2s;
+}
+
+.sidebar a:hover,
+.sidebar a.active {
+  background-color: #f0f4ff;
+  color: #003cff;
+}
+
+/* ===== 본문 ===== */
+.admin-content {
+  flex: 1;
+  margin: 40px;
+  padding: 30px 40px;
+}
+
+/* 헤더 컨테이너 추가 */
+.admin-header {
+  position: absolute;
+  top: 30px;
+  left: 240px;
+  right: 40px; /* 우측 여백 */
+  display: flex;
+  justify-content: space-between; /* 양 끝으로 배치 */
+  align-items: center; /* 수직 가운데 정렬 */
+  margin: 5px 0 16px 50px;
+}
+
+.admin-title {
+  position: absolute;
+  margin: 0;
+  top: 30px; left: 300px;
+}
+
+
+.admin-subtitle {
+  font-size: 1.3rem;
+  font-weight: 700;
+  margin: 30px 0 15px;
+  color: #333;
+}
+
+/* ===== 검색 ===== */
+.admin-search-form {
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.admin-search-input {
+  padding: 8px 12px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+}
+
+.admin-search-btn {
+  background-color: #2166ff;
+  color: white;
+  padding: 7px 14px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background 0.2s ease;
+}
+
+.admin-search-btn:hover {
+  background-color: #154bdc;
+}
+
+/* ===== 테이블 ===== */
+.admin-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.admin-table th,
+.admin-table td {
+  padding: 14px 16px;
+  border-bottom: 1px solid #eee;
+  text-align: center;
+  font-size: 14px;
+}
+
+.admin-table th {
+  background-color: #f4f6fa;
+  font-weight: 700;
+  color: #333;
+}
+
+.admin-table tr:last-child td {
+  border-bottom: none;
+}
+
+/* ===== 버튼 ===== */
+.admin-btn {
+  background-color: #1f8fff;
+  color: white;
+  border: none;
+  padding: 6px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 12px;
+  transition: background 0.2s ease;
+}
+
+.admin-btn:hover {
+  background-color: #166edc;
+}
+
+/* admin.css */
+
+.admin-wrapper {
+  display: flex;
+  width: 100%;
+  min-height: 100vh;
+  font-family: sans-serif;
+}
+
+.admin-sidebar {
+  width: 200px;
+  background: #fafafa;
+  border-right: 1px solid #eee;
+  padding: 20px;
+  box-shadow: 2px 0 6px rgba(0,0,0,0.05);
+}
+
+.admin-sidebar ul {
+  list-style: none;
+  padding: 0;
+}
+
+.admin-sidebar li {
+  padding: 12px 14px;
+  margin-bottom: 10px;
+  cursor: pointer;
+  border-radius: 8px;
+  font-weight: bold;
+  color: #333;
+  transition: background 0.2s;
+}
+
+.admin-sidebar li.active,
+.admin-sidebar li:hover {
+  background: #2f70ec;
+  color: #fff;
+}
+
+.admin-content {
+  flex: 1;
+  padding: 30px 40px;
+  background-color: #fff;
+  margin: 40px;
+  margin-top: 100px;
+}
+
+.admin-title {
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+.admin-subtitle {
+  font-size: 1.2rem;
+  margin: 20px 0 10px;
+  font-weight: 600;
+  color: #333;
+}
+
+.admin-search-form {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.admin-search-input {
+  padding: 8px 12px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+
+.admin-search-btn {
+  padding: 8px 14px;
+  background: #2f70ec;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.admin-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #f9f9f9;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.admin-table th,
+.admin-table td {
+  padding: 12px 16px;
+  border-bottom: 1px solid #ddd;
+  text-align: center;
+}
+
+.admin-table th {
+  background-color: #f1f3f7;
+  font-weight: bold;
+}
+
+.admin-btn {
+  padding: 6px 12px;
+  background-color: #2f70ec;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.admin-btn:hover {
+  background-color: #1e56c4;
+}
+
+/* QnA 관리 탭 스타일 */
+#qna-tab {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+
+#qna-tab h1 {
+  margin: 30px auto;
+}
+
+#qna-tab h2 {
+  margin: 20px 0 15px;
+  font-weight: 600;
+  color: #333;
+}
+
+/* QnA 테이블 */
+.qna-list-table {
+  width: 100%;
+  margin-bottom: 30px;
+  border-collapse: collapse;
+  background: white;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.qna-list-table th,
+.qna-list-table td {
+  padding: 14px 8px;
+  text-align: center;
+  border-bottom: 1px solid #ddd;
+  font-size: 14px;
+}
+
+.qna-list-table th {
+  background: #f7f7f7;
+  font-weight: 700;
+  color: #333;
+}
+
+.qna-list-table tr:last-child td {
+  border-bottom: none;
+}
+
+.qna-list-table tr.notice-row {
+  background-color: #f9f9f9;
+  font-weight: bold;
+}
+
+/* 제목 컬럼 왼쪽 정렬 */
+.qna-list-table td[style*="text-align:left"] {
+  text-align: left !important;
+}
+
+.qna-list-table td a {
+  color: #333;
+  text-decoration: none;
+}
+
+.qna-list-table td a:hover {
+  color: #4CAF50;
+}
+
+/* 페이지네이션 */
+#qna-tab .pagination {
+  margin-bottom: 50px;
+}
+
+#qna-tab .pagination a {
+  padding: 3px 16px 8px 16px;
+  margin: 0 3px;
+  color: #333;
+  border: 1px solid #ddd;
+  border-radius: 999px;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+#qna-tab .pagination a.active {
+  background-color: #4CAF50;
+  color: white;
+  font-weight: bold;
+  border: 1px solid #4CAF50;
+}
+
+#qna-tab .pagination a:hover {
+  background-color: #45a049;
+  color: white;
+  border-color: #45a049;
+}
+
+/* 빈 메시지 스타일 */
+#qna-tab p {
+  text-align: center;
+  color: #666;
+  font-size: 16px;
+  margin: 50px 0;
+}
+
+/* 식물도감 등록 폼 스타일 */
+#dict-form {
+  background: white;
+  border-radius: 12px;
+  padding: 30px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+#dict-form h3 {
+  text-align: center;
+  margin: 0 0 25px 0;
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: #333;
+}
+
+.admin-form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.admin-form input[type="text"],
+.admin-form textarea,
+.admin-form input[type="file"] {
+  padding: 12px 16px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 14px;
+  transition: border-color 0.2s ease;
+}
+
+.admin-form input[type="text"]:focus,
+.admin-form textarea:focus {
+  outline: none;
+  border-color: #2166ff;
+  box-shadow: 0 0 0 3px rgba(33, 102, 255, 0.1);
+}
+
+.admin-form textarea {
+  min-height: 80px;
+  resize: vertical;
+  font-family: inherit;
+}
+
+.admin-form input[type="file"] {
+  padding: 10px;
+  background-color: #f8f9fa;
+}
+
+.admin-form input[type="submit"] {
+  margin-top: 10px;
+  padding: 12px 24px;
+  font-size: 16px;
+  font-weight: 600;
+}

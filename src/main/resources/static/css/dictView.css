@@ -1,0 +1,191 @@
+
+.detail-section {
+    width: 1600px;
+    min-height: 600px;
+    margin: 60px auto;
+    position: relative;
+}
+
+.detail-title {
+    color: #2d5a2d;
+    margin-bottom: 40px;
+    text-align: center;
+}
+
+.plant-card {
+	width: 100%; height: auto;
+    display: flex;
+    background: rgba(255, 255, 255, 0.25);
+    border-radius: 24px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    border: 1px solid #a5c199;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    margin-bottom: 50px;
+}
+
+.plant-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5);
+}
+
+.plant-image {
+    flex: 0.4;
+    width: 400px;
+    min-height: 400px; max-height: 500px;
+    background: linear-gradient(45deg, #4CAF50, #81C784);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    position: relative;
+    overflow: hidden;
+}
+
+.plant-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.plant-info {
+    flex: 1;
+    background: rgba(255, 255, 255, 0.8);
+    display: flex;
+    box-sizing: border-box;
+    padding: 30px;
+    gap: 30px;
+}
+
+.plant-info .plant-profile {
+	flex: 1;
+	border-right-color: black;
+	position: relative;
+}
+
+.plant-profile .category {
+	position: absolute;
+	top: 5px; right: 5px;
+  font-size: 18px;
+  background-color: #f0f0f0;
+  padding: 10px 15px;
+  border-radius: 8px;
+}
+
+.plant-profile .name {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #2d5a2d;
+    margin-bottom: 25px;
+}
+
+.plant-profile .subtitle {
+    font-size: 1.1rem;
+    color: #666;
+    font-weight: normal;
+}
+
+.plant-profile .description-1 {
+    color: #555;
+    margin-bottom: 25px;
+    line-height: 1.5;
+}
+
+.plant-profile .description-2 {
+	color: #555;
+    margin-bottom: 25px;
+    line-height: 1.5;
+    font-size: 1rem;
+}
+
+.info-grid {
+	flex: 1;
+    display: grid;
+    gap: 15px;
+}
+
+.item-container {
+	display: flex;
+	justify-content: space-between;
+	gap: 20px;
+}
+
+.info-item {
+	flex: 1;
+    display: flex;
+    align-items: center;
+    padding: 10px 10px 14px 10px;
+    background: rgba(76, 175, 80, 0.1);
+    border-radius: 12px;
+    border-left: 4px solid #4CAF50;
+}
+
+.info-item .icon {
+    margin-right: 12px;
+    font-size: 1.2rem;
+}
+
+.info-item .label {
+    font-weight: 600;
+    color: #2d5a2d;
+    margin-right: 10px;
+}
+
+.info-item .value {
+    color: #555;
+}
+
+/* 이전, 다음 버튼*/
+.dict-nav-bottom {
+	width: 100%;
+	display: flex;
+	gap: 50px;         /* 행/열 간격 */
+	justify-content: center;
+	align-items: center;
+}
+.dict-nav-bottom a {
+	flex: 0 0 100px;   /* 버튼 폭 고정 100px */
+    display: flex;
+    justify-content: center;
+	align-items: center;
+  	height: 50px;
+    background-color: #fff;
+	color: #4E8A5D;
+	border: 2px solid #4E8A5D;
+    border-radius: 15px;
+    box-sizing: border-box;
+    border: 1px solid #829986;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    padding-bottom: 5px;
+    cursor: pointer;
+}
+/* hover 효과 */
+.dict-nav-bottom a:hover, .list-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(0,0,0,.25);
+  border-color: #6d8872; /* #2f5536의 연한 톤 */
+}
+/* 클릭 느낌 */
+.dict-nav-bottom a:active, .list-btn:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 8px rgba(0,0,0,.2);
+}
+
+.list-btn {
+  	width: 100px;   /* 버튼 폭 고정 100px */
+    display: flex;
+    justify-content: center;
+	align-items: center;
+  	height: 50px;
+    background-color: #fff;
+	color: #4E8A5D;
+	border: 2px solid #4E8A5D;
+    border-radius: 15px;
+    box-sizing: border-box;
+    border: 1px solid #829986;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    padding-bottom: 5px;
+    cursor: pointer;
+    position: absolute;
+    top: 20px; right: 0;
+}
