@@ -9,12 +9,17 @@ import org.springframework.core.annotation.Order;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.firewall.HttpFirewall;
 import org.springframework.security.web.firewall.StrictHttpFirewall;
 
+import com.edu.springboot.flutter.auth.JwtAuthenticationFilter;
+
 import jakarta.servlet.DispatcherType;
+import jakarta.servlet.http.HttpServletResponse;
 
 @Configuration
 public class WebSecurityConfig {
@@ -39,19 +44,63 @@ public class WebSecurityConfig {
             .authoritiesByUsernameQuery("SELECT userid, authority FROM members WHERE userid = ?")
             .passwordEncoder(bCryptPasswordEncoder);
     }
-    
+
+    // ✅ 1. Flutter 로그인용 - 인증 없이 허용
     @Bean
-    @Order(1)  // 우선순위 먼저
+    @Order(1)
+    public SecurityFilterChain flutterLoginFilterChain(HttpSecurity http) throws Exception {
+        http.securityMatcher("/api/flutter/login")
+            .csrf(csrf -> csrf.disable())
+            .authorizeHttpRequests(auth -> auth.anyRequest().permitAll())
+            .formLogin(form -> form.disable())
+            .httpBasic(basic -> basic.disable());
+
+        return http.build();
+    }
+
+    // ✅ 2. Flutter 인증된 API 요청용
+    @Bean
+    @Order(2)
+    public SecurityFilterChain flutterApiFilterChain(HttpSecurity http) throws Exception {
+    	//플러터에서 받을때 mydiary
+        http.securityMatcher("/api/flutter/**")
+            .csrf(csrf -> csrf.disable())
+            .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+            .requestCache(rc -> rc.disable())
+            .exceptionHandling(ex -> ex
+                .authenticationEntryPoint((req, res, ex2) -> {
+                    res.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                    res.setContentType("application/json;charset=UTF-8");
+                    res.getWriter().write("{\"error\": \"Unauthorized\"}");
+                })
+            )
+            .authorizeHttpRequests(auth -> auth.anyRequest().authenticated())
+            .formLogin(form -> form.disable())
+            .httpBasic(basic -> basic.disable())
+            .addFilterBefore(new JwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
+
+        return http.build();
+    }
+    /*    
+    @Bean
+    @Order(1)
     public SecurityFilterChain flutterApiFilterChain(HttpSecurity http) throws Exception {
         http.securityMatcher("/api/flutter/**")
             .csrf(csrf -> csrf.disable())
+            .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // ✅ 리다이렉트 방지
+            .requestCache(rc -> rc.disable()) // ✅ 리다이렉트 방지
+            .exceptionHandling(ex -> ex.authenticationEntryPoint((req, res, ex2) -> res.setStatus(401))) // ✅ 리다이렉트 방지
             .authorizeHttpRequests(auth -> auth
-            	.anyRequest().permitAll() 
-	        )
-            .formLogin(form -> form.disable())   // API에는 로그인폼 적용 안 함
-            .httpBasic(basic -> basic.disable());
+                .requestMatchers("/api/flutter/login").permitAll() // ✅ 로그인은 허용
+                .anyRequest().authenticated()
+            )
+            .formLogin(form -> form.disable())
+            .httpBasic(basic -> basic.disable())
+        	.addFilterBefore(new JwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
+
         return http.build();
     }
+*/
 
     @Bean
     @Order(2)
@@ -75,6 +124,7 @@ public class WebSecurityConfig {
             	    .requestMatchers("/api/weather").permitAll()
             	    .requestMatchers("/api/ranking").permitAll()
             	    .requestMatchers("/api/top10boards").permitAll()
+            	    .requestMatchers("/mydiary/**").authenticated()
 
             	    // 공개 엔드포인트
             	    .requestMatchers("/", "/signup.do", "/signupAction.do",

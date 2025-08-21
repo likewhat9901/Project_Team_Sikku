@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -15,14 +16,15 @@ public class CalendarApiController {
 	@Autowired
 	private CalendarService calendarService;
 
-	@GetMapping("/mydiary/calendar/images")
+	@CrossOrigin(origins = "*")
+	@GetMapping({"/mydiary/calendar/images", "/api/flutter/calendar/images"})
 	public List<DiaryPostResponse> getImagesForMonth(
 			@RequestParam("year") int year, 
 			@RequestParam("month") int month) {
 		// 로그인한 사용자 ID 가져오기
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		String userId = auth.getName();
-		
+		System.out.println("캘린더 로그인 사용자 : "+userId);
 		//service로 전달
 		List<DiaryPostResponse> posts = calendarService.getPostsByMonth(year, month, userId);
 		System.out.println("API 호출" + posts.size());
