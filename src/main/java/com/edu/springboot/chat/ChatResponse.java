@@ -2,6 +2,7 @@ package com.edu.springboot.chat;
 
 import lombok.Data;
 
+//응답 DTO
 public class ChatResponse {
 	@Data
     public static class ChatMessageDTO {

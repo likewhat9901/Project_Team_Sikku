@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 import lombok.RequiredArgsConstructor;
 
+// 클라이언트로부터 오는 메시지 처리
+
 @RequiredArgsConstructor
 @Controller
 public class ChatbotController {

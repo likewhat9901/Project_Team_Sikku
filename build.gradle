@@ -32,6 +32,8 @@ eclipse.wtp.facet {
 }
 
 dependencies {
+	// 데이터 유효성 검사
+	implementation 'org.springframework.boot:spring-boot-starter-validation'
 	// Spring Data JPA 의존성 추가
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	//시큐리티 추가
@@ -70,6 +72,11 @@ dependencies {
 
 	// mustache 탬플릿을 위한 의존
 	implementation 'org.springframework.boot:spring-boot-starter-mustache'
+	
+	//JWT
+	implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
+	runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.11.5'
+	runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.11.5'
 }
 
 tasks.named('test') {

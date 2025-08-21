@@ -1,6 +1,7 @@
 package com.edu.springboot.chat;
 import lombok.Data;
 
+//요청 DTO
 public class ChatRequest {
 
     @Data
