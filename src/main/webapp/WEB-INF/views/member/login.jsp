@@ -39,6 +39,9 @@
 
 					<button class="form-button" type="submit">로그인</button>
 				</form>
+				<div class="footer-link">
+					<a href="/signup.do">회원가입 바로가기</a>
+				</div>
 			</c:if>
 
 			<c:if test="${not loginResult}">

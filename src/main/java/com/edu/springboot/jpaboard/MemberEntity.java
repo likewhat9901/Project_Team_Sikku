@@ -6,7 +6,6 @@ import lombok.*;
 import java.time.LocalDateTime;
 
 
-@Data
 @Entity
 @Table(name = "members")
 @Getter

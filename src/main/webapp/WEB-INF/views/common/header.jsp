@@ -16,8 +16,8 @@
 <!-- Header Section -->
 <div class="header">
     <div class="header-content">
-	        <sec:authorize access="isAuthenticated()">
-	    <a href="/main/member.do">
+    <sec:authorize access="isAuthenticated()">
+	    <a href="/main/nonMember.do">
 	        <div class="logo">
 	            <img alt="" src="/images/header/logo.png" />
 	        </div>
@@ -33,9 +33,9 @@
 	</sec:authorize>
 	
         <div class="nav-icons">
-            <div class="nav-item" onclick="location.href='/main/nonMember.do'">
+            <div class="nav-item" onclick="location.href='/main/member.do'">
                 <div class="icon-box"><img alt="" src="/images/header/icons/icon_farmer_man.png"/></div>
-                <span>비회원</span>
+                <span>상태창</span>
             </div>
         	<div class="nav-item" onclick="location.href='/about/identity.do'">
 	            <div class="icon-box"><img alt="" src="/images/header/icons/icon_farmhouse.png"/></div>

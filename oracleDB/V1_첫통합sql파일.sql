@@ -224,12 +224,12 @@ VALUES (board_seq.NEXTVAL, 'hani',
         '상추 잎에 작은 점이 생겼는데 방제 방법 추천 부탁드려요.', 1);
 
 INSERT INTO hboard (boardidx, userid, title, content, category)
-VALUES (board_seq.NEXTVAL, 'hani',
+VALUES (board_seq.NEXTVAL, 'user',
         '물주기 주기 어느 정도가 적당할까요?',
         '실내 화분(몬스테라) 기준으로 주 몇 회가 좋은지 경험 공유 부탁드려요.', 1);
 
 INSERT INTO hboard (boardidx, userid, title, content, category)
-VALUES (board_seq.NEXTVAL, 'hani',
+VALUES (board_seq.NEXTVAL, 'user',
         '텃밭 첫파종 후기',
         '상추/바질 파종했는데 발아율 괜찮네요. 흙 배합은 상토7+펄라이트2+질석1 사용.', 2);
 
@@ -239,9 +239,81 @@ VALUES (board_seq.NEXTVAL, 'cheon',
         '창문이 북향이라 광량이 부족해요. 전력 20~30W대 사용해보신 분 있나요?', 1);
 
 INSERT INTO hboard (boardidx, userid, title, content, category)
-VALUES (board_seq.NEXTVAL, 'cheon',
+VALUES (board_seq.NEXTVAL, 'user',
         '해충 트랩 자작 후기',
         '노란 점착 트랩이 꽤 효과 있었어요. 붙은 개체 수가 확 줄었습니다.', 2);
+INSERT INTO hboard (boardidx, userid, title, content, category)
+VALUES (board_seq.NEXTVAL, 'test', '식물 키우기 처음인데 어떤 종이 좋을까요?', '화분을 들이려고 하는데 초보자에게 적합한 식물 알려주실 분 계신가요?', 1);
+INSERT INTO hboard (boardidx, userid, title, content, category)
+VALUES (board_seq.NEXTVAL, 'test', '겨울철 실내 식물 관리 꿀팁 알려주세요', '겨울철에 물 주는 빈도나 실내 온도 조절 팁 좀 나눠주세요!', 1);
+INSERT INTO hboard (boardidx, userid, title, content, category)
+VALUES (board_seq.NEXTVAL, 'test', '햇빛이 잘 안 드는 집에서 키울 수 있는 식물 추천!', '햇빛이 부족한 집에서도 잘 자라는 식물이 있을까요?', 1);
+INSERT INTO hboard (boardidx, userid, title, content, category)
+VALUES (board_seq.NEXTVAL, 'test', '화분 갈이 주기는 어떻게 되나요?', '화분을 몇 년마다 바꿔줘야 하는지 모르겠어요. 도와주세요!', 1);
+INSERT INTO hboard (boardidx, userid, title, content, category)
+VALUES (board_seq.NEXTVAL, 'test', '잎이 노랗게 변하는데 왜 그런 걸까요?', '잎 끝이 갈색으로 변해가는데 원인을 모르겠어요...', 1);
+INSERT INTO hboard (boardidx, userid, title, content, category)
+VALUES (board_seq.NEXTVAL, 'test', '실내 공기정화에 좋은 식물은 뭐가 있나요?', '공기 정화가 잘 되는 식물 추천 부탁드려요~', 1);
+INSERT INTO hboard (boardidx, userid, title, content, category)
+VALUES (board_seq.NEXTVAL, 'test', '베란다에서 키우기 좋은 식물 있을까요?', '베란다 환경에서도 키우기 쉬운 식물 있을까요?', 1);
+INSERT INTO hboard (boardidx, userid, title, content, category)
+VALUES (board_seq.NEXTVAL, 'test', '토양은 얼마나 자주 갈아줘야 하나요?', '토양을 얼마나 자주 새로 바꿔주는 게 좋은가요?', 1);
+INSERT INTO hboard (boardidx, userid, title, content, category)
+VALUES (board_seq.NEXTVAL, 'test', '수경재배와 토양재배 장단점이 궁금해요', '수경재배는 비추인가요? 해보신 분 후기 듣고 싶어요', 1);
+INSERT INTO hboard (boardidx, userid, title, content, category)
+VALUES (board_seq.NEXTVAL, 'test', '식물 영양제 추천 좀 해주세요!', '요즘 쓰는 영양제 있으신가요? 효과 어떤가요?', 1);
+INSERT INTO hboard (boardidx, userid, title, content, category)
+VALUES (board_seq.NEXTVAL, 'test', '거실에 두기 좋은 큰 화분 식물 추천', '큰 화분으로 분위기 바꾸려는데 추천 식물 있으신가요?', 1);
+INSERT INTO hboard (boardidx, userid, title, content, category)
+VALUES (board_seq.NEXTVAL, 'test', '반려동물과 함께 키우기 안전한 식물은?', '고양이 키우는데 안전한 식물만 고르고 싶어요', 1);
+INSERT INTO hboard (boardidx, userid, title, content, category)
+VALUES (board_seq.NEXTVAL, 'test', '초보자가 키우기 쉬운 다육이 추천!', '처음 시작하는 다육식물, 어떤 게 좋을까요?', 1);
+INSERT INTO hboard (boardidx, userid, title, content, category)
+VALUES (board_seq.NEXTVAL, 'test', '선인장 물 주는 주기 어떻게 하세요?', '선인장은 물 안 줘도 된다는데 어느 정도로 안 주나요?', 1);
+INSERT INTO hboard (boardidx, userid, title, content, category)
+VALUES (board_seq.NEXTVAL, 'test', '여름철 식물 관리 팁 공유해주세요', '여름에는 식물 시들시들한데 어떻게 관리하세요?', 1);
+INSERT INTO hboard (boardidx, userid, title, content, category)
+VALUES (board_seq.NEXTVAL, 'test', '식물 성장에 LED 조명 효과 있을까요?', '식물용 LED 써보신 분 계신가요? 효과 있나요?', 1);
+INSERT INTO hboard (boardidx, userid, title, content, category)
+VALUES (board_seq.NEXTVAL, 'test', '화분에 벌레 생겼어요 어떻게 하죠?', '벌레가 너무 생겨서 곤란해요... 해결책 좀요ㅠ', 1);
+INSERT INTO hboard (boardidx, userid, title, content, category)
+VALUES (board_seq.NEXTVAL, 'test', '식물 잎 닦는 방법이 따로 있나요?', '잎에 먼지가 자꾸 쌓이는데 어떻게 관리하시나요?', 1);
+INSERT INTO hboard (boardidx, userid, title, content, category)
+VALUES (board_seq.NEXTVAL, 'test', '가지치기 언제 어떻게 하시나요?', '가지치기 언제가 적당한가요? 도구는 뭐 쓰세요?', 1);
+INSERT INTO hboard (boardidx, userid, title, content, category)
+VALUES (board_seq.NEXTVAL, 'test', '이사할 때 식물은 어떻게 옮기세요?', '식물이 많아서 이사할 때 걱정이에요. 팁 좀 주세요', 1);
+INSERT INTO hboard (boardidx, userid, title, content, category)
+VALUES (board_seq.NEXTVAL, 'test', '식물 이름을 모르겠어요 도와주세요!', '사진 속 이 식물 이름 아시는 분 계신가요?', 1);
+INSERT INTO hboard (boardidx, userid, title, content, category)
+VALUES (board_seq.NEXTVAL, 'test', '물 많이 먹는 식물과 적게 먹는 식물 차이?', '물을 주는 기준을 어떻게 잡으세요?', 1);
+INSERT INTO hboard (boardidx, userid, title, content, category)
+VALUES (board_seq.NEXTVAL, 'test', '화분 배수 구멍 꼭 있어야 하나요?', '배수 구멍이 없는 화분 써도 괜찮나요?', 1);
+INSERT INTO hboard (boardidx, userid, title, content, category)
+VALUES (board_seq.NEXTVAL, 'test', '천장에 식물 매달아 키워보신 분?', '천장 플랜테리어 해보신 분 후기 듣고 싶어요!', 1);
+INSERT INTO hboard (boardidx, userid, title, content, category)
+VALUES (board_seq.NEXTVAL, 'test', '이끼볼 키우는 법 아시는 분?', '이끼볼 만들기 어려울까요? 유지 방법 궁금해요', 1);
+INSERT INTO hboard (boardidx, userid, title, content, category)
+VALUES (board_seq.NEXTVAL, 'test', '겨울철 베란다 월동 팁 부탁드려요', '베란다 월동은 어떤 재료로 보온하세요?', 1);
+INSERT INTO hboard (boardidx, userid, title, content, category)
+VALUES (board_seq.NEXTVAL, 'test', '식물도 음악 들으면 좋아할까요?', '음악 틀어주는 게 식물 성장에 효과 있을까요?', 1);
+INSERT INTO hboard (boardidx, userid, title, content, category)
+VALUES (board_seq.NEXTVAL, 'test', '관엽식물에 가장 잘 맞는 흙은?', '관엽식물 전용 흙이 따로 있던데 써보셨나요?', 1);
+INSERT INTO hboard (boardidx, userid, title, content, category)
+VALUES (board_seq.NEXTVAL, 'test', '플랜테리어 하신 분들 후기 궁금해요', '식물 인테리어 후기가 궁금합니다~ 사진도 환영!', 1);
+INSERT INTO hboard (boardidx, userid, title, content, category)
+VALUES (board_seq.NEXTVAL, 'test', '다육이가 갑자기 말라요 왜 그럴까요?', '다육이가 잎이 말라가요ㅠ 혹시 병일까요?', 1);
+INSERT INTO hboard (boardidx, userid, title, content, category)
+VALUES (board_seq.NEXTVAL, 'user', '아이 방에 둘 식물 추천해주세요', '아이 방에 둘 안전한 식물 뭐가 있을까요?', 2);
+INSERT INTO hboard (boardidx, userid, title, content, category)
+VALUES (board_seq.NEXTVAL, 'user', '식물 선물로 괜찮은 종류 있을까요?', '식물 선물해보신 분들 추천 부탁드려요!', 2);
+INSERT INTO hboard (boardidx, userid, title, content, category)
+VALUES (board_seq.NEXTVAL, 'user', '습도 조절에 좋은 식물 뭐가 있을까요?', '습도 유지를 위해 식물 하나 들이고 싶은데 조언 좀요', 2);
+INSERT INTO hboard (boardidx, userid, title, content, category)
+VALUES (board_seq.NEXTVAL, 'user', '책상 위에 둘만한 식물 추천해주세요', '책상 옆에 둘만한 작고 귀여운 식물 추천해주세요', 2);
+INSERT INTO hboard (boardidx, userid, title, content, category)
+VALUES (board_seq.NEXTVAL, 'user', '좁은 공간에 잘 어울리는 식물 뭐 있나요?', '좁은 원룸에서도 키울 수 있는 식물 뭐가 있을까요?', 2);
+INSERT INTO hboard (boardidx, userid, title, content, category)
+VALUES (board_seq.NEXTVAL, 'user', '꽃 피는 실내 식물 키워보신 분 계세요?', '실내에서 꽃 피우는 식물 뭐 키워보셨어요?', 2);
         
 
 /* 커밋 */
