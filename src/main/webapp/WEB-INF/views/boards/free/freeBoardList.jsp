@@ -25,7 +25,7 @@
 	</div>
 
 	<div class="search-write-container">
-		<form action="/boards/free/freeBoardList.do" method="get">
+		<form action="/boards/free/freeBoardSearch.do" method="get">
 			<input type="search" name="searchWord" placeholder="검색어를 입력해보세요"
 				value="${param.searchWord != null ? param.searchWord : ''}">
 			<button type="submit" class="search-btn">검색</button>
@@ -37,7 +37,7 @@
 
 	<div id="board-container" class="board-container">
 
-		<!-- 카드 부분만 수정 -->
+		<!-- 게시물 카드 -->
 		<c:forEach items="${rows}" var="row" varStatus="vs">
 			<div class="board-card"
 				onclick="location.href='/boards/free/freeBoardView.do?boardIdx=${row.boardIdx}'">

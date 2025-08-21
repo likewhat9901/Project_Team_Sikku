@@ -44,6 +44,7 @@ public class BoardService {
 	    return boardRows;
 	}
    
+   
    /******************** 갤러리게시판 (카테고리=2) *****************/
    // 목록 (검색어X)
    public Page<BoardEntity> selectGList(Pageable pageable, Integer category) {
@@ -57,6 +58,15 @@ public class BoardService {
 	    return boardRows;
 	}
    
+   /**********************************************************************/
+   
+   // 목록 (복합 검색어)
+   public Page<BoardEntity> selectListComplexSearch(Pageable pageable, BoardSearchCondDTO condDTO) {
+	   Page<BoardEntity> boardRows = br.searchComplex(pageable, condDTO);
+	   return boardRows;
+   }
+   
+   /**********************************************************************/
    
    // 순수하게 게시물 정보만 조회하는 메서드
    public Optional<BoardEntity> selectPost(Long boardIdx) {
