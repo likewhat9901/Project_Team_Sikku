@@ -56,7 +56,7 @@
 
 				<!-- 액션 버튼 -->
 				<div class="feed-actions">
-					❤️ &nbsp ${likesCountMap[row.boardIdx]} &nbsp&nbsp 
+					❤️ &nbsp ${row.likesCount} &nbsp&nbsp 
 					💬 &nbsp ${commentCountMap[row.boardIdx]}
 				</div>
 

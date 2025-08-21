@@ -16,6 +16,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -64,9 +65,6 @@ public class FreeController {
 		String searchWord = req.getParameter("searchWord");
 		String pageNum = req.getParameter("pageNum");
 		
-		System.out.println("검색어=" + searchWord);
-		System.out.println("페이지번호=" + pageNum);
-		
 		//내림차순 정렬
 		//페이지 번호는 0부터 시작하기 때문에 -1처리.
 		Sort sort = Sort.by(Sort.Order.desc("boardIdx"));
@@ -75,24 +73,11 @@ public class FreeController {
 		// PageRequest : 페이징 요청 객체
 		Pageable pageable = PageRequest.ofSize(10).withPage(iPageNum).withSort(sort);
 		
+		// 게시물 리스트
 		Page<BoardEntity> boardResult;
-		//검색어가 없을 때 목록
-		if (searchWord == null || searchWord.equals("")) {
-			boardResult = bs.selectList(pageable, 1);
-		}
-		//검색어가 있을 때 목록
-		else {
-			boardResult = bs.selectListSearch(pageable, 1, searchWord);
-		}
-		
+		boardResult = bs.selectList(pageable, 1);
 		List<BoardEntity> rows = boardResult.getContent();
-		
 		model.addAttribute("rows", rows);
-		
-		
-		//현재 로그인한 userId 가져오기
-		String loginUserId = principal.getName();
-		model.addAttribute("loginUserId", loginUserId);
 		
 		//좋아요 model에 담아 넘기기
 		Map<Long, Long> likesCountMap = new HashMap<>();
@@ -106,28 +91,44 @@ public class FreeController {
 		return "/boards/free/freeBoardList";
 	}
 	
+	//게시물 검색
+	@GetMapping("/boards/free/freeBoardSearch.do")
+	public String search(
+					BoardSearchCondDTO condDTO,
+					@PageableDefault(size=10, sort="postdate",
+									direction=Sort.Direction.DESC)Pageable pageable,
+					Model model) {
+		
+		Page<BoardEntity> result = bs.selectListComplexSearch(pageable, condDTO);
+		List<BoardEntity> rows = result.getContent();
+		model.addAttribute("rows", rows);
+		
+		//좋아요 model에 담아 넘기기
+		Map<Long, Long> likesCountMap = new HashMap<>();
+		for (BoardEntity board : rows) {
+			long likesCount = lr.countByBoard_BoardIdx(board.getBoardIdx());
+			likesCountMap.put(board.getBoardIdx(), likesCount);
+			System.out.println("디버깅:likesCountMap=" + likesCountMap);
+		}
+		model.addAttribute("likesCountMap", likesCountMap);
+		
+		return "/boards/free/freeBoardList";
+	}
+	
+	
+	
 	//무한 스크롤
 	@GetMapping("/boards/free/freeBoardListMore.do")
 	@ResponseBody
-	public List<Map<String, Object>> getMoreBoards(@RequestParam("page") int page,
-														HttpServletRequest req) {
+	public List<Map<String, Object>> getMoreBoards(
+					@RequestParam("page") int page,
+					BoardSearchCondDTO condDTO,
+					@PageableDefault(size=10, sort="postdate",
+									direction=Sort.Direction.DESC)Pageable pageable,
+					Model model) {
 	    System.out.println("요청 페이지: " + page);
 	    
-		String searchWord = req.getParameter("searchWord");
-		String pageNum = req.getParameter("pageNum");
-	    
-	    // DB에서 실제 데이터 가져오기
-	    Sort sort = Sort.by(Sort.Order.desc("boardIdx"));
-	    Pageable pageable = PageRequest.of(page, 10, sort);
-
-	    Page<BoardEntity> pageResult;
-	    
-	    if(searchWord == null || searchWord.equals("")) {
-	        pageResult = bs.selectList(pageable, 1);
-	    }
-	    else {
-	        pageResult = bs.selectListSearch(pageable, 1, searchWord);
-	    }
+	    Page<BoardEntity> pageResult = bs.selectListComplexSearch(pageable, condDTO);
 	    
 	    // 간단한 테스트 데이터
 	    List<Map<String, Object>> realData = new ArrayList<>();
@@ -142,11 +143,9 @@ public class FreeController {
 	        boardMap.put("likes", board.getLikesCount());
 	        realData.add(boardMap);
 	    }
-	    
 	    return realData;
 	}
 
-	
 	
 	//게시물 상세보기
 	@GetMapping("/boards/free/freeBoardView.do")

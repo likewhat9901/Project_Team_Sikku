@@ -73,9 +73,6 @@ public class GalleryController {
 		String searchWord = req.getParameter("searchWord");
 		String pageNum = req.getParameter("pageNum");
 
-		System.out.println("검색어=" + searchWord);
-		System.out.println("페이지번호=" + pageNum);
-
 		// 내림차순 정렬
 		// 페이지 번호는 0부터 시작하기 때문에 -1처리.
 		Sort sort = Sort.by(Sort.Order.desc("boardIdx"));
@@ -101,15 +98,6 @@ public class GalleryController {
 		// 현재 로그인한 userId 가져오기
 		String loginUserId = principal.getName();
 		model.addAttribute("loginUserId", loginUserId);
-
-		// 좋아요 model에 담아 넘기기
-		Map<Long, Long> likesCountMap = new HashMap<>();
-		for (BoardEntity board : rows) {
-			long likesCount = lr.countByBoard_BoardIdx(board.getBoardIdx());
-			likesCountMap.put(board.getBoardIdx(), likesCount);
-			System.out.println("디버깅:likesCountMap=" + likesCountMap);
-		}
-		model.addAttribute("likesCountMap", likesCountMap);
 		
 		//댓글 갯수 가져오기
 		Map<Long, Integer> commentCountMap = new HashMap<>();
@@ -138,23 +126,21 @@ public class GalleryController {
 
 	}
 
-	// 무한 스크롤
+	// 무한스크롤을 위한 추가 데이터 로딩 API
 	@GetMapping("/boards/gallery/galleryBoardListMore.do")
-	// 서버에서 클라이언트 쪽으로 JSON형태로 바로 보이도록 하는 어노테이션
 	@ResponseBody
-	// 반환타입이 Map<문자타입, 객체>
 	public Map<String, Object> getMoreBoards(@RequestParam("page") int page,
 													HttpServletRequest req) {
-	    System.out.println("요청 페이지: " + page);
-	    
+		// 검색어가 있는 경우 해당 검색어도 함께 처리
 	    String searchWord = req.getParameter("searchWord");
 	    
-	    // DB에서 실제 데이터 가져오기
+	    // 최신 게시물부터 보여주기 위해 boardIdx 기준 내림차순 정렬
 	    Sort sort = Sort.by(Sort.Order.desc("boardIdx"));
 	    Pageable pageable = PageRequest.of(page, 5, sort);
 	    
 	    Page<BoardEntity> pageResult;
 	    
+	    // 검색어가 null일 경우 전체 검색으로 처리 (null-safe 보장)
 	    if (searchWord == null || searchWord.equals("")) {
 	        pageResult = bs.selectGList(pageable, 2);
 	    } else {

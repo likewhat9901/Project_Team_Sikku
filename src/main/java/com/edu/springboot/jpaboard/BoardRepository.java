@@ -11,8 +11,12 @@ import org.springframework.data.jpa.repository.Query;
 import com.edu.springboot.jpaboard.dto.IBoardRow;
 import com.edu.springboot.jpaboard.dto.MyPostDto;
 
-public interface BoardRepository extends JpaRepository<BoardEntity, Long> {
-    // 기본적인 CRUD + findAll(Sort sort) 등 제공
+// public interface BoardRepository extends JpaRepository<BoardEntity, Long> {
+
+// 커스텀 레포지토리를 만든 후 기존 레포지토리와 연결.
+public interface BoardRepository extends JpaRepository<BoardEntity, Long>,
+														BoardRepositoryCustom {
+
 	
 	// 카테고리를 기준으로 데이터 가져오기
 	Page<BoardEntity> findByCategory(Pageable pageable, Integer category);
