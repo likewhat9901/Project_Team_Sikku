@@ -224,12 +224,12 @@ VALUES (board_seq.NEXTVAL, 'hani',
         '상추 잎에 작은 점이 생겼는데 방제 방법 추천 부탁드려요.', 1);
 
 INSERT INTO hboard (boardidx, userid, title, content, category)
-VALUES (board_seq.NEXTVAL, 'user',
+VALUES (board_seq.NEXTVAL, 'hani',
         '물주기 주기 어느 정도가 적당할까요?',
         '실내 화분(몬스테라) 기준으로 주 몇 회가 좋은지 경험 공유 부탁드려요.', 1);
 
 INSERT INTO hboard (boardidx, userid, title, content, category)
-VALUES (board_seq.NEXTVAL, 'user',
+VALUES (board_seq.NEXTVAL, 'hani',
         '텃밭 첫파종 후기',
         '상추/바질 파종했는데 발아율 괜찮네요. 흙 배합은 상토7+펄라이트2+질석1 사용.', 2);
 
@@ -314,6 +314,9 @@ INSERT INTO hboard (boardidx, userid, title, content, category)
 VALUES (board_seq.NEXTVAL, 'user', '좁은 공간에 잘 어울리는 식물 뭐 있나요?', '좁은 원룸에서도 키울 수 있는 식물 뭐가 있을까요?', 2);
 INSERT INTO hboard (boardidx, userid, title, content, category)
 VALUES (board_seq.NEXTVAL, 'user', '꽃 피는 실내 식물 키워보신 분 계세요?', '실내에서 꽃 피우는 식물 뭐 키워보셨어요?', 2);
+VALUES (board_seq.NEXTVAL, 'cheon',
+        '해충 트랩 자작 후기',
+        '노란 점착 트랩이 꽤 효과 있었어요. 붙은 개체 수가 확 줄었습니다.', 2);
         
 
 /* 커밋 */

@@ -1,6 +1,5 @@
 package com.edu.springboot.auth;
 import javax.sql.DataSource;
-// 필요하면: import org.springframework.security.crypto.password.PasswordEncoder;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -99,7 +98,6 @@ public class WebSecurityConfig {
 
             	    // 비회원 메인
             	    .requestMatchers("/main/nonMember.do").permitAll()
-
             	    // 날씨, 랭킹
             	    .requestMatchers("/api/weather").permitAll()
             	    .requestMatchers("/api/ranking").permitAll()

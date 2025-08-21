@@ -17,7 +17,12 @@ public interface IDictService {
 
     List<DictDTO> selectAllPlants();
 
+    //식물 도감 삭제
     public int deletePlantDict(int plantidx);
     
+    //식물도감 수정
+    int updatePlantDict(DictDTO dto);
+    
     int getMaxPlantIdx();
+    
 }

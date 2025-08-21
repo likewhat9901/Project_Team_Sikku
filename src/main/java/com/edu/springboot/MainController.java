@@ -312,4 +312,43 @@ public class MainController {
         return "/admin/admin"; // JSP 경로
     }
     
+    //식물도감 수정
+    @PostMapping("/admin/dict/update.do")
+    public String updatePlantDict(
+            DictDTO dto,
+            @RequestParam(value = "image", required = false) MultipartFile image,
+            RedirectAttributes redirectAttrs) {
+
+        try {
+            // 이미지 새로 업로드한 경우 저장
+            if (image != null && !image.isEmpty()) {
+                Path uploadRoot = Paths.get(new ClassPathResource("static/images/dict").getFile().getAbsolutePath());
+                Files.createDirectories(uploadRoot);
+
+                String ext = "";
+                String original = image.getOriginalFilename();
+                if (original != null && original.contains(".")) {
+                    ext = original.substring(original.lastIndexOf("."));
+                }
+                String savedName = "dict_" +
+                        LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss_SSS")) + ext;
+
+                Files.copy(image.getInputStream(),
+                        uploadRoot.resolve(savedName),
+                        StandardCopyOption.REPLACE_EXISTING);
+
+                dto.setImgpath(savedName); // 새 파일명으로 갱신
+            }
+
+            dao.updatePlantDict(dto);
+            redirectAttrs.addFlashAttribute("successMsg", "식물 정보가 수정되었습니다!");
+        } catch (Exception e) {
+            e.printStackTrace();
+            redirectAttrs.addFlashAttribute("errorMsg", "수정 실패: " + e.getMessage());
+        }
+
+        return "redirect:/admin/index.do";
+    }
+
+    
 }
