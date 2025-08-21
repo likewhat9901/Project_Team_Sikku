@@ -29,12 +29,12 @@ public class AuthApiController {
         // 아이디/비번이 "test"/"1234"면 성공, 아니면 실패
         if ("test".equals(req.getUsername()) && "1234".equals(req.getPassword())) {
         	
+        	// 진짜 JWT 생성
+            String jwt = JwtTokenProvider.generateToken(req.getUsername());
         	/* ResponseEntity.ok(...)
 			→ HTTP 상태 코드 200 OK와 함께 응답 바디를 돌려줌.
-			(new LoginResponse(...)가 JSON으로 변환돼서 Flutter로 전달)
-        	 */
-        	// 진짜 JWT 대신 임시 토큰 문자열 리턴
-            return ResponseEntity.ok(new LoginResponse("dummy-jwt-token-abc.def.ghi"));
+			(new LoginResponse(...)가 JSON으로 변환돼서 Flutter로 전달) */
+            return ResponseEntity.ok(new LoginResponse(jwt));
         }
         // 실패 시 401
         return ResponseEntity.status(401).body("Invalid credentials");
