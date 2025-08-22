@@ -207,11 +207,7 @@
             <th>번호</th>
             <th>식물명</th>
             <th>영문명</th>
-<<<<<<< HEAD
-            <th>카테고리</th>
-=======
             <th>분류</th>
->>>>>>> origin/jinkyeong
             <th>이미지</th>
             <th>삭제</th>
           </tr>
@@ -221,8 +217,6 @@
               <td>${p.name}</td>
               <td>${p.engname}</td>
               <td>${p.category}</td>
-<<<<<<< HEAD
-=======
               <td style="display:none;">${p.summary}</td>
               <td style="display:none;">${p.growseason}</td>
               <td style="display:none;">${p.bloomingseason}</td>
@@ -232,7 +226,6 @@
               <td style="display:none;">${p.water}</td>
               <td style="display:none;">${p.disease}</td>
               <td style="display:none;">${p.note}</td>
->>>>>>> origin/jinkyeong
               <td><img src="/images/dict/${p.imgpath}" alt="식물사진" style="max-width:100px;"></td>
               <td>
                 <form action="/admin/deletePlantDict.do" method="post"
@@ -240,11 +233,8 @@
                     <input type="hidden" name="plantidx" value="${p.plantidx}" />
                     <button type="submit">삭제</button>
                 </form>
-<<<<<<< HEAD
-=======
                  <!-- 수정 버튼 -->
  				 <button type="button" class="edit-btn" data-id="${p.plantidx}">수정</button>
->>>>>>> origin/jinkyeong
             </td>
             </tr>
           </c:forEach>
@@ -261,39 +251,23 @@
 		
 		    <input type="text" name="name" placeholder="식물 이름" required>
 		    <input type="text" name="engname" placeholder="영문 이름">
-<<<<<<< HEAD
-		    <input type="text" name="category" placeholder="카테고리">
-		    <textarea name="summary" placeholder="요약 설명"></textarea>
-		    <textarea name="feature" placeholder="특징"></textarea>
-=======
 		    <input type="text" name="category" placeholder="분류">
 		    <textarea name="summary" placeholder="개요"></textarea>
->>>>>>> origin/jinkyeong
 		    <input type="text" name="growseason" placeholder="생육 시기 (예: 봄~가을)">
 		    <input type="text" name="bloomingseason" placeholder="개화 시기 (예: 7~8월)">
 		    <input type="text" name="sunlight" placeholder="햇빛 환경 (예: 반양지~양지)">
 		    <input type="text" name="temperature" placeholder="재배 온도 (예: 18~25℃)">
-<<<<<<< HEAD
-		    <input type="text" name="humidity" placeholder="습도 (예: 50~60%)">
-		    <input type="text" name="water" placeholder="물 주기 (예: 주 1회)">
-		    <textarea name="disease" placeholder="병충해"></textarea>
-		    <textarea name="summary" placeholder="요약 설명"></textarea>
-		    <textarea name="note" placeholder="기타 메모"></textarea>
-=======
 		    <input type="text" name="humidity" placeholder="재배 습도 (예: 50~60%)">
 		    <input type="text" name="water" placeholder="물 주기 (예: 주 1회)">
 		    <textarea name="disease" placeholder="병충해"></textarea>
 		    <textarea name="summary" placeholder="개요"></textarea>
 		    <textarea name="note" placeholder="기타 정보"></textarea>
->>>>>>> origin/jinkyeong
 		
 		    <input type="file" name="image" accept="image/*" required>
 		
 		    <input type="submit" value="등록" class="admin-btn" >
 		  </form>
 	  </div>
-<<<<<<< HEAD
-=======
 	  
 	  <!-- 수정폼 -->
 	<div id="dict-edit-form" style="display:none; margin-top:20px;">
@@ -323,7 +297,6 @@
 	  </form>
 	</div>
 	  
->>>>>>> origin/jinkyeong
 
     </div>
   </div>
@@ -351,8 +324,6 @@
     this.style.display = "none"; // 버튼 자체를 숨김
   });
   
-<<<<<<< HEAD
-=======
   document.querySelectorAll(".edit-btn").forEach(btn => {
 	  btn.addEventListener("click", function() {
 	    const row = this.closest("tr");
@@ -376,7 +347,6 @@
 	});
 
   
->>>>>>> origin/jinkyeong
   
 </script>
 </body>
