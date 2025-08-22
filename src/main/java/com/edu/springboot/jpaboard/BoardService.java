@@ -176,4 +176,26 @@ public class BoardService {
     public List<MyPostDto> getMyPostsOf(String userId) {
         return br.findMyPosts(userId);
     }
+    
+    /**********************************************************************/
+
+    
+    // 최근 7일 게시글 통계 가져오기
+    public List<WeeklyPostCountDTO> getWeeklyPosts() {
+    	return br.countWeeklyPosts();
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
 }

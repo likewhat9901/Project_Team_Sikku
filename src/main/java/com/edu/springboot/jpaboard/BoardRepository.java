@@ -30,16 +30,6 @@ public interface BoardRepository extends JpaRepository<BoardEntity, Long>,
     
     
     
-//    // 게시글 내용(content)에 대한 검색
-//    Page<BoardEntity> findByContentLike(String content, Pageable pageable);
-//
-//    // 게시글 제목 또는 내용에서 검색
-//    Page<BoardEntity> findByTitleContainingOrContentContaining(String title, String content, Pageable pageable);
-//
-//    // 특정 작성자의 게시글만
-//    Page<BoardEntity> findByWriter(String writer, Pageable pageable);
-    
-    
     @Query("""
             select new com.edu.springboot.jpaboard.dto.MyPostDto(
                 b.boardIdx, b.title, b.postdate

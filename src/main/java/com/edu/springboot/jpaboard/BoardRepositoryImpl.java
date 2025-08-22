@@ -1,5 +1,6 @@
 package com.edu.springboot.jpaboard;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.data.domain.Page;
@@ -7,6 +8,8 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 
 import com.querydsl.core.BooleanBuilder;
+import com.querydsl.core.types.Projections;
+import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
 import lombok.RequiredArgsConstructor;
@@ -60,4 +63,28 @@ public class BoardRepositoryImpl implements BoardRepositoryCustom {
 		 * total: 전체 데이터의 총 개수 (방금 .count()로 계산한 값).
 		 */
 	}
+	
+	@Override
+    public List<WeeklyPostCountDTO> countWeeklyPosts() {
+        QBoardEntity b = QBoardEntity.boardEntity;
+
+        LocalDate today = LocalDate.now();
+        LocalDate sevenDaysAgo = today.minusDays(6);
+
+        
+        List<WeeklyPostCountDTO> result = queryFactory
+        		.select(Projections.constructor(WeeklyPostCountDTO.class,
+    	            // SQL DATE(postdate) → LocalDate로 매핑
+    	            Expressions.dateTemplate(LocalDate.class, "DATE({0})", b.postdate),
+    	            b.count()
+    	        ))
+    	        .from(b)
+    	        .where(b.postdate.between(sevenDaysAgo.atStartOfDay(), today.plusDays(1).atStartOfDay()))
+    	        .groupBy(Expressions.dateTemplate(LocalDate.class, "DATE({0})", b.postdate))
+    	        .orderBy(Expressions.dateTemplate(LocalDate.class, "DATE({0})", b.postdate).asc())
+    	        .fetch();
+        
+        return result;
+    }
+	
 }
