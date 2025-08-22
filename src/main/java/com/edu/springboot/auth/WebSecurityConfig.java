@@ -102,6 +102,7 @@ public class WebSecurityConfig {
             	    .requestMatchers("/api/weather").permitAll()
             	    .requestMatchers("/api/ranking").permitAll()
             	    .requestMatchers("/api/top10boards").permitAll()
+            	    .requestMatchers("/api/dashboard/weekly-posts/**").permitAll()
             	    .requestMatchers("/mydiary/**").authenticated()
 
             	    // 공개 엔드포인트

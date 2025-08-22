@@ -11,15 +11,17 @@
 
 	<h2>주간 게시판 발행량</h2>
 	
+	<button onclick="location.href='/admin/index.do'">뒤로 가기</button>
 	<!-- 주간 게시판 발행량 차트 출력 -->
 	<canvas id="weeklyPostsChart" width="600" height="300"></canvas>
 	
 	<script>
 		async function renderWeeklyPostsChart() {
 		
+		const url = '/api/dashboard/weekly-posts';
 		try {
 			// 백엔드 API 호출
-			const response = await fetch("<c:url value='/api/dashboard/weekly-posts'/>");
+			const response = await fetch(url, {method : 'GET'});
 			const data = await response.json();
 			
 			// 날짜와 게시글 수를 배열로 분리

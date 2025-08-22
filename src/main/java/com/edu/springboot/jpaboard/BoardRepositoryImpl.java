@@ -1,6 +1,7 @@
 package com.edu.springboot.jpaboard;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import org.springframework.data.domain.Page;
@@ -8,8 +9,13 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 
 import com.querydsl.core.BooleanBuilder;
+import com.querydsl.core.Tuple;
+import com.querydsl.core.types.Expression;
 import com.querydsl.core.types.Projections;
+import com.querydsl.core.types.dsl.DateExpression;
 import com.querydsl.core.types.dsl.Expressions;
+import com.querydsl.core.types.dsl.NumberExpression;
+import com.querydsl.core.types.dsl.StringExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
 import lombok.RequiredArgsConstructor;
@@ -70,21 +76,32 @@ public class BoardRepositoryImpl implements BoardRepositoryCustom {
 
         LocalDate today = LocalDate.now();
         LocalDate sevenDaysAgo = today.minusDays(6);
+        
+        StringExpression dayStr = Expressions.stringTemplate(
+                "TO_CHAR({0}, 'YYYY-MM-DD')", b.postdate);
+        
+        NumberExpression<Long> cnt = b.boardIdx.count(); // b.id.count() 로 바꿔도 됨
+//        NumberExpression<Long> cnt = b.count(); // b.count
 
-        
-        List<WeeklyPostCountDTO> result = queryFactory
-        		.select(Projections.constructor(WeeklyPostCountDTO.class,
-    	            // SQL DATE(postdate) → LocalDate로 매핑
-    	            Expressions.dateTemplate(LocalDate.class, "DATE({0})", b.postdate),
-    	            b.count()
-    	        ))
-    	        .from(b)
-    	        .where(b.postdate.between(sevenDaysAgo.atStartOfDay(), today.plusDays(1).atStartOfDay()))
-    	        .groupBy(Expressions.dateTemplate(LocalDate.class, "DATE({0})", b.postdate))
-    	        .orderBy(Expressions.dateTemplate(LocalDate.class, "DATE({0})", b.postdate).asc())
-    	        .fetch();
-        
-        return result;
+        List<Tuple> rows = queryFactory
+            .select(dayStr, cnt)
+            .from(b)
+            .where(b.postdate.between(
+        		sevenDaysAgo.atStartOfDay(),
+                today.plusDays(1).atStartOfDay()   // 오늘 포함
+            ))
+            .groupBy(dayStr)
+            .orderBy(dayStr.asc())
+            .fetch();
+
+        DateTimeFormatter f = DateTimeFormatter.ISO_LOCAL_DATE;
+
+        return rows.stream()
+            .map(t -> new WeeklyPostCountDTO(
+                LocalDate.parse(t.get(dayStr), f), // 문자열 → LocalDate
+                t.get(cnt)
+            ))
+            .toList();
     }
 	
 }

@@ -17,6 +17,9 @@
       <!-- QnA 관리 탭 추가 -->
       <li class="admin-tab-btn" data-tab="qna">QnA 관리</li>
       <li class="admin-tab-btn" data-tab="dict">식물 도감 관리</li>
+      <li class="admin-tab-btn" onclick="location.href='/admin/dashBoard.do'">
+      		대시보드
+      </li>
     </ul>
   </div>
    <button class="admin-home-btn" type="button" onclick="location.href='/main/member.do'" >
