@@ -7,8 +7,8 @@ from tensorflow.keras.preprocessing.image import img_to_array
 # === 모델/라벨/입력크기 매핑 (필요시 과일 추가) =========================
 MODEL_INFO = {
     '딸기': {
-        # 경로 바꾸기 r'D:\project-js\project-js\strawberry_cnn_model.h5')
-        'path': r'D:\project-js\project-js\strawberry_cnn_model.h5',
+        # 경로 확인
+        'path': r'D:\disease\strawberry\strawberry_cnn_model.h5',
         'categories': ["잿빛곰팡이병", "정상", "흰가루병"],
         'input_size': (64, 64)
     },
