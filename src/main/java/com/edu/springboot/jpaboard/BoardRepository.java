@@ -54,4 +54,8 @@ public interface BoardRepository extends JpaRepository<BoardEntity, Long>,
     	""")
     	Page<IBoardRow> findTopByCategory(@Param("category") Integer category, Pageable pageable);
     
+    
+    //================flutter======================
+    List<BoardEntity> findByUserId(String userid);
+    
 }

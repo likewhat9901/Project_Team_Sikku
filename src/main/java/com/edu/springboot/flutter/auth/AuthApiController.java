@@ -38,7 +38,7 @@ public class AuthApiController {
     	String userpw = req.getUserpw();
     	
     	try {
-    		LoginResponse response = authService.login(req.getUserid(), req.getUserpw());
+    		LoginResponse response = authService.login(userid, userpw);
             return ResponseEntity.ok(response);
 		} catch (Exception e) {
 			return ResponseEntity.status(401).body(Map.of("error", e.getMessage()));

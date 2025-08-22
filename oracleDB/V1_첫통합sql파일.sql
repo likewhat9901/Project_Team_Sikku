@@ -216,108 +216,142 @@ INSERT INTO members (
 ) VALUES (
   'cheon', '2222', 'ROLE_USER', 1, 'cheon', '010-2222-2222', 'cheon@google.com', 'Busan'
 );
+- ============================
+-- 1. members 테이블 (독립 테이블 - 가장 먼저)
+-- ============================
+INSERT INTO members VALUES ('user1', '1234', 'ROLE_USER', 1, '식물애호가김씨', '010-1111-1111', 'user1@naver.com', '서울시 강남구', '/profile/user1.jpg');
+INSERT INTO members VALUES ('user2', '1234', 'ROLE_USER', 1, '초록손이박씨', '010-2222-2222', 'user2@gmail.com', '서울시 서초구', '/profile/user2.jpg');
+INSERT INTO members VALUES ('user3', '1234', 'ROLE_USER', 1, '화초키우는이씨', '010-3333-3333', 'user3@hanmail.net', '경기도 성남시', '/profile/user3.jpg');
+INSERT INTO members VALUES ('user4', '1234', 'ROLE_USER', 1, '가드닝조씨', '010-4444-4444', 'user4@naver.com', '서울시 마포구', '/profile/user4.jpg');
+INSERT INTO members VALUES ('user5', '1234', 'ROLE_USER', 1, '베란다농부최씨', '010-5555-5555', 'user5@daum.net', '부산시 해운대구', '/profile/user5.jpg');
+INSERT INTO members VALUES ('user6', '1234', 'ROLE_USER', 1, '플랜테리어정씨', '010-6666-6666', 'user6@gmail.com', '대구시 수성구', '/profile/user6.jpg');
+INSERT INTO members VALUES ('user7', '1234', 'ROLE_USER', 1, '다육이사랑강씨', '010-7777-7777', 'user7@naver.com', '광주시 동구', '/profile/user7.jpg');
+INSERT INTO members VALUES ('user8', '1234', 'ROLE_USER', 1, '실내원예윤씨', '010-8888-8888', 'user8@hanmail.net', '대전시 서구', '/profile/user8.jpg');
+INSERT INTO members VALUES ('user9', '1234', 'ROLE_USER', 1, '꽃키우는송씨', '010-9999-9999', 'user9@gmail.com', '울산시 남구', '/profile/user9.jpg');
+INSERT INTO members VALUES ('user10', '1234', 'ROLE_USER', 1, '허브마니아한씨', '010-1010-1010', 'user10@daum.net', '인천시 연수구', '/profile/user10.jpg');
+INSERT INTO members VALUES ('admin1', '1234', 'ROLE_ADMIN', 1, '관리자', '010-0000-0000', 'admin@plantcare.com', '서울시 종로구', '/profile/admin.jpg');
 
-/* hboard */
-INSERT INTO hboard (boardidx, userid, title, content, category)
-VALUES (board_seq.NEXTVAL, 'hani',
-        '병충해 방제 질문',
-        '상추 잎에 작은 점이 생겼는데 방제 방법 추천 부탁드려요.', 1);
+-- ============================
+-- 2. hboard 테이블 (members 참조)
+-- ============================
 
-INSERT INTO hboard (boardidx, userid, title, content, category)
-VALUES (board_seq.NEXTVAL, 'hani',
-        '물주기 주기 어느 정도가 적당할까요?',
-        '실내 화분(몬스테라) 기준으로 주 몇 회가 좋은지 경험 공유 부탁드려요.', 1);
+-- 카테고리 1 (자유게시판) - 25개 (좋아요 수 hlike 테이블과 맞춤)
+INSERT INTO hboard VALUES (board_seq.nextval, 'user1', '식물 키우기 초보 질문있어요!', '몬스테라를 키우기 시작했는데 잎이 노랗게 변하네요. 물을 너무 많이 준 건가요? 조언 부탁드립니다.', null, null, SYSDATE, 1, 12, 3, 0);
+INSERT INTO hboard VALUES (board_seq.nextval, 'user2', '겨울철 식물 관리 팁 공유', '겨울에 식물들이 힘들어하는 것 같아요. 난방으로 인한 건조함 때문인 것 같은데, 여러분은 어떻게 관리하시나요?', null, null, SYSDATE-1, 1, 8, 0, 0);
+INSERT INTO hboard VALUES (board_seq.nextval, 'user3', '베란다 정원 만들기 성공담', '작은 베란다지만 예쁘게 꾸며봤어요. 허브 키우기 시작했는데 요리할 때 바로 따서 쓸 수 있어 좋네요!', null, null, SYSDATE-2, 1, 15, 0, 0);
+INSERT INTO hboard VALUES (board_seq.nextval, 'user4', '다육식물 번식 도전기', '다육이 잎꽂이에 성공했어요! 작은 새싹들이 돋아나는 걸 보니 정말 신기하네요. 경험 공유합니다.', null, null, SYSDATE-3, 1, 20, 2, 0);
+INSERT INTO hboard VALUES (board_seq.nextval, 'user5', '실내 공기정화 식물 추천해주세요', '새집으로 이사했는데 공기정화에 좋은 식물을 키우고 싶어요. 관리하기 쉬운 것으로 추천 부탁드립니다.', null, null, SYSDATE-4, 1, 18, 0, 0);
+INSERT INTO hboard VALUES (board_seq.nextval, 'user6', '플랜테리어 완성! 후기', '거실을 식물로 꾸미는데 성공했어요. 인테리어 효과도 좋고 공기도 깨끗해진 느낌이에요.', null, null, SYSDATE-5, 1, 25, 1, 0);
+INSERT INTO hboard VALUES (board_seq.nextval, 'user7', '화분 물받이의 중요성', '물받이를 제대로 안 써서 바닥이 상했던 경험이 있어요. 지금은 꼭 사용하고 있습니다.', null, null, SYSDATE-6, 1, 10, 0, 0);
+INSERT INTO hboard VALUES (board_seq.nextval, 'user8', '식물 병충해 대처법', '진딧물이 생겼을 때 어떻게 처리하시나요? 화학살충제 말고 천연 방법이 있을까요?', null, null, SYSDATE-7, 1, 14, 0, 0);
+INSERT INTO hboard VALUES (board_seq.nextval, 'user9', '꽃이 피었어요!', '키우던 선인장에 드디어 꽃이 폈어요! 몇 년을 기다렸는데 정말 감동이에요.', null, null, SYSDATE-8, 1, 30, 2, 0);
+INSERT INTO hboard VALUES (board_seq.nextval, 'user10', '허브 키우기 한 달 후기', '바질, 로즈마리, 민트 키우고 있는데 생각보다 잘 자라네요. 요리할 때 활용도가 높아요.', null, null, SYSDATE-9, 1, 16, 0, 0);
+INSERT INTO hboard VALUES (board_seq.nextval, 'user1', '식물등 구매 후기', 'LED 식물등을 샀는데 확실히 식물들이 더 건강해진 것 같아요. 겨울철 필수템인 것 같네요.', null, null, SYSDATE-10, 1, 22, 0, 0);
+INSERT INTO hboard VALUES (board_seq.nextval, 'user2', '물꽂이 vs 흙 심기', '삽목할 때 물꽂이를 먼저 하는 게 좋을까요, 바로 흙에 심는 게 좋을까요? 경험담 들려주세요.', null, null, SYSDATE-11, 1, 13, 0, 0);
+INSERT INTO hboard VALUES (board_seq.nextval, 'user3', '식물 키우면서 생긴 변화', '식물을 키우기 시작한 후로 마음이 많이 평온해진 것 같아요. 치유 효과가 정말 있는 것 같네요.', null, null, SYSDATE-12, 1, 28, 2, 0);
+INSERT INTO hboard VALUES (board_seq.nextval, 'user4', '분갈이 시기 질문', '뿌리가 화분 밑으로 나왔는데 지금 분갈이 해도 될까요? 계절적으로 적절한 시기가 있나요?', null, null, SYSDATE-13, 1, 17, 0, 0);
+INSERT INTO hboard VALUES (board_seq.nextval, 'user5', '식물 카페 다녀왔어요', '식물로 가득한 카페에 다녀왔는데 정말 힐링되더라고요. 집에도 이런 분위기를 만들고 싶어요.', null, null, SYSDATE-14, 1, 19, 0, 0);
+INSERT INTO hboard VALUES (board_seq.nextval, 'user6', '반려식물 이름 짓기', '키우는 식물들에게 이름을 지어주고 있어요. 더 애착이 가고 잘 돌보게 되는 것 같아요.', null, null, SYSDATE-15, 1, 24, 0, 0);
+INSERT INTO hboard VALUES (board_seq.nextval, 'user7', '다육이 웃자람 문제', '다육식물이 웃자라고 있어요. 햇빛 부족인 것 같은데 어떻게 해결하면 좋을까요?', null, null, SYSDATE-16, 1, 11, 0, 0);
+INSERT INTO hboard VALUES (board_seq.nextval, 'user8', '식물 구매처 추천', '건강한 식물을 살 수 있는 곳을 추천해주세요. 온라인과 오프라인 각각 좋은 곳이 있을까요?', null, null, SYSDATE-17, 1, 15, 0, 0);
+INSERT INTO hboard VALUES (board_seq.nextval, 'user9', '겨울 개화 식물', '겨울에도 꽃을 볼 수 있는 실내식물이 있을까요? 추천해주시면 키워보고 싶어요.', null, null, SYSDATE-18, 1, 21, 0, 0);
+INSERT INTO hboard VALUES (board_seq.nextval, 'user10', '식물 관련 앱 추천', '식물 관리에 도움되는 앱이 있나요? 물주기 알림이나 식물 정보를 알 수 있는 앱을 찾고 있어요.', null, null, SYSDATE-19, 1, 12, 0, 0);
+INSERT INTO hboard VALUES (board_seq.nextval, 'user1', '미세먼지와 식물', '미세먼지가 심한 날 식물들도 영향을 받나요? 실내 공기정화 효과는 어느 정도인지 궁금해요.', null, null, SYSDATE-20, 1, 26, 0, 0);
+INSERT INTO hboard VALUES (board_seq.nextval, 'user2', '식물 선물하기', '친구 집들이 선물로 식물을 주려고 하는데 어떤 게 좋을까요? 초보자도 키우기 쉬운 걸로 추천 부탁드려요.', null, null, SYSDATE-21, 1, 18, 0, 0);
+INSERT INTO hboard VALUES (board_seq.nextval, 'user3', '봄맞이 식물 준비', '봄을 맞아서 새로운 식물을 들일 계획이에요. 봄에 키우기 시작하기 좋은 식물이 있을까요?', null, null, SYSDATE-22, 1, 23, 0, 0);
+INSERT INTO hboard VALUES (board_seq.nextval, 'user4', '식물 전시회 후기', '플랜트 페어에 다녀왔는데 정말 다양한 식물들을 볼 수 있어서 좋았어요. 새로운 식물도 데려왔답니다!', null, null, SYSDATE-23, 1, 27, 0, 0);
+INSERT INTO hboard VALUES (board_seq.nextval, 'user5', '식물과 함께하는 일상', '식물을 키우면서 하루하루가 더 풍요로워진 것 같아요. 작은 변화들을 관찰하는 재미가 쏠쏠해요.', null, null, SYSDATE-24, 1, 31, 0, 0);
+INSERT INTO hboard VALUES (board_seq.nextval, 'test', '식물과 함께하는 일상', '식물을 키우면서 하루하루가 더 풍요로워진 것 같아요. 작은 변화들을 관찰하는 재미가 쏠쏠해요.', null, null, SYSDATE-24, 1, 31, 0, 0);
+INSERT INTO hboard VALUES (board_seq.nextval, 'test', '식물과 함께하는 일상', '식물을 키우면서 하루하루가 더 풍요로워진 것 같아요. 작은 변화들을 관찰하는 재미가 쏠쏠해요.', null, null, SYSDATE-24, 1, 31, 0, 0);
+INSERT INTO hboard VALUES (board_seq.nextval, 'test', '식물과 함께하는 일상', '식물을 키우면서 하루하루가 더 풍요로워진 것 같아요. 작은 변화들을 관찰하는 재미가 쏠쏠해요.', null, null, SYSDATE-24, 1, 31, 0, 0);
+INSERT INTO hboard VALUES (board_seq.nextval, 'test', '식물과 함께하는 일상', '식물을 키우면서 하루하루가 더 풍요로워진 것 같아요. 작은 변화들을 관찰하는 재미가 쏠쏠해요.', null, null, SYSDATE-24, 1, 31, 0, 0);
+INSERT INTO hboard VALUES (board_seq.nextval, 'test', '식물과 함께하는 일상', '식물을 키우면서 하루하루가 더 풍요로워진 것 같아요. 작은 변화들을 관찰하는 재미가 쏠쏠해요.', null, null, SYSDATE-24, 1, 31, 0, 0);
 
-INSERT INTO hboard (boardidx, userid, title, content, category)
-VALUES (board_seq.NEXTVAL, 'hani',
-        '텃밭 첫파종 후기',
-        '상추/바질 파종했는데 발아율 괜찮네요. 흙 배합은 상토7+펄라이트2+질석1 사용.', 2);
-
-INSERT INTO hboard (boardidx, userid, title, content, category)
-VALUES (board_seq.NEXTVAL, 'cheon',
-        'LED 식물등 추천 좀',
-        '창문이 북향이라 광량이 부족해요. 전력 20~30W대 사용해보신 분 있나요?', 1);
-
-INSERT INTO hboard (boardidx, userid, title, content, category)
-VALUES (board_seq.NEXTVAL, 'user',
-        '해충 트랩 자작 후기',
-        '노란 점착 트랩이 꽤 효과 있었어요. 붙은 개체 수가 확 줄었습니다.', 2);
-INSERT INTO hboard (boardidx, userid, title, content, category)
-VALUES (board_seq.NEXTVAL, 'test', '식물 키우기 처음인데 어떤 종이 좋을까요?', '화분을 들이려고 하는데 초보자에게 적합한 식물 알려주실 분 계신가요?', 1);
-INSERT INTO hboard (boardidx, userid, title, content, category)
-VALUES (board_seq.NEXTVAL, 'test', '겨울철 실내 식물 관리 꿀팁 알려주세요', '겨울철에 물 주는 빈도나 실내 온도 조절 팁 좀 나눠주세요!', 1);
-INSERT INTO hboard (boardidx, userid, title, content, category)
-VALUES (board_seq.NEXTVAL, 'test', '햇빛이 잘 안 드는 집에서 키울 수 있는 식물 추천!', '햇빛이 부족한 집에서도 잘 자라는 식물이 있을까요?', 1);
-INSERT INTO hboard (boardidx, userid, title, content, category)
-VALUES (board_seq.NEXTVAL, 'test', '화분 갈이 주기는 어떻게 되나요?', '화분을 몇 년마다 바꿔줘야 하는지 모르겠어요. 도와주세요!', 1);
-INSERT INTO hboard (boardidx, userid, title, content, category)
-VALUES (board_seq.NEXTVAL, 'test', '잎이 노랗게 변하는데 왜 그런 걸까요?', '잎 끝이 갈색으로 변해가는데 원인을 모르겠어요...', 1);
-INSERT INTO hboard (boardidx, userid, title, content, category)
-VALUES (board_seq.NEXTVAL, 'test', '실내 공기정화에 좋은 식물은 뭐가 있나요?', '공기 정화가 잘 되는 식물 추천 부탁드려요~', 1);
-INSERT INTO hboard (boardidx, userid, title, content, category)
-VALUES (board_seq.NEXTVAL, 'test', '베란다에서 키우기 좋은 식물 있을까요?', '베란다 환경에서도 키우기 쉬운 식물 있을까요?', 1);
-INSERT INTO hboard (boardidx, userid, title, content, category)
-VALUES (board_seq.NEXTVAL, 'test', '토양은 얼마나 자주 갈아줘야 하나요?', '토양을 얼마나 자주 새로 바꿔주는 게 좋은가요?', 1);
-INSERT INTO hboard (boardidx, userid, title, content, category)
-VALUES (board_seq.NEXTVAL, 'test', '수경재배와 토양재배 장단점이 궁금해요', '수경재배는 비추인가요? 해보신 분 후기 듣고 싶어요', 1);
-INSERT INTO hboard (boardidx, userid, title, content, category)
-VALUES (board_seq.NEXTVAL, 'test', '식물 영양제 추천 좀 해주세요!', '요즘 쓰는 영양제 있으신가요? 효과 어떤가요?', 1);
-INSERT INTO hboard (boardidx, userid, title, content, category)
-VALUES (board_seq.NEXTVAL, 'test', '거실에 두기 좋은 큰 화분 식물 추천', '큰 화분으로 분위기 바꾸려는데 추천 식물 있으신가요?', 1);
-INSERT INTO hboard (boardidx, userid, title, content, category)
-VALUES (board_seq.NEXTVAL, 'test', '반려동물과 함께 키우기 안전한 식물은?', '고양이 키우는데 안전한 식물만 고르고 싶어요', 1);
-INSERT INTO hboard (boardidx, userid, title, content, category)
-VALUES (board_seq.NEXTVAL, 'test', '초보자가 키우기 쉬운 다육이 추천!', '처음 시작하는 다육식물, 어떤 게 좋을까요?', 1);
-INSERT INTO hboard (boardidx, userid, title, content, category)
-VALUES (board_seq.NEXTVAL, 'test', '선인장 물 주는 주기 어떻게 하세요?', '선인장은 물 안 줘도 된다는데 어느 정도로 안 주나요?', 1);
-INSERT INTO hboard (boardidx, userid, title, content, category)
-VALUES (board_seq.NEXTVAL, 'test', '여름철 식물 관리 팁 공유해주세요', '여름에는 식물 시들시들한데 어떻게 관리하세요?', 1);
-INSERT INTO hboard (boardidx, userid, title, content, category)
-VALUES (board_seq.NEXTVAL, 'test', '식물 성장에 LED 조명 효과 있을까요?', '식물용 LED 써보신 분 계신가요? 효과 있나요?', 1);
-INSERT INTO hboard (boardidx, userid, title, content, category)
-VALUES (board_seq.NEXTVAL, 'test', '화분에 벌레 생겼어요 어떻게 하죠?', '벌레가 너무 생겨서 곤란해요... 해결책 좀요ㅠ', 1);
-INSERT INTO hboard (boardidx, userid, title, content, category)
-VALUES (board_seq.NEXTVAL, 'test', '식물 잎 닦는 방법이 따로 있나요?', '잎에 먼지가 자꾸 쌓이는데 어떻게 관리하시나요?', 1);
-INSERT INTO hboard (boardidx, userid, title, content, category)
-VALUES (board_seq.NEXTVAL, 'test', '가지치기 언제 어떻게 하시나요?', '가지치기 언제가 적당한가요? 도구는 뭐 쓰세요?', 1);
-INSERT INTO hboard (boardidx, userid, title, content, category)
-VALUES (board_seq.NEXTVAL, 'test', '이사할 때 식물은 어떻게 옮기세요?', '식물이 많아서 이사할 때 걱정이에요. 팁 좀 주세요', 1);
-INSERT INTO hboard (boardidx, userid, title, content, category)
-VALUES (board_seq.NEXTVAL, 'test', '식물 이름을 모르겠어요 도와주세요!', '사진 속 이 식물 이름 아시는 분 계신가요?', 1);
-INSERT INTO hboard (boardidx, userid, title, content, category)
-VALUES (board_seq.NEXTVAL, 'test', '물 많이 먹는 식물과 적게 먹는 식물 차이?', '물을 주는 기준을 어떻게 잡으세요?', 1);
-INSERT INTO hboard (boardidx, userid, title, content, category)
-VALUES (board_seq.NEXTVAL, 'test', '화분 배수 구멍 꼭 있어야 하나요?', '배수 구멍이 없는 화분 써도 괜찮나요?', 1);
-INSERT INTO hboard (boardidx, userid, title, content, category)
-VALUES (board_seq.NEXTVAL, 'test', '천장에 식물 매달아 키워보신 분?', '천장 플랜테리어 해보신 분 후기 듣고 싶어요!', 1);
-INSERT INTO hboard (boardidx, userid, title, content, category)
-VALUES (board_seq.NEXTVAL, 'test', '이끼볼 키우는 법 아시는 분?', '이끼볼 만들기 어려울까요? 유지 방법 궁금해요', 1);
-INSERT INTO hboard (boardidx, userid, title, content, category)
-VALUES (board_seq.NEXTVAL, 'test', '겨울철 베란다 월동 팁 부탁드려요', '베란다 월동은 어떤 재료로 보온하세요?', 1);
-INSERT INTO hboard (boardidx, userid, title, content, category)
-VALUES (board_seq.NEXTVAL, 'test', '식물도 음악 들으면 좋아할까요?', '음악 틀어주는 게 식물 성장에 효과 있을까요?', 1);
-INSERT INTO hboard (boardidx, userid, title, content, category)
-VALUES (board_seq.NEXTVAL, 'test', '관엽식물에 가장 잘 맞는 흙은?', '관엽식물 전용 흙이 따로 있던데 써보셨나요?', 1);
-INSERT INTO hboard (boardidx, userid, title, content, category)
-VALUES (board_seq.NEXTVAL, 'test', '플랜테리어 하신 분들 후기 궁금해요', '식물 인테리어 후기가 궁금합니다~ 사진도 환영!', 1);
-INSERT INTO hboard (boardidx, userid, title, content, category)
-VALUES (board_seq.NEXTVAL, 'test', '다육이가 갑자기 말라요 왜 그럴까요?', '다육이가 잎이 말라가요ㅠ 혹시 병일까요?', 1);
-INSERT INTO hboard (boardidx, userid, title, content, category)
-VALUES (board_seq.NEXTVAL, 'user', '아이 방에 둘 식물 추천해주세요', '아이 방에 둘 안전한 식물 뭐가 있을까요?', 2);
-INSERT INTO hboard (boardidx, userid, title, content, category)
-VALUES (board_seq.NEXTVAL, 'user', '식물 선물로 괜찮은 종류 있을까요?', '식물 선물해보신 분들 추천 부탁드려요!', 2);
-INSERT INTO hboard (boardidx, userid, title, content, category)
-VALUES (board_seq.NEXTVAL, 'user', '습도 조절에 좋은 식물 뭐가 있을까요?', '습도 유지를 위해 식물 하나 들이고 싶은데 조언 좀요', 2);
-INSERT INTO hboard (boardidx, userid, title, content, category)
-VALUES (board_seq.NEXTVAL, 'user', '책상 위에 둘만한 식물 추천해주세요', '책상 옆에 둘만한 작고 귀여운 식물 추천해주세요', 2);
-INSERT INTO hboard (boardidx, userid, title, content, category)
-VALUES (board_seq.NEXTVAL, 'user', '좁은 공간에 잘 어울리는 식물 뭐 있나요?', '좁은 원룸에서도 키울 수 있는 식물 뭐가 있을까요?', 2);
-INSERT INTO hboard (boardidx, userid, title, content, category)
-VALUES (board_seq.NEXTVAL, 'user', '꽃 피는 실내 식물 키워보신 분 계세요?', '실내에서 꽃 피우는 식물 뭐 키워보셨어요?', 2);
-VALUES (board_seq.NEXTVAL, 'cheon',
-        '해충 트랩 자작 후기',
-        '노란 점착 트랩이 꽤 효과 있었어요. 붙은 개체 수가 확 줄었습니다.', 2);
         
+        
+-- 카테고리 2 (갤러리게시판) - 15개 (좋아요, 댓글, 신고 없으므로 0으로 설정)
+INSERT INTO hboard VALUES (board_seq.nextval, 'user1', '우리집 몬스테라 성장기', '작은 화분에서 시작해서 이렇게 크게 자랐어요! 새 잎이 나올 때마다 설레요.', null, null, SYSDATE, 2, 45, 0, 0);
+INSERT INTO hboard VALUES (board_seq.nextval, 'user2', '베란다 정원 전체샷', '베란다를 식물들로 가득 채웠어요. 매일 아침 물주기가 즐거운 시간이에요.', null, null, SYSDATE-1, 2, 52, 0, 0);
+INSERT INTO hboard VALUES (board_seq.nextval, 'user3', '다육이 컬렉션 자랑', '작은 다육이들을 모아서 미니 정원을 만들어봤어요. 각자 다른 매력이 있어서 보는 재미가 있네요.', null, null, SYSDATE-2, 2, 38, 0, 0);
+INSERT INTO hboard VALUES (board_seq.nextval, 'user4', '허브 가든 완성', '요리용 허브들을 한 곳에 모아뒀어요. 바질, 로즈마리, 타임 등이 무럭무럭 자라고 있답니다.', null, null, SYSDATE-3, 2, 41, 0, 0);
+INSERT INTO hboard VALUES (board_seq.nextval, 'user5', '선인장 꽃 개화 순간', '몇 년 키운 선인장에 드디어 꽃이 폈어요! 분홍색 꽃이 정말 예뻐요.', null, null, SYSDATE-4, 2, 67, 0, 0);
+INSERT INTO hboard VALUES (board_seq.nextval, 'user6', '거실 플랜테리어 완성본', '거실 한쪽을 식물 코너로 만들었어요. 큰 화분부터 작은 화분까지 다양하게 배치했답니다.', null, null, SYSDATE-5, 2, 58, 0, 0);
+INSERT INTO hboard VALUES (board_seq.nextval, 'user7', '수경재배 실험 결과', '스킨답서스를 물에서 키워봤는데 뿌리가 이렇게 잘 자랐어요. 투명 화분이라 뿌리까지 관찰할 수 있어 좋네요.', null, null, SYSDATE-6, 2, 33, 0, 0);
+INSERT INTO hboard VALUES (board_seq.nextval, 'user8', '에어플랜트 디스플레이', '에어플랜트들을 다양한 방법으로 전시해봤어요. 공중에 매달린 모습이 신기하죠?', null, null, SYSDATE-7, 2, 29, 0, 0);
+INSERT INTO hboard VALUES (board_seq.nextval, 'user9', '계절별 화분 갈아입기', '같은 자리, 다른 식물로 계절감을 연출해봤어요. 봄엔 화사한 꽃, 겨울엔 초록 잎으로!', null, null, SYSDATE-8, 2, 44, 0, 0);
+INSERT INTO hboard VALUES (board_seq.nextval, 'user10', '미니 테라리움 만들기', '작은 유리병 안에 작은 세상을 만들어봤어요. 이끼와 작은 식물들이 어우러진 모습이 예뻐요.', null, null, SYSDATE-9, 2, 36, 0, 0);
+INSERT INTO hboard VALUES (board_seq.nextval, 'user1', '분갈이 전후 비교샷', '뿌리가 가득했던 화분에서 큰 화분으로 옮겨줬어요. 식물이 훨씬 시원해 보이네요.', null, null, SYSDATE-10, 2, 42, 0, 0);
+INSERT INTO hboard VALUES (board_seq.nextval, 'user2', '식물 번식 성공 기록', '잎꽂이로 키운 다육이들이 이렇게 자랐어요! 작은 잎에서 시작해서 이제 독립할 수 있을 정도예요.', null, null, SYSDATE-11, 2, 51, 0, 0);
+INSERT INTO hboard VALUES (board_seq.nextval, 'user3', '창가 정원 조성 과정', '창가를 활용해서 작은 정원을 만들어봤어요. 햇빛 받는 식물들의 모습이 정말 생기 있어요.', null, null, SYSDATE-12, 2, 47, 0, 0);
+INSERT INTO hboard VALUES (board_seq.nextval, 'user4', '야생화 화분 만들기', '산에서 본 야생화를 모티브로 화분을 꾸며봤어요. 자연스러운 느낌을 살리려고 노력했답니다.', null, null, SYSDATE-13, 2, 35, 0, 0);
+INSERT INTO hboard VALUES (board_seq.nextval, 'user5', '1년 키운 식물 변화상', '1년 전 작은 화분에서 시작한 고무나무가 이렇게 커졌어요. 시간의 힘이 대단하네요!', null, null, SYSDATE-14, 2, 63, 0, 0);
+
+
+-- ============================
+-- 3. comments 테이블 (members, hboard 참조) - 자유게시판만
+-- ============================
+INSERT INTO comments VALUES (comment_seq.nextval, 'user2', 1, 2, '저도 같은 문제 겪었어요! 물을 줄이고 통풍이 잘 되는 곳에 두니까 좋아졌어요.', SYSDATE);
+INSERT INTO comments VALUES (comment_seq.nextval, 'user3', 1, 1, '몬스테라는 과습에 민감해요. 흙이 마를 때까지 기다렸다가 물주세요.', SYSDATE-1);
+INSERT INTO comments VALUES (comment_seq.nextval, 'user4', 2, 3, '저는 가습기 틀어놔요. 식물들이 확실히 좋아하는 것 같더라고요.', SYSDATE);
+INSERT INTO comments VALUES (comment_seq.nextval, 'user1', 3, 2, '베란다 정원 부럽네요! 저도 도전해보고 싶어요.', SYSDATE);
+INSERT INTO comments VALUES (comment_seq.nextval, 'user5', 4, 1, '잎꽂이 성공 축하드려요! 다육이 번식은 정말 신기해요.', SYSDATE-1);
+INSERT INTO comments VALUES (comment_seq.nextval, 'user6', 5, 4, '산세베리아 추천드려요! 관리 정말 쉽고 공기정화도 잘해요.', SYSDATE);
+INSERT INTO comments VALUES (comment_seq.nextval, 'user7', 6, 2, '플랜테리어 예쁘게 하셨네요! 사진도 보고 싶어요.', SYSDATE-2);
+INSERT INTO comments VALUES (comment_seq.nextval, 'user8', 8, 3, '계피 우린 물 뿌리면 천연 살충 효과 있어요!', SYSDATE);
+INSERT INTO comments VALUES (comment_seq.nextval, 'user9', 9, 5, '선인장 꽃 정말 예쁘죠! 저희 집 선인장도 꽃 피우면 좋겠어요.', SYSDATE-1);
+INSERT INTO comments VALUES (comment_seq.nextval, 'user10', 10, 2, '허브 키우기 정말 좋죠! 요리할 때 바로 따서 쓸 수 있어서 최고예요.', SYSDATE);
+
+-- ============================
+-- 5. hlike 테이블 (hboard 참조) - 자유게시판만
+-- ============================
+INSERT INTO hlike VALUES (DEFAULT, 1, 'user2', SYSDATE);
+INSERT INTO hlike VALUES (DEFAULT, 1, 'user3', SYSDATE-1);
+INSERT INTO hlike VALUES (DEFAULT, 1, 'user4', SYSDATE-2);
+INSERT INTO hlike VALUES (DEFAULT, 4, 'user1', SYSDATE);
+INSERT INTO hlike VALUES (DEFAULT, 4, 'user2', SYSDATE-1);
+INSERT INTO hlike VALUES (DEFAULT, 6, 'user3', SYSDATE);
+INSERT INTO hlike VALUES (DEFAULT, 9, 'user1', SYSDATE-1);
+INSERT INTO hlike VALUES (DEFAULT, 9, 'user5', SYSDATE-2);
+INSERT INTO hlike VALUES (DEFAULT, 13, 'user2', SYSDATE);
+INSERT INTO hlike VALUES (DEFAULT, 13, 'user4', SYSDATE-1);
+
+
+-- ============================
+-- 6. board_report 테이블 (hboard 참조) - 자유게시판만, 소수만
+-- ============================
+INSERT INTO board_report VALUES (DEFAULT, 7, 'user9', '부적절한 내용', SYSDATE);
+INSERT INTO board_report VALUES (DEFAULT, 12, 'user8', '스팸성 게시글', SYSDATE-1);
+
+
+-- ============================
+-- 7. board_image 테이블 (hboard 참조) - 갤러리게시판만 (boardIdx 26~40)
+-- ============================
+INSERT INTO board_image VALUES (DEFAULT, 26, 'monstera_growth.jpg', 'sample1.png', '/uploads/board/sample1.png');
+INSERT INTO board_image VALUES (DEFAULT, 27, 'balcony_garden.jpg', 'sample2.png', '/uploads/board/sample2.png');
+INSERT INTO board_image VALUES (DEFAULT, 27, 'balcony_garden2.jpg', 'sample3.png', '/uploads/board/sample3.png');
+INSERT INTO board_image VALUES (DEFAULT, 28, 'succulent_collection.jpg', 'sample4.png', '/uploads/board/sample4.png');
+INSERT INTO board_image VALUES (DEFAULT, 29, 'herb_garden.jpg', 'sample5.png', '/uploads/board/sample5.png');
+INSERT INTO board_image VALUES (DEFAULT, 30, 'cactus_flower.jpg', 'sample6.png', '/uploads/board/sample6.png');
+INSERT INTO board_image VALUES (DEFAULT, 31, 'living_room_plants.jpg', 'sample7.png', '/uploads/board/sample7.png');
+INSERT INTO board_image VALUES (DEFAULT, 31, 'living_room_plants2.jpg', 'sample8.png', '/uploads/board/sample8.png');
+INSERT INTO board_image VALUES (DEFAULT, 32, 'hydroponic_experiment.jpg', 'sample9.png', '/uploads/board/sample9.png');
+INSERT INTO board_image VALUES (DEFAULT, 33, 'airplant_display.jpg', 'sample10.png', '/uploads/board/sample10.png');
+INSERT INTO board_image VALUES (DEFAULT, 34, 'seasonal_plants.jpg', 'sample11.png', '/uploads/board/sample11.png');
+INSERT INTO board_image VALUES (DEFAULT, 35, 'mini_terrarium.jpg', 'sample12.png', '/uploads/board/sample12.png');
+INSERT INTO board_image VALUES (DEFAULT, 36, 'repotting_before_after.jpg', 'sample13.png', '/uploads/board/sample13.png');
+INSERT INTO board_image VALUES (DEFAULT, 37, 'plant_propagation.jpg', 'sample14.png', '/uploads/board/sample14.png');
+INSERT INTO board_image VALUES (DEFAULT, 38, 'window_garden.jpg', 'sample15.png', '/uploads/board/sample15.png');
+INSERT INTO board_image VALUES (DEFAULT, 39, 'wildflower_pot.jpg', 'sample16.png', '/uploads/board/sample16.png');
+INSERT INTO board_image VALUES (DEFAULT, 40, 'plant_growth_1year.jpg', 'sample17.png', '/uploads/board/sample17.png');
+
+-- ============================
+-- 8. qna_board 테이블 (독립적)
+-- ============================
+INSERT INTO qna_board VALUES (qna_board_seq.nextval, 'user1', '식물애호가김씨', '식물 배송 중 손상 문의', '주문한 몬스테라가 배송 중에 잎이 찢어진 상태로 왔는데 교환 가능한가요?', '배송', 'N', 'N', '대기', NULL, 5, 0, SYSDATE, SYSDATE);
+INSERT INTO qna_board VALUES (qna_board_seq.nextval, 'user3', '화초키우는이씨', '회원정보 수정 문의', '가입할 때 입력한 전화번호를 변경하고 싶은데 어떻게 하면 되나요?', '회원', 'N', 'N', '완료', '마이페이지에서 직접 수정하실 수 있습니다.', 12, 1, SYSDATE-3, SYSDATE-1);
+INSERT INTO qna_board VALUES (qna_board_seq.nextval, 'user5', '베란다농부최씨', '결제 관련 문의', '카드 결제가 되지 않아서 문의드립니다.', '결제', 'Y', 'N', '처리중', NULL, 3, 0, SYSDATE-2, SYSDATE-2);
+INSERT INTO qna_board VALUES (qna_board_seq.nextval, 'admin1', '관리자', '[공지] 시스템 점검 안내', '서버 점검으로 인해 8월 25일 새벽 2시-6시 서비스 이용이 제한됩니다.', '공지', 'N', 'Y', '완료', NULL, 45, 3, SYSDATE-5, SYSDATE-5);
+INSERT INTO qna_board VALUES (qna_board_seq.nextval, 'user7', '다육이사랑강씨', '식물 관리 방법 문의', '다육식물이 웃자라는 이유와 해결방법을 알고 싶어요.', '기타', 'N', 'N', '완료', '햇빛 부족이 주된 원인입니다. 더 밝은 곳으로 옮겨주세요.', 18, 2, SYSDATE-4, SYSDATE-2);
 
 /* 커밋 */
 commit;
@@ -361,5 +395,11 @@ DROP SEQUENCE qna_board_seq;
 UPDATE members
 SET authority = 'ROLE_ADMIN'
 WHERE userid = 'aaa';
+
+SELECT constraint_name, column_name
+FROM user_cons_columns
+WHERE table_name = 'MEMBERS';
+
+ALTER TABLE members DROP CONSTRAINT SYS_C008605;
 
 commit;
