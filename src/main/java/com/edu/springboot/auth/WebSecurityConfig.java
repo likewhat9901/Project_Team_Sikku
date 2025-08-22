@@ -90,7 +90,7 @@ public class WebSecurityConfig {
             	    .dispatcherTypeMatchers(DispatcherType.FORWARD).permitAll()
 
             	    // 정적/공개 리소스
-            	    .requestMatchers("/css/**","/js/**","/images/**").permitAll()
+            	    .requestMatchers("/predict","/css/**","/js/**","/images/**").permitAll()
             	    .requestMatchers("/uploads/**").permitAll()
 
             	    // 식물도감 페이지 비회원도 공개
