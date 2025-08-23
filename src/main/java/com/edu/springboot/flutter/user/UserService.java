@@ -11,8 +11,10 @@ import com.edu.springboot.flutter.user.dto.ProfileResponse;
 import com.edu.springboot.jpaboard.BoardEntity;
 import com.edu.springboot.jpaboard.BoardRepository;
 import com.edu.springboot.jpaboard.CommentRepository;
+import com.edu.springboot.jpaboard.LikeRepository;
 import com.edu.springboot.jpaboard.MemberEntity;
 import com.edu.springboot.jpaboard.MemberRepository;
+import com.edu.springboot.jpaboard.dto.LikedPostDto;
 import com.edu.springboot.jpaboard.dto.MyCommentDto;
 
 
@@ -25,6 +27,8 @@ public class UserService {
     private BoardRepository boardRepository;
 	@Autowired
     private CommentRepository commentRepository;
+	@Autowired
+    private LikeRepository likeRepository;
 
 	
     public ProfileResponse profile(String jwtToken) {
@@ -43,7 +47,22 @@ public class UserService {
     	return ProfileResponse.fromEntity(member);
     }    
     
-    public List<String> getMyCommentTitles(String jwtToken) {
+    public List<String> getLikedPostTitles(String jwtToken) {
+        if (!JwtTokenProvider.validateToken(jwtToken)) {
+            throw new IllegalArgumentException("Invalid or expired token");
+        }
+
+        String userId = JwtTokenProvider.getUseridFromToken(jwtToken);
+
+        List<LikedPostDto> likedPosts = likeRepository.findLikedPostsByUser(userId);
+
+        // 제목만 추출해서 리스트로
+        return likedPosts.stream()
+                    .map(c -> c.title())
+                    .collect(Collectors.toList());
+    }
+    
+    public List<String> getMyCommentContents(String jwtToken) {
         if (!JwtTokenProvider.validateToken(jwtToken)) {
             throw new IllegalArgumentException("Invalid or expired token");
         }
@@ -54,7 +73,7 @@ public class UserService {
 
         // 제목만 추출해서 리스트로
         return comments.stream()
-                    .map(c -> c.boardTitle())
+                    .map(c -> c.content())
                     .collect(Collectors.toList());
     }
     

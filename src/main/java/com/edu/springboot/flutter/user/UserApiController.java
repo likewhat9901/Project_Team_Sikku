@@ -32,23 +32,40 @@ public class UserApiController {
 			String pureToken = token.replace("Bearer ", "");
 			
 			ProfileResponse response = userService.profile(pureToken);
-            return ResponseEntity.ok(response);
+            return ResponseEntity.ok()
+            		.header(HttpHeaders.CONTENT_TYPE, "application/json; charset=UTF-8")
+            		.body(response);
 		} catch (Exception e) {
 			return ResponseEntity.status(401).body("인증 실패: " + e.getMessage());
 		}
 		
 	}
 	
-	@GetMapping("/my-comments")
-	public ResponseEntity<?> getMyComments(@RequestHeader("Authorization") String token) {
+	@GetMapping("/liked-posts")
+	public ResponseEntity<?> getLikedPosts(@RequestHeader("Authorization") String token) {
 	    try {
 	        String pureToken = token.replace("Bearer ", "");
-	        List<String> titles = userService.getMyCommentTitles(pureToken);
+	        List<String> titles = userService.getLikedPostTitles(pureToken);
 	        
 	        HttpHeaders headers = new HttpHeaders();
 	        headers.setContentType(new MediaType("application", "json", StandardCharsets.UTF_8));
 	        
 	        return new ResponseEntity<>(titles, headers, HttpStatus.OK);
+	    } catch (Exception e) {
+	        return ResponseEntity.status(401).body(List.of("error", e.getMessage()));
+	    }
+	}
+	
+	@GetMapping("/my-comments")
+	public ResponseEntity<?> getMyComments(@RequestHeader("Authorization") String token) {
+	    try {
+	        String pureToken = token.replace("Bearer ", "");
+	        List<String> comments = userService.getMyCommentContents(pureToken);
+	        
+	        HttpHeaders headers = new HttpHeaders();
+	        headers.setContentType(new MediaType("application", "json", StandardCharsets.UTF_8));
+	        
+	        return new ResponseEntity<>(comments, headers, HttpStatus.OK);
 	    } catch (Exception e) {
 	        return ResponseEntity.status(401).body(List.of("error", e.getMessage()));
 	    }

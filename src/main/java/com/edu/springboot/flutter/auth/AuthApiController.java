@@ -3,6 +3,7 @@ package com.edu.springboot.flutter.auth;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -39,7 +40,10 @@ public class AuthApiController {
     	
     	try {
     		LoginResponse response = authService.login(userid, userpw);
-            return ResponseEntity.ok(response);
+            return ResponseEntity
+            		.ok()
+            	    .header(HttpHeaders.CONTENT_TYPE, "application/json; charset=UTF-8")
+            		.body(response);
 		} catch (Exception e) {
 			return ResponseEntity.status(401).body(Map.of("error", e.getMessage()));
 		}
