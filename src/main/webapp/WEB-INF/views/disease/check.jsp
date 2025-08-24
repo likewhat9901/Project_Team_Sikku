@@ -54,6 +54,10 @@ const uploadInput = document.getElementById('upload');
 const previewImg = document.getElementById('preview');
 const resultDiv = document.getElementById('result');
 const diagnosisMessage = document.getElementById('diagnosis-message');
+const uploadArea = document.querySelector('.upload-area');
+
+// 컨텍스트패스 안전
+const PREDICT_URL = '<c:url value="/predict"/>';
 
 let selectedFruit = null;
 
@@ -62,62 +66,56 @@ fruitButtons.forEach(btn => {
     fruitButtons.forEach(b => b.classList.remove('selected'));
     btn.classList.add('selected');
     selectedFruit = btn.getAttribute('data-fruit');
-    diagnosisMessage.textContent = selectedFruit+'을(를) 선택했습니다. 이미지를 업로드하세요.';
+    diagnosisMessage.textContent = selectedFruit + '을(를) 선택했습니다. 이미지를 업로드하세요.';
+    uploadArea.style.display = 'block';
     previewImg.style.display = 'none';
-    uploadInput.style.display = 'block';
+    previewImg.src = '';
     resultDiv.textContent = '';
     uploadInput.value = '';
   });
 });
 
 uploadInput.addEventListener('change', async e => {
-  if (!selectedFruit) {
-    alert('먼저 과일을 선택하세요!');
-    uploadInput.value = '';
-    return;
-  }
+  if (!selectedFruit) { alert('먼저 과일을 선택하세요!'); uploadInput.value=''; return; }
+
   const file = e.target.files[0];
-  if (!file) {
-    previewImg.style.display = 'none';
-    resultDiv.textContent = '';
-    diagnosisMessage.textContent = '이미지를 업로드하면 결과가 여기에 표시됩니다.';
-    return;
-  }
+  if (!file) { previewImg.style.display='none'; resultDiv.textContent=''; diagnosisMessage.textContent='이미지를 업로드하면 결과가 여기에 표시됩니다.'; return; }
 
   const reader = new FileReader();
-  reader.onload = () => {
-  previewImg.src = reader.result;
-  previewImg.style.display = 'block';
-  // uploadInput 말고 upload-area를 숨긴다
-  document.querySelector('.upload-area').style.display = 'none';
-};
+  reader.onload = () => { previewImg.src = reader.result; previewImg.style.display='block'; uploadArea.style.display='none'; };
   reader.readAsDataURL(file);
 
   const formData = new FormData();
   formData.append('fruit', selectedFruit);
   formData.append('image', file);
 
-  diagnosisMessage.textContent = '🔍 분석 중입니다... 잠시만 기다려 주세요.';
+  diagnosisMessage.textContent = '🔍 분석 중입니다...';
 
   try {
-    const response = await fetch('/predict', {
-      method: 'POST',
-      body: formData,
-    });
+    const response = await fetch(PREDICT_URL, { method: 'POST', body: formData });
 
-    if (!response.ok) throw new Error('서버 에러');
+    const raw = await response.text();  // 항상 본문 읽기
+    let data = null;
+    try { data = raw ? JSON.parse(raw) : null; } catch {}
 
-    const data = await response.json();
+    if (!response.ok) {
+      const msg = data?.error || data?.detail || `HTTP ${response.status} ${response.statusText}`;
+      diagnosisMessage.textContent = '❌ ' + msg;
+      console.error('Predict error:', msg, 'Raw:', raw);
+      resultDiv.textContent = '';
+      return;
+    }
 
-    if (data.error) {
+    if (data?.error) {
       diagnosisMessage.textContent = `⚠️ ${data.error}`;
       resultDiv.textContent = '';
-    } else {
-      diagnosisMessage.innerHTML = '✅ 병명: <span class="disease-name">'+data.disease+'</span>';
-      resultDiv.innerHTML = '신뢰도: <strong>'+(data.confidence * 100).toFixed(2)+'%</strong>';
+      return;
     }
+
+    diagnosisMessage.innerHTML = '✅ 병명: <span class="disease-name">'+ data.disease +'</span>';
+    resultDiv.innerHTML = '신뢰도: <strong>'+ (data.confidence * 100).toFixed(2) +'%</strong>';
   } catch (err) {
-    diagnosisMessage.textContent = '❌ 예측 중 오류가 발생했습니다.';
+    diagnosisMessage.textContent = '❌ 예측 중 오류가 발생했습니다. 콘솔을 확인하세요.';
     resultDiv.textContent = '';
     console.error(err);
   }

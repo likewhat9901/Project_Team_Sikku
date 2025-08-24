@@ -24,7 +24,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Controller
 public class CheckController {
-	@Value("${predict.python.bin}")
+	@Value("${predict.python.tf}")
     private String pythonBin;
 
     @Value("${predict.script.diseasepath}")
@@ -79,18 +79,26 @@ public class CheckController {
             env.put("PYTHONIOENCODING", "utf-8");
             env.put("TF_CPP_MIN_LOG_LEVEL", "2");
 
-            pb.redirectErrorStream(true);
+            //pb.redirectErrorStream(true);
             Process p = pb.start();
 
+            //stdout(JSON)과 stderr(경고 로그 등)를 분리해서 읽기
             String out;
             try (InputStream is = p.getInputStream()) {
                 out = new String(is.readAllBytes(), StandardCharsets.UTF_8).trim();
             }
+            String err;
+            try (InputStream es = p.getErrorStream()) {
+                err = new String(es.readAllBytes(), StandardCharsets.UTF_8).trim();
+            }
+            
             int code = p.waitFor();
 
             // ── (4) 파이썬 출력(JSON) 처리
             ObjectMapper mapper = new ObjectMapper();
-            Map<String, Object> result;
+            Map<String, Object> result = null;
+            
+            //그대로 파싱
             try {
                 result = mapper.readValue(out, new TypeReference<>() {});
             } catch (Exception parseErr) {
