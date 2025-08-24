@@ -18,6 +18,9 @@ public interface BoardRepositoryCustom {
 	// 주간 게시글 수 통계
 	List<WeeklyPostCountDTO> countWeeklyPosts();
 	
+	// 주간 인기글(조회수) TOP5 통계
+	List<WeeklyTop5PostDTO> findWeeklyTop5Posts();
+	
 	
 	
 	

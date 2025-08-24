@@ -72,5 +72,12 @@ public class CommentService {
     public List<MyCommentDto> getMyComments(String userId) {
         return commentRepository.findMyComments(userId);
     }
+    
+    /**********************************************************************/
+    
+    // 최근 7일 게시글 통계 가져오기
+    public List<WeeklyPostCountDTO> getWeeklyComments() {
+    	return cr.countWeeklyComments();
+    }
 	
 }
