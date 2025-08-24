@@ -12,9 +12,13 @@ MODEL_INFO = {
         'categories': ["잿빛곰팡이병", "정상", "흰가루병"],
         'input_size': (64, 64)
     },
-    # '귤': {'path': r'...', 'categories': [...], 'input_size': (64,64)},
-    # '레몬': {...},
-    # '참외': {...},
+    '귤': {
+		'path': r'D:\disease\mandarin\mandarin_cnn_model.h5', 
+		'categories': ["건강 잎", "잎 궤양", "잎 귤응애", "진딧물", "건강 열매", "열매 궤양"], 
+		'input_size': (128,128)},
+    # '오렌지': {...},
+    # '파프리카': {...},
+    # '포도': {...},
 }
 
 def preprocess_image(image_file, target_size):
