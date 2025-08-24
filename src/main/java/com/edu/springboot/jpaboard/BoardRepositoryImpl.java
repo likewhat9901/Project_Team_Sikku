@@ -80,9 +80,9 @@ public class BoardRepositoryImpl implements BoardRepositoryCustom {
         StringExpression dayStr = Expressions.stringTemplate(
                 "TO_CHAR({0}, 'YYYY-MM-DD')", b.postdate);
         
-        NumberExpression<Long> cnt = b.boardIdx.count(); // b.id.count() 로 바꿔도 됨
-//        NumberExpression<Long> cnt = b.count(); // b.count
+        NumberExpression<Long> cnt = b.boardIdx.count();
 
+        //DB에서 해당쿼리문을 이용하면 7일, 즉 7개의 행들(rows)을 List<Tuple>에 담음
         List<Tuple> rows = queryFactory
             .select(dayStr, cnt)
             .from(b)
@@ -102,6 +102,39 @@ public class BoardRepositoryImpl implements BoardRepositoryCustom {
                 t.get(cnt)
             ))
             .toList();
+    }
+	
+	
+	
+	@Override
+    public List<WeeklyTop5PostDTO> findWeeklyTop5Posts() {
+		QBoardEntity b = QBoardEntity.boardEntity;
+
+        LocalDate today = LocalDate.now();
+        LocalDate sevenDaysAgo = today.minusDays(6);
+        
+
+        List<Tuple> rows = queryFactory
+            .select(b.boardIdx, b.title, b.visitcount, b.postdate, b.category)
+            .from(b)
+            .where(b.postdate.between(
+        		sevenDaysAgo.atStartOfDay(),
+                today.plusDays(1).atStartOfDay()   // 오늘 포함
+            ))
+            .orderBy(b.visitcount.desc())
+            .limit(5)
+            .fetch();
+
+
+        return rows.stream()
+	        .map(t -> new WeeklyTop5PostDTO(
+	            t.get(b.boardIdx),
+	            t.get(b.title),
+	            t.get(b.visitcount),
+	            t.get(b.postdate).toLocalDate(),
+	            t.get(b.category)
+	        ))
+	        .toList();
     }
 	
 }

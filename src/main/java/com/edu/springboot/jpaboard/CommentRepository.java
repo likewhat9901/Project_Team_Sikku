@@ -12,8 +12,8 @@ import org.springframework.data.jpa.repository.Query;
 import com.edu.springboot.jpaboard.BoardEntity;
 import com.edu.springboot.jpaboard.dto.MyCommentDto;
 
-public interface CommentRepository extends JpaRepository<CommentEntity, Long> {
-    // 기본적인 CRUD + findAll(Sort sort) 등 제공
+public interface CommentRepository extends JpaRepository<CommentEntity, Long>,
+														CommentRepositoryCustom {
 	
 	
 	// 게시물 기준으로 댓글 조회하기

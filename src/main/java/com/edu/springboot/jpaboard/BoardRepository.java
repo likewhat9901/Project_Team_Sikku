@@ -11,6 +11,7 @@ import org.springframework.data.jpa.repository.Query;
 import com.edu.springboot.jpaboard.dto.IBoardRow;
 import com.edu.springboot.jpaboard.dto.MyPostDto;
 
+// 커스텀 레포지토리 만들기 전.
 // public interface BoardRepository extends JpaRepository<BoardEntity, Long> {
 
 // 커스텀 레포지토리를 만든 후 기존 레포지토리와 연결.
