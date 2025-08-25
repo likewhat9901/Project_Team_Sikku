@@ -89,8 +89,8 @@ window.addEventListener('DOMContentLoaded', function () {
 			    : '';
 
             const html = `
-                <span class="weather-item"><span class="weather-label">🕑 관측:</span> \${timeStr}</span>
-                <span class="weather-item"><span class="weather-label">📍 지점:</span> \${latest.STN}</span>
+                <span class="weather-item"><span class="weather-label">🕑 관측:</span> ${timeStr}</span>
+                <span class="weather-item"><span class="weather-label">📍 지점:</span> 서울</span>
                 <span class="weather-item"><span class="weather-label">🌡️ 기온:</span> \${latest.TA}℃</span>
                 <span class="weather-item"><span class="weather-label">💧 습도:</span> \${latest.HM}%</span>
                 <span class="weather-item"><span class="weather-label">🌧️ 강수:</span> \${latest["RN-DAY"]}mm</span>
