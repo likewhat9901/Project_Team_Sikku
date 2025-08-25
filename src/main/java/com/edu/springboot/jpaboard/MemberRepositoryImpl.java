@@ -28,7 +28,9 @@ public class MemberRepositoryImpl implements MemberRepositoryCustom {
         
         //DB에서 해당쿼리문을 이용하면 게시물,댓글 발행량이 많은 유저 5명을 List<Tuple>에 담음
         List<Tuple> rows = queryFactory
-            .select(m.userId, b.count().coalesce(0L), c.count().coalesce(0L))
+            .select(m.userId,
+            		b.countDistinct().coalesce(0L),
+            		c.countDistinct().coalesce(0L))
             .from(m)
             .leftJoin(b).on(b.userId.eq(m.userId)
             		.and(b.postdate.between(sevenDaysAgo.atStartOfDay(),

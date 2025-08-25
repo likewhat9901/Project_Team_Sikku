@@ -126,11 +126,10 @@ public class FreeController {
 					@PageableDefault(size=10, sort="postdate",
 									direction=Sort.Direction.DESC)Pageable pageable,
 					Model model) {
-	    System.out.println("요청 페이지: " + page);
-	    
+		
+	    // JPA + QueryDSL을 활용한 복합 검색 결과 (페이징 처리된 데이터)
 	    Page<BoardEntity> pageResult = bs.selectListComplexSearch(pageable, condDTO);
-	    
-	    // 간단한 테스트 데이터
+	    // JSON 응답용 List 생성
 	    List<Map<String, Object>> realData = new ArrayList<>();
 	    
 	    for (BoardEntity board : pageResult.getContent()) {
@@ -143,6 +142,7 @@ public class FreeController {
 	        boardMap.put("likes", board.getLikesCount());
 	        realData.add(boardMap);
 	    }
+	    // JS fetch 요청에 JSON으로 반환
 	    return realData;
 	}
 
