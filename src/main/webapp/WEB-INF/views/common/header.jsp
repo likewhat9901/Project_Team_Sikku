@@ -61,6 +61,14 @@
 			   <div class="icon-box"><img alt="" src="/images/header/icons/icon_recommend.png"/></div>
 			   <span>MBTI</span>
 			</div>
+			<div class="nav-item" onclick="location.href='/disease/check.do'">
+			   <!-- 
+			   <div class="icon-box"><img alt="" src="/images/header/icons/icon_disease.png"/></div>			   
+			   <span>병명진단</span>
+			    -->
+			   <div class="icon-box"><img alt="" src="/images/header/icons/icon_ambulance.png"/></div>
+			   <span>삐뽀삐뽀</span>
+			</div>
         </div>
         <!-- ✅ 로그인 상태에 따라 동적으로 변경 -->
 		<div class="user-section">

@@ -125,7 +125,6 @@ public class BoardService {
        int newLikesCount = board.getLikes().size();
        board.setLikesCount(newLikesCount);  // 이 부분이 실제 DB 컬럼을 업데이트함
        br.save(board);
-       System.out.println("변경 후 좋아요 개수: " + newLikesCount + ", 현재 상태: " + isLiked);
        
        Map<String, Object> result = new HashMap<>();
        result.put("likesCount", newLikesCount);
@@ -185,6 +184,10 @@ public class BoardService {
     	return br.countWeeklyPosts();
     }
     
+    // 최근 7일 조회수 TOP5 게시글 가져오기
+    public List<WeeklyTop5PostDTO> getWeeklyTop5() {
+    	return br.findWeeklyTop5Posts();
+    }
     
     
     
