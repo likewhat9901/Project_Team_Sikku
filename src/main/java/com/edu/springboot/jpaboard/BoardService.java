@@ -11,6 +11,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestParam;
+
 import com.edu.springboot.auth.AuthController;
 import com.edu.springboot.flutter.auth.AuthApiController;
 import com.edu.springboot.jpaboard.dto.IBoardRow;
@@ -65,6 +67,7 @@ public class BoardService {
    
    // 목록 (복합 검색어)
    public Page<BoardEntity> selectListComplexSearch(Pageable pageable, BoardSearchCondDTO condDTO) {
+	 
 	   
 	    if(condDTO.getCategory() != null && condDTO.getCategory() == 1) {
 	        Page<BoardEntity> boardRows = br.searchComplex(pageable, condDTO);
@@ -72,7 +75,7 @@ public class BoardService {
 	    }
 	    else {
 	        // 카테고리가 null이거나 1이 아닐 때는 기본 selectList 사용
-	        return br.findByCategory(pageable, 1);
+	    	return br.searchComplex(pageable, condDTO);
 	    }
    }
    

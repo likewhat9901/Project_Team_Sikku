@@ -31,13 +31,23 @@ public class BoardRepositoryImpl implements BoardRepositoryCustom {
 		QBoardEntity b = QBoardEntity.boardEntity;
 		BooleanBuilder where = new BooleanBuilder();
 		
+	    // 카테고리 조건 추가
+	    // condDTO.getCategory()가 null이 아닐 때만 조건을 추가합니다.
+	    if(condDTO.getCategory() != null) {
+	        where.and(b.category.eq(condDTO.getCategory()));
+	    }
+		
+	    // 검색어가 있을 경우 조건 추가
 	    if(condDTO.getSearchWord() != null && !condDTO.getSearchWord().isEmpty()) {
 	        String[] keywords = condDTO.getSearchWord().split(" ");
 	        
+	        // 각 키워드를 and로 묶고, 키워드 내부의 title과 content는 or로 묶습니다.
+	        BooleanBuilder searchConditions = new BooleanBuilder();
 	        for(String word : keywords) {
-	            where.or(b.title.containsIgnoreCase(word)
-	                  .or(b.content.containsIgnoreCase(word)));
+	            searchConditions.or(b.title.containsIgnoreCase(word)
+	                                    .or(b.content.containsIgnoreCase(word)));
 	        }
+	        where.and(searchConditions);
 	    }
 	    
 		List<BoardEntity> content = queryFactory
