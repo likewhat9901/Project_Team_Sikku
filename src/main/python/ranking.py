@@ -159,6 +159,11 @@ def ranking_data(category):
 		"방울토마토": "/images/ranking/farm/cherry_tomato.jpg",
 		"로메인": "/images/ranking/farm/romaine.jpg",
 		"파슬리": "/images/ranking/farm/parsley.jpg",
+		"고수": "/images/ranking/farm/coriander.jpg",
+		"시금치": "/images/ranking/farm/spinach.jpg",
+		"샐러리": "/images/ranking/farm/celery.jpg",
+		"호박": "/images/ranking/farm/pumpkin.jpg",
+		"청경채": "/images/ranking/farm/bok_choy.jpg",
 		
 		"알로카시아": "/images/ranking/foliage/alocasia.jpg",
 		"행운목": "/images/ranking/foliage/happy_plant.jpg",
@@ -167,6 +172,7 @@ def ranking_data(category):
 		"파키라": "/images/ranking/foliage/pachira.jpg",
 		"금전수": "/images/ranking/foliage/ZZ_plant.jpg",
 		"사랑초": "/images/ranking/foliage/oxalis.jpg",
+		"팔레놉시스": "/images/ranking/foliage/Phalaenopsis.jpg",
 	}
     
 	# top10 데이터 뽑기
@@ -177,7 +183,7 @@ def ranking_data(category):
 		top10.append({
 			"name": name,
 			"volume": item["volume"],
-			"image": image_map.get(name, "./images/default.jpg")
+			"image": image_map.get(name, "/images/ranking/default.jpg")
 		})
 	
 	# 결과 반환

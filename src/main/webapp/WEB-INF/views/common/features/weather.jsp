@@ -37,6 +37,7 @@
     border-radius: 8px;
     box-shadow: 0 1px 3px rgba(60,80,120,0.08);
     min-width: 90px;
+    font-size: 1.1em;
     font-weight: 500;
     white-space: nowrap;  /* 줄바꿈 금지 */
 }
@@ -46,7 +47,7 @@
 }
 .weather-label {
     color: #1b5e20;
-    font-size: 1em;
+    font-size: 1.1em;
     font-weight: 700;
     margin-right: 8px;
     opacity: 0.85;
@@ -84,13 +85,18 @@ window.addEventListener('DOMContentLoaded', function () {
             // console.log("latest 데이터:", latest);
             // console.log("latest의 키", Object.keys(latest));
             // 시간 포맷 변환 (선택)
-            const timeStr = latest.YYMMDDHHMI
-			    ? `${latest.YYMMDDHHMI.slice(0,4)}-${latest.YYMMDDHHMI.slice(4,6)}-${latest.YYMMDDHHMI.slice(6,8)} ${latest.YYMMDDHHMI.slice(8,10)}:${latest.YYMMDDHHMI.slice(10,12)}`
-			    : '';
+            const rawTime = latest.YYMMDDHHMI;
+            let timeStr = '';
+
+            if (rawTime && rawTime.length === 12) {
+                timeStr = `\${rawTime.slice(0,4)}-\${rawTime.slice(4,6)}-\${rawTime.slice(6,8)} \${rawTime.slice(8,10)}:\${rawTime.slice(10,12)}`;
+            } else {
+                timeStr = '정보 없음';
+            }
 
             const html = `
                 <span class="weather-item"><span class="weather-label">🕑 관측:</span> \${timeStr}</span>
-                <span class="weather-item"><span class="weather-label">📍 지점:</span> \${latest.STN}</span>
+                <span class="weather-item"><span class="weather-label">📍 지점:</span> 서울</span>
                 <span class="weather-item"><span class="weather-label">🌡️ 기온:</span> \${latest.TA}℃</span>
                 <span class="weather-item"><span class="weather-label">💧 습도:</span> \${latest.HM}%</span>
                 <span class="weather-item"><span class="weather-label">🌧️ 강수:</span> \${latest["RN-DAY"]}mm</span>

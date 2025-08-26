@@ -19,7 +19,6 @@ public class AuthService {
     private MemberRepository memberRepository;
 	@Autowired
 	private PasswordEncoder passwordEncoder;
-
 	
 	
     public LoginResponse login(String userid, String userpw) {
@@ -49,14 +48,25 @@ public class AuthService {
         if (memberRepository.findByUserId(req.getUserid()).isPresent()) {
             throw new IllegalStateException("이미 존재하는 아이디입니다.");
         }
-
-        // 3) 비번 인코딩
-        String encodedPw = passwordEncoder.encode(req.getUserpw());
+        
+        if (req.getEmail() != null && memberRepository.existsByEmail(req.getEmail())) {
+            throw new IllegalStateException("이미 사용 중인 이메일입니다.");
+        }
         
         // 3-1) 전화번호 포맷 변환
         String rawPhone = req.getPhoneNumber(); // ex: "01012345678"
         String formattedPhone = rawPhone.replaceAll("(\\d{3})(\\d{4})(\\d{4})", "$1-$2-$3");
+        
+        if (formattedPhone != null && memberRepository.existsByPhonenumber(formattedPhone)) {
+            throw new IllegalStateException("이미 등록된 전화번호입니다.");
+        }
 
+        if (req.getUsername() != null && memberRepository.existsByUsername(req.getUsername())) {
+            throw new IllegalStateException("이미 사용 중인 이름입니다.");
+        }
+
+        // 3) 비번 인코딩
+        String encodedPw = passwordEncoder.encode(req.getUserpw());
 
         // 4) 엔티티 생성/저장 (권한/상태 기본값 설정)
         MemberEntity member = new MemberEntity();
