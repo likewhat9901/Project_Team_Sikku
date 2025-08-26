@@ -8,7 +8,7 @@ CREATE TABLE members(
     phonenumber        VARCHAR2(20)    UNIQUE,
     email               VARCHAR2(100)   UNIQUE,
     address             VARCHAR2(200),
-    profileimgpath      VARCHAR2(100) DEFAULT 'null'
+    profileimgpath      VARCHAR2(100)
 );
 
 CREATE TABLE hboard (
