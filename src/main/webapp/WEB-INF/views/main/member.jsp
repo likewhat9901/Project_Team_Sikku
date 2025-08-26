@@ -89,48 +89,6 @@
 
 <%@ include file="/WEB-INF/views/common/footer.jsp" %>
 </body>
-<!-- 날씨창 -->
-<script type="text/javascript">
-window.addEventListener('DOMContentLoaded', function () {
-    fetch('/api/weather')
-        .then(response => response.json())
-        .then(data => {
-        	// console.log("data:", data);
-            const container = document.querySelector('.weather-content');
-            container.innerHTML = '';
-
-            if (!data || data.length === 0) {
-                container.innerHTML = '<p>날씨 정보를 불러올 수 없습니다.</p>';
-                return;
-            }
-
-            // 최신 데이터 1개만 보여줌 (첫 번째 값)
-            const latest = data[0];
-            // console.log("latest 데이터:", latest);
-            // console.log("latest의 키", Object.keys(latest));
-            // 시간 포맷 변환 (선택)
-            const timeStr = latest.YYMMDDHHMI
-			    ? `${latest.YYMMDDHHMI.slice(0,4)}-${latest.YYMMDDHHMI.slice(4,6)}-${latest.YYMMDDHHMI.slice(6,8)} ${latest.YYMMDDHHMI.slice(8,10)}:${latest.YYMMDDHHMI.slice(10,12)}`
-			    : '';
-
-            const html = `
-                <span class="weather-item"><span class="weather-label">🕑 관측:</span> \${timeStr}</span>
-                <span class="weather-item"><span class="weather-label">📍 지점:</span> \${latest.STN}</span>
-                <span class="weather-item"><span class="weather-label">🌡️ 기온:</span> \${latest.TA}℃</span>
-                <span class="weather-item"><span class="weather-label">💧 습도:</span> \${latest.HM}%</span>
-                <span class="weather-item"><span class="weather-label">🌧️ 강수:</span> \${latest["RN-DAY"]}mm</span>
-                <span class="weather-item"><span class="weather-label">💨 풍속:</span> \${latest.WS1}m/s</span>
-                <span class="weather-item"><span class="weather-label">🧭 풍향:</span> \${latest.WD1}°</span>
-                <span class="weather-item"><span class="weather-label">🧪 기압:</span> \${latest.PA}hPa</span>
-            `;
-            container.innerHTML = html;
-
-        })
-        .catch(err => {
-            document.querySelector('.weather-content').innerHTML = '<p>날씨 정보를 불러올 수 없습니다.</p>';
-        });
-});
-</script>
 
 <!-- ===== 예측 그래프 렌더링 ===== -->
 <script type="text/javascript">
