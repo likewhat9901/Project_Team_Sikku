@@ -345,6 +345,9 @@
 /* 페이지네이션 */
 #qna-tab .pagination {
   margin-bottom: 50px;
+  align-items: center;
+  display: flex;
+  justify-content: center;
 }
 
 #qna-tab .pagination a {

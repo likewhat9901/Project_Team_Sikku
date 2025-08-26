@@ -586,6 +586,7 @@
     transition: all 0.3s ease;
     font-family: 'MyFont', 'Malgun Gothic', sans-serif;
     box-sizing: border-box;
+    margin: 20px;
 }
 
 .write-form input[type="text"]:focus,
