@@ -95,9 +95,11 @@ public class FreeController {
 	@GetMapping("/boards/free/freeBoardSearch.do")
 	public String search(
 					BoardSearchCondDTO condDTO,
-					@PageableDefault(size=10, sort="postdate",
-									direction=Sort.Direction.DESC)Pageable pageable,
+					@RequestParam("page") int page,
 					Model model) {
+		
+		Sort sort = Sort.by(Sort.Order.desc("boardIdx"));
+		Pageable pageable = PageRequest.ofSize(10).withPage(page - 1).withSort(sort);
 		
 		Page<BoardEntity> result = bs.selectListComplexSearch(pageable, condDTO);
 		List<BoardEntity> rows = result.getContent();
@@ -123,14 +125,26 @@ public class FreeController {
 	public List<Map<String, Object>> getMoreBoards(
 					@RequestParam("page") int page,
 					BoardSearchCondDTO condDTO,
-					@PageableDefault(size=10, sort="postdate",
-									direction=Sort.Direction.DESC)Pageable pageable,
 					Model model) {
+		
+		Sort sort = Sort.by(Sort.Order.desc("boardIdx"));
+		Pageable pageable = PageRequest.ofSize(10).withPage(page - 1).withSort(sort);
+		
+	    
 		
 	    // JPA + QueryDSL을 활용한 복합 검색 결과 (페이징 처리된 데이터)
 	    Page<BoardEntity> pageResult = bs.selectListComplexSearch(pageable, condDTO);
+	    System.out.println("condDTO 카테고리: " + condDTO.getCategory());
 	    // JSON 응답용 List 생성
 	    List<Map<String, Object>> realData = new ArrayList<>();
+	    
+	    // 디버깅 로그 추가
+	    System.out.println("요청 페이지: " + page);
+	    System.out.println("실제 조회 페이지: " + (page - 1));
+	    System.out.println("전체 데이터 수: " + pageResult.getTotalElements());
+	    System.out.println("전체 페이지 수: " + pageResult.getTotalPages());
+	    System.out.println("현재 페이지 데이터 수: " + pageResult.getContent().size());
+	    System.out.println("현재 페이지가 마지막인가: " + pageResult.isLast());
 	    
 	    for (BoardEntity board : pageResult.getContent()) {
 	        Map<String, Object> boardMap = new HashMap<>();
@@ -143,7 +157,9 @@ public class FreeController {
 	        realData.add(boardMap);
 	    }
 	    // JS fetch 요청에 JSON으로 반환
+	    System.out.println("리얼데이터"+ realData);
 	    return realData;
+	    
 	}
 
 	
