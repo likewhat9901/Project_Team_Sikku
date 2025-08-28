@@ -90,7 +90,6 @@
 <%@ include file="/WEB-INF/views/common/footer.jsp" %>
 </body>
 
-
 <!-- ===== 예측 그래프 렌더링 ===== -->
 <script type="text/javascript">
 (async function renderChartsForAllCards() {

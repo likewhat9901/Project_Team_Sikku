@@ -4,6 +4,8 @@ package com.edu.springboot.restApi;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.URL;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -26,8 +28,12 @@ public class WeatherApiController {
 		List<Map<String, String>> result = new ArrayList<>();
 		
 		try {
+			LocalDateTime now = LocalDateTime.now().minusMinutes(1);
+	        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMddHHmm");
+	        String currentTimeStr = now.format(formatter);
+			
 			String baseUrl = "https://apihub.kma.go.kr/api/typ01/cgi-bin/url/nph-aws2_min"
-					+ "?tm2=202302010900"
+					+ "?tm2=" + currentTimeStr
 					+ "&stn=0"
 					+ "&disp=0"
 					+ "&help=1"
