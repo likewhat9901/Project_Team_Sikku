@@ -15,7 +15,7 @@
 	<select id="selectAll"
 		resultType="com.edu.springboot.dict.DictDTO">
 		SELECT * from plantdict
-		ORDER BY plantidx ASC
+		ORDER BY plantidx DESC
 	</select>
 	
 	<select id="selectAllPlantidx"

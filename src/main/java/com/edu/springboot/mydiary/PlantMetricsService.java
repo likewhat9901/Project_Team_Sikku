@@ -38,11 +38,10 @@ public class PlantMetricsService {
          m.setLatestHeight(safeF(latest.getHeight()));
          m.setLatestFruit(safeI(latest.getFruit()));
 
-         // 기준일 가까운 값 찾기 (가장 가까운 날짜의 기록)
-         Float h7 = nearestHeight(rows, latestDate.minusDays(7));
-         Float h30 = nearestHeight(rows, latestDate.minusDays(30));
-         Integer f7 = nearestFruit(rows, latestDate.minusDays(7));
-
+         Float h7  = heightAtOrBefore(rows, latestDate.minusDays(7));
+         Float h30 = heightAtOrBefore(rows, latestDate.minusDays(30));
+         Integer f7 = fruitAtOrBefore(rows, latestDate.minusDays(7));
+         
          if (m.getLatestHeight() != null && h7 != null) {
              m.setDeltaHeight7d(m.getLatestHeight() - h7);
          }
@@ -61,54 +60,48 @@ public class PlantMetricsService {
      return out;
  }
 
- private static Float nearestHeight(List<MyDiaryDTO> rows, LocalDate target) {
-     MyDiaryDTO nearest = nearestByDate(rows, target);
-     return nearest != null ? safeF(nearest.getHeight()) : null;
- }
- private static Integer nearestFruit(List<MyDiaryDTO> rows, LocalDate target) {
-     MyDiaryDTO nearest = nearestByDate(rows, target);
-     return nearest != null ? safeI(nearest.getFruit()) : null;
- }
- private static MyDiaryDTO nearestByDate(List<MyDiaryDTO> rows, LocalDate target) {
-     return rows.stream().min(Comparator.comparingLong(r -> {
-         long d = Math.abs(r.getPostdate().toLocalDate().toEpochDay() - target.toEpochDay());
-         return d;
-     })).orElse(null);
- }
+ private static Float heightAtOrBefore(List<MyDiaryDTO> rows, LocalDate target) {
+    MyDiaryDTO r = latestOnOrBefore(rows, target);
+    return r != null ? safeF(r.getHeight()) : null;
+}
+private static Integer fruitAtOrBefore(List<MyDiaryDTO> rows, LocalDate target) {
+    MyDiaryDTO r = latestOnOrBefore(rows, target);
+    return r != null ? safeI(r.getFruit()) : null;
+}
 
- private static Double calcWeeklyAvgFruitInc(List<MyDiaryDTO> rows, LocalDate latestDate) {
-     // 최근 28일 범위 내에서, 7일 간격 변화의 평균
-     LocalDate since = latestDate.minusDays(28);
-     List<MyDiaryDTO> window = rows.stream()
-             .filter(r -> !r.getPostdate().toLocalDate().isBefore(since))
-             .collect(Collectors.toList());
-     if (window.size() < 2) return null;
+private static MyDiaryDTO latestOnOrBefore(List<MyDiaryDTO> rows, LocalDate target) {
+	// rows는 오름차순 정렬되어 있음
+    MyDiaryDTO candidate = null;
+    for (MyDiaryDTO r : rows) {
+        LocalDate d = r.getPostdate().toLocalDate();
+        if (d.isAfter(target)) break;   // target 넘으면 종료
+        candidate = r;                  // 조건 만족하면 일단 갱신
+    }
+    return candidate; // 없으면 null
+}
 
-     // 일자별 마지막 값으로 맵 (하루에 여러개면 마지막만)
-     Map<LocalDate, Integer> lastFruitPerDay = new TreeMap<>();
-     for (MyDiaryDTO r : window) {
-         lastFruitPerDay.put(r.getPostdate().toLocalDate(), safeI(r.getFruit()));
-     }
-     // 7일 간격으로 샘플: since, since+7, since+14, since+21, latest
-     List<LocalDate> points = Arrays.asList(
-             since, since.plusDays(7), since.plusDays(14), since.plusDays(21), latestDate
-     );
-     List<Integer> vals = new ArrayList<>();
-     for (LocalDate p : points) {
-         Integer v = nearestFruit(rows, p);
-         if (v == null) return null; // 데이터 부족
-         vals.add(v);
-     }
-     // 구간 증가량 평균 (4구간)
-     double sum = 0;
-     int cnt = 0;
-     for (int i = 1; i < vals.size(); i++) {
-         sum += (vals.get(i) - vals.get(i-1));
-         cnt++;
-     }
-     if (cnt == 0) return null;
-     return sum / cnt;
- }
+private static Double calcWeeklyAvgFruitInc(List<MyDiaryDTO> rows, LocalDate latestDate) {
+    // 최근 28일 기준 4구간 평균 증가량
+    LocalDate since = latestDate.minusDays(28);
+    // 최소한 기준점(since) 이전 기록이 있어야 의미가 있음
+    // (rows는 이미 latestDate-35일 이후만 들어오므로 충분함)
+
+    List<LocalDate> points = Arrays.asList(
+        since, since.plusDays(7), since.plusDays(14), since.plusDays(21), latestDate
+    );
+
+    List<Integer> vals = new ArrayList<>(points.size());
+    for (LocalDate p : points) {
+        Integer v = fruitAtOrBefore(rows, p); // 핵심: ≤ p
+        if (v == null) return null;           // 기준점 부족하면 null로
+        vals.add(v);
+    }
+
+    double sum = 0;
+    for (int i = 1; i < vals.size(); i++) sum += (vals.get(i) - vals.get(i - 1));
+    return sum / 4.0; // 4구간 평균
+}
+
 
  private static Float safeF(Float f) { return f; }
  private static Integer safeI(Integer i) { return i; }

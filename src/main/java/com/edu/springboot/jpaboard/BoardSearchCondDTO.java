@@ -15,5 +15,6 @@ public class BoardSearchCondDTO {
 	private String userId;
 	private LocalDateTime postdate;
 	private String searchWord;
+	private Integer category;
 	
 }

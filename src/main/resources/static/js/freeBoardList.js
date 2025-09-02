@@ -2,8 +2,9 @@
 무한 스크롤 구현을 위한 JS
 */
 
-let currentPage = 0;
+let currentPage = 1;
 let loading = false;
+let hasMoreData = true;
 let currentSearchWord = ''; // 현재 검색어 저장용
 
 // 페이지 로드시 검색어 확인
@@ -28,6 +29,8 @@ window.addEventListener('scroll', function() {
 });
 
 function loadMoreBoards() {
+	if (!hasMoreData) return; // 더 이상 데이터가 없으면 종료
+	
     loading = true;
     currentPage++;
 

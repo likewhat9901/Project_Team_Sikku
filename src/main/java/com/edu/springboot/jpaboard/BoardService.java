@@ -11,7 +11,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestParam;
 
+import com.edu.springboot.auth.AuthController;
+import com.edu.springboot.flutter.auth.AuthApiController;
 import com.edu.springboot.jpaboard.dto.IBoardRow;
 import com.edu.springboot.jpaboard.dto.LikedPostDto;
 import com.edu.springboot.jpaboard.dto.MyPostDto;
@@ -22,13 +25,15 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @Service
 public class BoardService {
-   
+
 	
    //DAO역할의 인터페이스
    @Autowired
    private BoardRepository br;
-    @Autowired
-    private LikeRepository lr;
+   @Autowired
+   private LikeRepository lr;
+
+
    
    
    /******************** 자유게시판 (카테고리=1) *****************/
@@ -62,8 +67,16 @@ public class BoardService {
    
    // 목록 (복합 검색어)
    public Page<BoardEntity> selectListComplexSearch(Pageable pageable, BoardSearchCondDTO condDTO) {
-	   Page<BoardEntity> boardRows = br.searchComplex(pageable, condDTO);
-	   return boardRows;
+	 
+	   
+	    if(condDTO.getCategory() != null && condDTO.getCategory() == 1) {
+	        Page<BoardEntity> boardRows = br.searchComplex(pageable, condDTO);
+	        return boardRows;
+	    }
+	    else {
+	        // 카테고리가 null이거나 1이 아닐 때는 기본 selectList 사용
+	    	return br.searchComplex(pageable, condDTO);
+	    }
    }
    
    /**********************************************************************/

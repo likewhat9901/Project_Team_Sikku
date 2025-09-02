@@ -46,11 +46,15 @@
 	<update id="edit"
 		parameterType="com.edu.springboot.mydiary.MyDiaryDTO">
 		UPDATE diary SET
-		ofileName = #{ofileName,
-		jdbcType=VARCHAR}, sfile=#{sfile, jdbcType=VARCHAR},
-		description=#{description}, temperature=#{temperature},
-		humidity=#{humidity}, sunlight=#{sunlight}, plantidx=#{plantidx,
-		javaType=java.lang.Long, jdbcType=NUMERIC}
+		ofileName = #{ofileName,jdbcType=VARCHAR}, 
+		sfile=#{sfile, jdbcType=VARCHAR},
+		description=#{description}, 
+		temperature=#{temperature},
+		humidity=#{humidity}, 
+		sunlight=#{sunlight}, 
+		height=#{height}, 
+		fruit=#{fruit}, 
+		plantidx=#{plantidx, javaType=java.lang.Long, jdbcType=NUMERIC}
 		WHERE diaryIdx=#{diaryIdx}
 	</update>
 

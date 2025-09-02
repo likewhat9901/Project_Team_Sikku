@@ -6,7 +6,7 @@
 <html>
 <head>
 	<meta charset="UTF-8">
-	<title>Insert title here</title>
+	<title>식꾸</title>
 	<link rel="stylesheet" href="/css/common/layout.css" />
 	<link rel="stylesheet" href="/css/myDiaryEdit.css" />
 </head>
@@ -38,9 +38,8 @@
 
 				<div class="mydiary-write-content">
 					<form name="writeFrm" method="post" enctype="multipart/form-data"
-						action="./edit.do" onsubmit="return validateForm(this);">
-						<input type="hidden" name="diaryIdx"
-							value="${myDiaryDTO.diaryIdx}" />
+						action="/mydiary/edit.do" onsubmit="return validateForm(this);">
+						<input type="hidden" name="diaryIdx" value="${myDiaryDTO.diaryIdx}" />
 
 						<!-- 식물명 (라디오: 선택 옵션, 기본값 미선택) -->
 <div class="mydiary-write-row">

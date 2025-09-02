@@ -19,10 +19,14 @@
   <h1 class="main-title">식물 병명 진단 🚑</h1>
 
   <div class="fruit-buttons">
-    <button class="fruit-btn tangerine-btn" data-fruit="귤">귤 🍊</button>
     <button class="fruit-btn strawberry-btn" data-fruit="딸기">딸기 🍓</button>
-    <button class="fruit-btn lemon-btn" data-fruit="레몬">레몬 🍋</button>
-    <button class="fruit-btn melon-btn" data-fruit="참외">참외 🍈</button>
+    <button class="fruit-btn tangerine-btn" data-fruit="귤">귤 🍊</button>
+    <!-- 
+    
+    <button class="fruit-btn lemon-btn" data-fruit="참외">참외 🍈</button>
+     -->
+    <button class="fruit-btn melon-btn" data-fruit="레몬">레몬 🍋</button>
+    <button class="fruit-btn grape-btn" data-fruit="포도">포도 🍇</button>
   </div>
 
   <div class="detector-layout">
